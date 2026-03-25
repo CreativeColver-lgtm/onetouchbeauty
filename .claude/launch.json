@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "onetouchbeauty",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/creativecolver/Downloads/Tap&Charge /onetouchbeauty"],
+      "port": 3001
+    }
+  ]
+}
