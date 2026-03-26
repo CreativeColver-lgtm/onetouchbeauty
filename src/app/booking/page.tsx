@@ -1,9 +1,13 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import {
   Calendar, Clock, Star, MapPin, ArrowLeft, ArrowRight, Check,
   Bell, ChevronLeft, ChevronRight, User, Phone, Mail, MessageSquare,
+  CreditCard, Lock, Shield, Loader2, Users, Sparkles,
 } from "lucide-react";
+import AvailabilityCalendar from "@/components/AvailabilityCalendar";
+import PaymentButton from "@/components/PaymentButton";
 
 const salon = {
   name: "Glow Studio",
@@ -24,49 +28,55 @@ const servicesList = [
   { id: 8, name: "Updo / Evening Style", duration: 60, price: 55 },
 ];
 
-const timeSlots = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-  "12:00", "12:30", "13:00", "13:30", "14:00", "14:30",
-  "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
+const staff = [
+  {
+    id: 1,
+    name: "Sophie Taylor",
+    role: "Senior Stylist",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face",
+    specialities: ["Balayage", "Colour"],
+    rating: 4.9,
+  },
+  {
+    id: 2,
+    name: "James Chen",
+    role: "Creative Director",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+    specialities: ["Precision Cuts", "Men's Styling"],
+    rating: 5.0,
+  },
+  {
+    id: 3,
+    name: "Amara Osei",
+    role: "Colour Specialist",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face",
+    specialities: ["Highlights", "Colour Correction"],
+    rating: 4.8,
+  },
+  {
+    id: 4,
+    name: "No preference",
+    role: "First available stylist",
+    image: "",
+    specialities: [],
+    rating: 0,
+  },
 ];
 
-const bookedSlots = ["10:00", "10:30", "13:00", "15:30"];
-
-const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-function getDaysInMonth(year: number, month: number) {
-  const days: { date: number; isCurrentMonth: boolean; isToday: boolean }[] = [];
-  const firstDay = new Date(year, month, 1).getDay();
-  const adjusted = firstDay === 0 ? 6 : firstDay - 1;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const today = new Date();
-
-  for (let i = 0; i < adjusted; i++) {
-    days.push({ date: 0, isCurrentMonth: false, isToday: false });
-  }
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push({
-      date: i,
-      isCurrentMonth: true,
-      isToday: today.getDate() === i && today.getMonth() === month && today.getFullYear() === year,
-    });
-  }
-  return days;
-}
-
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const stepLabels = ["Services", "Stylist", "Date & Time", "Details", "Payment", "Confirm"];
 
 export default function BookingPage() {
   const [step, setStep] = useState(0);
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
-  const [selectedDate, setSelectedDate] = useState<number | null>(null);
+  const [selectedStaff, setSelectedStaff] = useState<number | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [notifications, setNotifications] = useState({ email: true, sms: true, reminder24h: true, reminder1h: true });
+  const [depositOnly, setDepositOnly] = useState(true);
   const [confirmed, setConfirmed] = useState(false);
-
-  const days = getDaysInMonth(currentYear, currentMonth);
+  const [clientDetails, setClientDetails] = useState({ name: "", phone: "", email: "", notes: "" });
 
   const toggleService = (id: number) => {
     setSelectedServices((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
@@ -74,15 +84,17 @@ export default function BookingPage() {
 
   const totalDuration = servicesList.filter((s) => selectedServices.includes(s.id)).reduce((sum, s) => sum + s.duration, 0);
   const totalPrice = servicesList.filter((s) => selectedServices.includes(s.id)).reduce((sum, s) => sum + s.price, 0);
+  const depositAmount = Math.max(10, Math.round(totalPrice * 0.2));
 
-  const prevMonth = () => {
-    if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(currentYear - 1); }
-    else setCurrentMonth(currentMonth - 1);
-  };
+  const formattedDate = selectedDate
+    ? `${selectedDate.getDate()} ${months[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
+    : "";
 
-  const nextMonth = () => {
-    if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(currentYear + 1); }
-    else setCurrentMonth(currentMonth + 1);
+  const canNext = () => {
+    if (step === 0) return selectedServices.length > 0;
+    if (step === 1) return selectedStaff !== null;
+    if (step === 2) return selectedDate && selectedTime;
+    return true;
   };
 
   if (confirmed) {
@@ -95,7 +107,7 @@ export default function BookingPage() {
           <h1 className="text-2xl font-bold text-foreground mb-3">Booking Confirmed!</h1>
           <p className="text-text-muted mb-6">
             Your appointment at {salon.name} has been booked for{" "}
-            <strong className="text-foreground">{selectedDate} {months[currentMonth]}</strong> at{" "}
+            <strong className="text-foreground">{formattedDate}</strong> at{" "}
             <strong className="text-foreground">{selectedTime}</strong>.
           </p>
           <div className="bg-surface-elevated border border-border rounded-2xl p-5 mb-6 text-left">
@@ -129,28 +141,33 @@ export default function BookingPage() {
     <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Salon Header */}
-        <div className="bg-surface-elevated border border-border rounded-2xl p-5 mb-6 flex items-center gap-4">
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center text-3xl">
-            {salon.image}
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">{salon.name}</h1>
-            <p className="text-sm text-text-muted flex items-center gap-1">
-              <MapPin size={13} /> {salon.location}
-            </p>
-            <div className="flex items-center gap-1 mt-1">
-              <Star size={14} className="text-amber-400 fill-amber-400" />
-              <span className="text-sm font-semibold text-foreground">{salon.rating}</span>
-              <span className="text-xs text-text-muted">({salon.reviews} reviews)</span>
+        <div className="bg-surface-elevated border border-border rounded-2xl p-5 mb-6 flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center text-3xl">
+              {salon.image}
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">{salon.name}</h1>
+              <p className="text-sm text-text-muted flex items-center gap-1">
+                <MapPin size={13} /> {salon.location}
+              </p>
+              <div className="flex items-center gap-1 mt-1">
+                <Star size={14} className="text-amber-400 fill-amber-400" />
+                <span className="text-sm font-semibold text-foreground">{salon.rating}</span>
+                <span className="text-xs text-text-muted">({salon.reviews} reviews)</span>
+              </div>
             </div>
           </div>
+          <a href="/booking/group" className="flex items-center gap-2 px-4 py-2 border border-border text-sm font-semibold text-foreground rounded-xl hover:border-primary hover:text-primary hover:bg-primary/5 transition">
+            <Users size={14} /> Group Booking
+          </a>
         </div>
 
         {/* Steps */}
-        <div className="flex gap-2 mb-6">
-          {["Services", "Date & Time", "Notifications", "Confirm"].map((s, i) => (
+        <div className="flex gap-1.5 mb-6 overflow-x-auto pb-1">
+          {stepLabels.map((s, i) => (
             <button key={s} onClick={() => i < step && setStep(i)}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition ${
+              className={`flex-1 min-w-0 py-2 px-1 rounded-xl text-xs font-semibold transition truncate ${
                 i === step ? "bg-primary text-white" : i < step ? "bg-primary/10 text-primary" : "bg-surface text-text-muted"
               }`}>
               {s}
@@ -158,7 +175,7 @@ export default function BookingPage() {
           ))}
         </div>
 
-        {/* Step 1: Services */}
+        {/* Step 0: Services */}
         {step === 0 && (
           <div className="animate-fade-in">
             <h2 className="text-lg font-bold text-foreground mb-4">Choose your services</h2>
@@ -199,130 +216,229 @@ export default function BookingPage() {
           </div>
         )}
 
-        {/* Step 2: Date & Time */}
+        {/* Step 1: Staff Selection */}
         {step === 1 && (
           <div className="animate-fade-in">
-            <div className="grid lg:grid-cols-2 gap-6">
-              {/* Calendar */}
-              <div className="bg-surface-elevated border border-border rounded-2xl p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <button onClick={prevMonth} className="p-2 hover:bg-surface rounded-lg transition">
-                    <ChevronLeft size={18} className="text-foreground" />
-                  </button>
-                  <h3 className="font-bold text-foreground">{months[currentMonth]} {currentYear}</h3>
-                  <button onClick={nextMonth} className="p-2 hover:bg-surface rounded-lg transition">
-                    <ChevronRight size={18} className="text-foreground" />
-                  </button>
-                </div>
-                <div className="grid grid-cols-7 gap-1 mb-2">
-                  {daysOfWeek.map((d) => (
-                    <div key={d} className="text-center text-xs font-semibold text-text-muted py-2">{d}</div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-7 gap-1">
-                  {days.map((d, i) => (
-                    <button key={i} disabled={!d.isCurrentMonth || d.date === 0}
-                      onClick={() => d.isCurrentMonth && setSelectedDate(d.date)}
-                      className={`aspect-square rounded-lg text-sm font-medium transition ${
-                        !d.isCurrentMonth ? "invisible" :
-                        selectedDate === d.date ? "bg-primary text-white" :
-                        d.isToday ? "bg-primary/10 text-primary font-bold" :
-                        "text-foreground hover:bg-surface"
-                      }`}>
-                      {d.date || ""}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Time Slots */}
-              <div>
-                <h3 className="font-bold text-foreground mb-3">
-                  {selectedDate ? `Available times for ${selectedDate} ${months[currentMonth]}` : "Select a date first"}
-                </h3>
-                {selectedDate ? (
-                  <div className="grid grid-cols-3 gap-2">
-                    {timeSlots.map((t) => {
-                      const booked = bookedSlots.includes(t);
-                      return (
-                        <button key={t} disabled={booked} onClick={() => setSelectedTime(t)}
-                          className={`py-3 rounded-xl text-sm font-medium transition ${
-                            booked ? "bg-surface text-text-muted/40 line-through cursor-not-allowed" :
-                            selectedTime === t ? "bg-primary text-white" :
-                            "bg-surface-elevated border border-border text-foreground hover:border-primary"
-                          }`}>
-                          {t}
-                        </button>
-                      );
-                    })}
+            <h2 className="text-lg font-bold text-foreground mb-2">Choose your stylist</h2>
+            <p className="text-sm text-text-muted mb-5">Select a stylist or let us assign the first available</p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {staff.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setSelectedStaff(s.id)}
+                  className={`p-4 rounded-xl border text-left transition ${
+                    selectedStaff === s.id
+                      ? "border-primary bg-primary/5"
+                      : "border-border bg-surface-elevated hover:border-primary/30"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {s.image ? (
+                      <div className="w-14 h-14 rounded-full overflow-hidden relative ring-2 ring-primary/10 shrink-0">
+                        <Image src={s.image} alt={s.name} fill className="object-cover" unoptimized />
+                      </div>
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <Sparkles size={20} className="text-primary" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-foreground text-sm">{s.name}</h3>
+                      <p className="text-xs text-text-muted">{s.role}</p>
+                      {s.specialities.length > 0 && (
+                        <div className="flex gap-1 mt-1.5 flex-wrap">
+                          {s.specialities.map((sp) => (
+                            <span key={sp} className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                              {sp}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {s.rating > 0 && (
+                        <div className="flex items-center gap-1 mt-1">
+                          <Star size={11} className="text-amber-400 fill-amber-400" />
+                          <span className="text-xs font-bold text-foreground">{s.rating}</span>
+                        </div>
+                      )}
+                    </div>
+                    {selectedStaff === s.id && <Check size={18} className="text-primary shrink-0" />}
                   </div>
-                ) : (
-                  <div className="flex items-center justify-center h-48 bg-surface rounded-2xl border border-border">
-                    <p className="text-text-muted text-sm">Pick a date from the calendar</p>
-                  </div>
-                )}
-              </div>
+                </button>
+              ))}
             </div>
           </div>
         )}
 
-        {/* Step 3: Notifications */}
+        {/* Step 2: Date & Time with Availability Calendar */}
         {step === 2 && (
-          <div className="animate-fade-in max-w-lg">
-            <h2 className="text-lg font-bold text-foreground mb-2">Notification preferences</h2>
-            <p className="text-sm text-text-muted mb-6">Choose how you&apos;d like to be reminded about your appointment</p>
+          <div className="animate-fade-in">
+            <h2 className="text-lg font-bold text-foreground mb-4">Pick a date & time</h2>
+            <AvailabilityCalendar
+              onSlotSelect={(date, time) => {
+                setSelectedDate(date);
+                setSelectedTime(time);
+              }}
+              selectedDate={selectedDate}
+              selectedTime={selectedTime}
+            />
+            {selectedDate && selectedTime && (
+              <div className="mt-4 p-4 bg-accent/5 border border-accent/20 rounded-xl flex items-center gap-3">
+                <Check size={18} className="text-accent" />
+                <span className="text-sm font-semibold text-foreground">
+                  Selected: {formattedDate} at {selectedTime}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
-            <div className="space-y-3">
+        {/* Step 3: Details & Notifications */}
+        {step === 3 && (
+          <div className="animate-fade-in max-w-lg">
+            <h2 className="text-lg font-bold text-foreground mb-2">Your details</h2>
+            <p className="text-sm text-text-muted mb-6">We&apos;ll use these to confirm your booking</p>
+
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
+                <User size={16} className="text-text-muted" />
+                <input
+                  placeholder="Your name"
+                  value={clientDetails.name}
+                  onChange={(e) => setClientDetails({ ...clientDetails, name: e.target.value })}
+                  className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none"
+                />
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
+                <Phone size={16} className="text-text-muted" />
+                <input
+                  placeholder="Phone number"
+                  value={clientDetails.phone}
+                  onChange={(e) => setClientDetails({ ...clientDetails, phone: e.target.value })}
+                  className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none"
+                />
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
+                <Mail size={16} className="text-text-muted" />
+                <input
+                  placeholder="Email address"
+                  value={clientDetails.email}
+                  onChange={(e) => setClientDetails({ ...clientDetails, email: e.target.value })}
+                  className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none"
+                />
+              </div>
+              <div className="flex items-start gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
+                <MessageSquare size={16} className="text-text-muted mt-0.5" />
+                <textarea
+                  placeholder="Any notes for the stylist? (optional)"
+                  rows={2}
+                  value={clientDetails.notes}
+                  onChange={(e) => setClientDetails({ ...clientDetails, notes: e.target.value })}
+                  className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none resize-none"
+                />
+              </div>
+            </div>
+
+            <h3 className="font-bold text-foreground text-sm mb-3">Notification preferences</h3>
+            <div className="space-y-2">
               {[
-                { key: "email", icon: Mail, label: "Email notifications", desc: "Get booking confirmation and reminders via email" },
-                { key: "sms", icon: Phone, label: "SMS notifications", desc: "Receive text message reminders" },
-                { key: "reminder24h", icon: Bell, label: "24-hour reminder", desc: "Get notified 24 hours before your appointment" },
-                { key: "reminder1h", icon: Clock, label: "1-hour reminder", desc: "Get a last-minute reminder 1 hour before" },
+                { key: "email", icon: Mail, label: "Email notifications" },
+                { key: "sms", icon: Phone, label: "SMS notifications" },
+                { key: "reminder24h", icon: Bell, label: "24-hour reminder" },
+                { key: "reminder1h", icon: Clock, label: "1-hour reminder" },
               ].map((n) => (
                 <label key={n.key}
-                  className="flex items-center gap-4 p-4 bg-surface-elevated border border-border rounded-xl cursor-pointer hover:border-primary/30 transition">
-                  <n.icon size={20} className="text-primary shrink-0" />
-                  <div className="flex-1">
-                    <p className="font-semibold text-foreground text-sm">{n.label}</p>
-                    <p className="text-xs text-text-muted">{n.desc}</p>
-                  </div>
+                  className="flex items-center gap-3 p-3 bg-surface-elevated border border-border rounded-xl cursor-pointer hover:border-primary/30 transition">
+                  <n.icon size={16} className="text-primary shrink-0" />
+                  <span className="flex-1 font-medium text-foreground text-sm">{n.label}</span>
                   <input type="checkbox"
                     checked={notifications[n.key as keyof typeof notifications]}
                     onChange={() => setNotifications((prev) => ({ ...prev, [n.key]: !prev[n.key as keyof typeof notifications] }))}
-                    className="w-5 h-5 accent-primary rounded" />
+                    className="w-4 h-4 accent-primary rounded" />
                 </label>
               ))}
-            </div>
-
-            <div className="mt-6 p-4 bg-surface border border-border rounded-xl">
-              <h3 className="font-semibold text-foreground text-sm mb-2">Your details</h3>
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div className="flex items-center gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
-                  <User size={16} className="text-text-muted" />
-                  <input placeholder="Your name" className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none" />
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
-                  <Phone size={16} className="text-text-muted" />
-                  <input placeholder="Phone number" className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none" />
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg sm:col-span-2">
-                  <Mail size={16} className="text-text-muted" />
-                  <input placeholder="Email address" className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none" />
-                </div>
-              </div>
-              <div className="mt-3">
-                <div className="flex items-start gap-2 px-3 py-2.5 bg-surface-elevated border border-border rounded-lg">
-                  <MessageSquare size={16} className="text-text-muted mt-0.5" />
-                  <textarea placeholder="Any notes for the stylist? (optional)" rows={2}
-                    className="w-full bg-transparent text-sm text-foreground placeholder:text-text-muted focus:outline-none resize-none" />
-                </div>
-              </div>
             </div>
           </div>
         )}
 
-        {/* Step 4: Confirm */}
-        {step === 3 && (
+        {/* Step 4: Payment */}
+        {step === 4 && (
+          <div className="animate-fade-in max-w-lg">
+            <h2 className="text-lg font-bold text-foreground mb-2">Payment</h2>
+            <p className="text-sm text-text-muted mb-6">Secure your booking with a payment</p>
+
+            {/* Deposit Toggle */}
+            <div className="bg-surface-elevated border border-border rounded-xl p-4 mb-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-foreground text-sm">Payment option</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => setDepositOnly(true)}
+                  className={`p-3 rounded-xl text-center transition ${
+                    depositOnly
+                      ? "border-2 border-primary bg-primary/5"
+                      : "border border-border hover:border-primary/30"
+                  }`}
+                >
+                  <p className="font-bold text-foreground">£{depositAmount}</p>
+                  <p className="text-xs text-text-muted">Pay deposit only</p>
+                  <p className="text-[10px] text-primary mt-1">20% of total</p>
+                </button>
+                <button
+                  onClick={() => setDepositOnly(false)}
+                  className={`p-3 rounded-xl text-center transition ${
+                    !depositOnly
+                      ? "border-2 border-primary bg-primary/5"
+                      : "border border-border hover:border-primary/30"
+                  }`}
+                >
+                  <p className="font-bold text-foreground">£{totalPrice}</p>
+                  <p className="text-xs text-text-muted">Pay full amount</p>
+                  <p className="text-[10px] text-accent mt-1">No balance due</p>
+                </button>
+              </div>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="bg-surface border border-border rounded-xl p-4 mb-5">
+              <div className="flex items-start gap-3">
+                <Shield size={16} className="text-primary mt-0.5 shrink-0" />
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground mb-1">Cancellation Policy</h4>
+                  <ul className="text-xs text-text-muted space-y-1">
+                    <li>• Free cancellation up to 24 hours before your appointment</li>
+                    <li>• Cancellations within 24 hours: deposit is non-refundable</li>
+                    <li>• No-shows: full amount may be charged</li>
+                    <li>• Rescheduling is free with 24+ hours notice</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Button */}
+            <PaymentButton
+              amount={totalPrice}
+              depositOnly={depositOnly}
+              serviceName={`${selectedServices.length} service(s) at ${salon.name}`}
+              salonId="glow-studio"
+              serviceIds={selectedServices}
+              date={formattedDate}
+              time={selectedTime || ""}
+              clientEmail={clientDetails.email}
+            />
+
+            {/* Skip Payment Option */}
+            <button
+              onClick={() => setStep(5)}
+              className="w-full mt-3 text-sm text-text-muted hover:text-primary transition text-center py-2"
+            >
+              Skip payment — pay at salon instead
+            </button>
+          </div>
+        )}
+
+        {/* Step 5: Confirm */}
+        {step === 5 && (
           <div className="animate-fade-in max-w-lg">
             <h2 className="text-lg font-bold text-foreground mb-4">Review your booking</h2>
             <div className="bg-surface-elevated border border-border rounded-2xl p-5 space-y-4">
@@ -336,9 +452,18 @@ export default function BookingPage() {
                 </div>
               </div>
 
+              {selectedStaff && selectedStaff !== 4 && (
+                <div className="flex items-center gap-3 text-sm">
+                  <User size={16} className="text-primary" />
+                  <span className="text-foreground font-medium">
+                    with {staff.find((s) => s.id === selectedStaff)?.name}
+                  </span>
+                </div>
+              )}
+
               <div className="flex items-center gap-3 text-sm">
                 <Calendar size={16} className="text-primary" />
-                <span className="text-foreground font-medium">{selectedDate} {months[currentMonth]} {currentYear}</span>
+                <span className="text-foreground font-medium">{formattedDate}</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Clock size={16} className="text-primary" />
@@ -371,12 +496,14 @@ export default function BookingPage() {
               <ArrowLeft size={16} /> Back
             </button>
           ) : <div />}
-          {step < 3 ? (
+          {step < 4 ? (
             <button onClick={() => setStep(step + 1)}
-              disabled={(step === 0 && selectedServices.length === 0) || (step === 1 && (!selectedDate || !selectedTime))}
+              disabled={!canNext()}
               className="px-6 py-2.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
               Next <ArrowRight size={16} />
             </button>
+          ) : step === 4 ? (
+            <div /> // Payment step has its own buttons
           ) : (
             <button onClick={() => setConfirmed(true)}
               className="px-6 py-2.5 bg-accent text-white font-semibold rounded-xl hover:bg-accent/90 transition flex items-center gap-2">

@@ -8,6 +8,9 @@ import {
   Scissors, Users, Award, CheckCircle2, ExternalLink, Map,
 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import BeforeAfterGallery from "@/components/BeforeAfterGallery";
+import PortfolioGrid from "@/components/PortfolioGrid";
+import VideoIntro from "@/components/VideoIntro";
 
 const salon = {
   name: "Glow Studio",
@@ -497,6 +500,39 @@ export default function SalonPage() {
                     : `Show all ${salon.reviewsList.length} reviews`}
                 </button>
               )}
+            </div>
+
+            {/* Before & After */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6 reveal card-glow">
+              <h2 className="font-bold text-foreground text-lg mb-4">Before & After</h2>
+              <BeforeAfterGallery
+                transformations={[
+                  {
+                    before: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop",
+                    after: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop",
+                    title: "Balayage Transformation",
+                    description: "From flat colour to sun-kissed dimension",
+                  },
+                ]}
+                compact
+              />
+              <Link
+                href="/gallery"
+                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+              >
+                View full gallery →
+              </Link>
+            </div>
+
+            {/* Meet Your Stylist */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6 reveal card-glow">
+              <VideoIntro />
+            </div>
+
+            {/* Portfolio */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6 reveal card-glow">
+              <h2 className="font-bold text-foreground text-lg mb-4">Our Work</h2>
+              <PortfolioGrid />
             </div>
           </div>
 

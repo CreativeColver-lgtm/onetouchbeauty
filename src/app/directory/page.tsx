@@ -4,9 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Search, MapPin, Star, SlidersHorizontal, X, Clock, ChevronDown,
-  Map, ChevronLeft, ChevronRight,
+  Map, ChevronLeft, ChevronRight, LayoutGrid,
 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import MapView from "@/components/MapView";
 
 const allSalons = [
   {
@@ -189,6 +190,7 @@ export default function DirectoryPage() {
   const [sortBy, setSortBy] = useState("rating");
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
   const scrollRef = useScrollReveal();
 
@@ -321,9 +323,39 @@ export default function DirectoryPage() {
 
       {/* Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <p className="text-sm text-text-muted mb-6">
-          {filtered.length} result{filtered.length !== 1 ? "s" : ""} found
-        </p>
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-sm text-text-muted">
+            {filtered.length} result{filtered.length !== 1 ? "s" : ""} found
+          </p>
+          <div className="flex items-center gap-1 bg-surface border border-border rounded-xl p-1">
+            <button
+              onClick={() => setViewMode("list")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                viewMode === "list"
+                  ? "bg-primary text-white shadow-md"
+                  : "text-text-muted hover:text-foreground"
+              }`}
+            >
+              <LayoutGrid size={14} /> List
+            </button>
+            <button
+              onClick={() => setViewMode("map")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                viewMode === "map"
+                  ? "bg-primary text-white shadow-md"
+                  : "text-text-muted hover:text-foreground"
+              }`}
+            >
+              <Map size={14} /> Map
+            </button>
+          </div>
+        </div>
+
+        {viewMode === "map" && (
+          <div className="mb-10 reveal">
+            <MapView />
+          </div>
+        )}
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
           {paginatedSalons.map((salon, i) => (

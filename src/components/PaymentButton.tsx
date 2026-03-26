@@ -1,33 +1,37 @@
 "use client";
 import { useState } from "react";
-import { CreditCard, Lock, Loader2, AlertCircle, Check } from "lucide-react";
+import { CreditCard, Lock, Loader2, AlertTriangle, Check } from "lucide-react";
 
 interface PaymentButtonProps {
-  totalPrice: number;
-  depositOnly: boolean;
-  services: { name: string; price: number }[];
-  salonId: string;
-  date: string;
-  time: string;
-  clientEmail: string;
+  amount: number; // in pounds
+  depositOnly?: boolean;
+  serviceName?: string;
+  salonId?: string;
+  serviceIds?: number[];
+  date?: string;
+  time?: string;
+  clientEmail?: string;
   onPaymentStart?: () => void;
+  onPaymentError?: (error: string) => void;
 }
 
 export default function PaymentButton({
-  totalPrice,
-  depositOnly,
-  services,
-  salonId,
-  date,
-  time,
-  clientEmail,
+  amount,
+  depositOnly = false,
+  serviceName = "Beauty Services",
+  salonId = "glow-studio",
+  serviceIds = [1],
+  date = "",
+  time = "",
+  clientEmail = "",
   onPaymentStart,
+  onPaymentError,
 }: PaymentButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const depositAmount = Math.max(10, Math.round(totalPrice * 0.2));
-  const payAmount = depositOnly ? depositAmount : totalPrice;
+  const depositAmount = Math.max(10, Math.round(amount * 0.2));
+  const paymentAmount = depositOnly ? depositAmount : amount;
 
   const handlePayment = async () => {
     setLoading(true);
@@ -39,12 +43,12 @@ export default function PaymentButton({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          serviceIds: services.map((_, i) => i),
+          serviceIds,
           salonId,
           date,
           time,
-          clientEmail,
-          amount: payAmount * 100, // Convert to pence
+          clientEmail: clientEmail || "customer@example.com",
+          amount: paymentAmount * 100, // convert to pence
           depositOnly,
         }),
       });
@@ -53,19 +57,20 @@ export default function PaymentButton({
 
       if (!res.ok) {
         if (res.status === 503) {
-          setError(data.message || "Payment processing is not available yet.");
-        } else {
-          setError(data.error || "Something went wrong.");
+          setError("Payment processing is not yet configured. Your booking has been saved — pay on arrival.");
+          return;
         }
-        setLoading(false);
-        return;
+        throw new Error(data.error || "Payment failed");
       }
 
       if (data.url) {
         window.location.href = data.url;
       }
-    } catch {
-      setError("Unable to connect to payment service. Please try again.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      setError(message);
+      onPaymentError?.(message);
+    } finally {
       setLoading(false);
     }
   };
@@ -74,51 +79,33 @@ export default function PaymentButton({
     <div className="space-y-4">
       {/* Price Breakdown */}
       <div className="bg-surface border border-border rounded-xl p-4 space-y-2">
-        {services.map((s, i) => (
-          <div key={i} className="flex justify-between text-sm">
-            <span className="text-foreground">{s.name}</span>
-            <span className="text-text-muted">£{s.price}</span>
-          </div>
-        ))}
-        <div className="border-t border-border pt-2 mt-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-foreground font-medium">Subtotal</span>
-            <span className="text-foreground">£{totalPrice}</span>
-          </div>
-          {depositOnly && (
-            <div className="flex justify-between text-sm mt-1">
-              <span className="text-text-muted">Deposit (20%)</span>
-              <span className="text-foreground font-semibold">£{depositAmount}</span>
-            </div>
-          )}
-        </div>
-        <div className="flex justify-between pt-2 border-t border-border font-bold text-lg">
-          <span className="text-foreground">{depositOnly ? "Due now" : "Total"}</span>
-          <span className="text-primary">£{payAmount}</span>
+        <div className="flex justify-between text-sm">
+          <span className="text-text-muted">{serviceName}</span>
+          <span className="text-foreground font-medium">£{amount.toFixed(2)}</span>
         </div>
         {depositOnly && (
-          <p className="text-xs text-text-muted">
-            Remaining £{totalPrice - depositAmount} due at the salon
-          </p>
+          <>
+            <div className="flex justify-between text-sm">
+              <span className="text-text-muted">Deposit (20%)</span>
+              <span className="text-foreground font-medium">£{depositAmount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-xs text-text-muted pt-1 border-t border-border">
+              <span>Remaining (pay at salon)</span>
+              <span>£{(amount - depositAmount).toFixed(2)}</span>
+            </div>
+          </>
         )}
-      </div>
-
-      {/* Security Notice */}
-      <div className="flex items-center gap-2 text-xs text-text-muted">
-        <Lock size={12} />
-        <span>Payments secured with 256-bit SSL encryption</span>
+        <div className="flex justify-between pt-2 border-t border-border font-bold">
+          <span className="text-foreground">{depositOnly ? "Pay now" : "Total"}</span>
+          <span className="text-primary text-lg">£{paymentAmount.toFixed(2)}</span>
+        </div>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-sm">
-          <AlertCircle size={16} className="text-red-500 shrink-0 mt-0.5" />
-          <div>
-            <p className="text-red-700 dark:text-red-400 font-medium">{error}</p>
-            <p className="text-red-500 dark:text-red-500 text-xs mt-1">
-              You can still confirm your booking — pay at the salon instead.
-            </p>
-          </div>
+        <div className="flex items-start gap-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+          <AlertTriangle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+          <p className="text-sm text-amber-700 dark:text-amber-300">{error}</p>
         </div>
       )}
 
@@ -126,7 +113,7 @@ export default function PaymentButton({
       <button
         onClick={handlePayment}
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-all hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2 py-3.5 bg-accent text-white font-bold rounded-xl hover:bg-accent/90 transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-accent/20"
       >
         {loading ? (
           <>
@@ -136,17 +123,15 @@ export default function PaymentButton({
         ) : (
           <>
             <CreditCard size={18} />
-            Pay £{payAmount} & Confirm
+            Pay £{paymentAmount.toFixed(2)} {depositOnly ? "(Deposit)" : "& Confirm"}
           </>
         )}
       </button>
 
-      {/* Accepted Cards */}
-      <div className="flex items-center justify-center gap-3 text-text-muted/60">
-        <span className="text-xs">Visa</span>
-        <span className="text-xs">Mastercard</span>
-        <span className="text-xs">Amex</span>
-        <span className="text-xs">Apple Pay</span>
+      {/* Security Note */}
+      <div className="flex items-center justify-center gap-1.5 text-xs text-text-muted">
+        <Lock size={11} />
+        <span>Secure payment powered by Stripe</span>
       </div>
     </div>
   );

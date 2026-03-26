@@ -1,28 +1,27 @@
 "use client";
 import { useState } from "react";
-import { Star, Upload, BadgeCheck, Check, Loader2, X, Camera } from "lucide-react";
+import { Star, BadgeCheck, Camera, X, Loader2, Check, Upload } from "lucide-react";
 
 interface ReviewFormProps {
   salonName?: string;
   onSubmit?: (review: { rating: number; text: string }) => void;
-  isVerifiedBooking?: boolean;
 }
 
-export default function ReviewForm({
-  salonName = "this salon",
-  onSubmit,
-  isVerifiedBooking = true,
-}: ReviewFormProps) {
+export default function ReviewForm({ salonName = "this salon", onSubmit }: ReviewFormProps) {
   const [rating, setRating] = useState(0);
-  const [hoveredRating, setHoveredRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
   const [text, setText] = useState("");
   const [photos, setPhotos] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
   const maxChars = 500;
+  const activeRating = hoverRating || rating;
+
+  const ratingLabels = ["", "Poor", "Fair", "Good", "Great", "Excellent"];
 
   const handleSubmit = async () => {
-    if (rating === 0) return;
+    if (rating === 0 || text.trim().length < 10) return;
     setSubmitting(true);
     // Simulate API call
     await new Promise((r) => setTimeout(r, 1500));
@@ -33,96 +32,88 @@ export default function ReviewForm({
 
   if (submitted) {
     return (
-      <div className="bg-surface-elevated border border-border rounded-2xl p-8 text-center animate-fade-in">
+      <div className="bg-surface-elevated border border-border rounded-2xl p-8 text-center">
         <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
           <Check size={32} className="text-accent" />
         </div>
         <h3 className="text-lg font-bold text-foreground mb-2">Thank you for your review!</h3>
-        <p className="text-sm text-text-muted">Your feedback helps other clients find great beauty professionals.</p>
-        <div className="flex justify-center gap-0.5 mt-3">
-          {[1, 2, 3, 4, 5].map((s) => (
-            <Star key={s} size={18} className={s <= rating ? "text-amber-400 fill-amber-400" : "text-border"} />
-          ))}
-        </div>
+        <p className="text-sm text-text-muted">Your feedback helps others find great salons and helps businesses improve.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-surface-elevated border border-border rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-surface-elevated border border-border rounded-2xl p-6 space-y-5">
+      <div className="flex items-center justify-between">
         <h3 className="font-bold text-foreground text-lg">Write a Review</h3>
-        {isVerifiedBooking && (
-          <span className="flex items-center gap-1 text-xs font-semibold text-accent bg-accent/10 px-2.5 py-1 rounded-full">
-            <BadgeCheck size={12} /> Verified Booking
-          </span>
-        )}
-      </div>
-
-      <p className="text-sm text-text-muted mb-4">How was your experience at {salonName}?</p>
-
-      {/* Star Rating */}
-      <div className="flex items-center gap-1 mb-5">
-        {[1, 2, 3, 4, 5].map((s) => (
-          <button
-            key={s}
-            onMouseEnter={() => setHoveredRating(s)}
-            onMouseLeave={() => setHoveredRating(0)}
-            onClick={() => setRating(s)}
-            className="p-1 transition-transform hover:scale-110"
-          >
-            <Star
-              size={28}
-              className={`transition-colors ${
-                s <= (hoveredRating || rating)
-                  ? "text-amber-400 fill-amber-400"
-                  : "text-border hover:text-amber-200"
-              }`}
-            />
-          </button>
-        ))}
-        {rating > 0 && (
-          <span className="text-sm text-text-muted ml-2">
-            {["", "Poor", "Fair", "Good", "Great", "Excellent"][rating]}
-          </span>
-        )}
-      </div>
-
-      {/* Text Input */}
-      <div className="relative mb-4">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value.slice(0, maxChars))}
-          placeholder="Tell others about your experience..."
-          rows={4}
-          className="w-full p-4 bg-surface border border-border rounded-xl text-sm text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary resize-none transition"
-        />
-        <span className={`absolute bottom-3 right-3 text-xs ${text.length > maxChars * 0.9 ? "text-red-400" : "text-text-muted"}`}>
-          {text.length}/{maxChars}
+        <span className="flex items-center gap-1.5 text-xs font-semibold text-accent bg-accent/10 px-2.5 py-1 rounded-full">
+          <BadgeCheck size={12} /> Verified Booking
         </span>
       </div>
 
-      {/* Photo Upload Dropzone */}
-      <div className="mb-5">
-        <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition group">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2 group-hover:bg-primary/20 transition">
-            <Camera size={20} className="text-primary" />
+      {/* Star Rating */}
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-foreground">Your rating</label>
+        <div className="flex items-center gap-3">
+          <div className="flex gap-1">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <button
+                key={s}
+                onClick={() => setRating(s)}
+                onMouseEnter={() => setHoverRating(s)}
+                onMouseLeave={() => setHoverRating(0)}
+                className="p-0.5 transition-transform hover:scale-110"
+              >
+                <Star
+                  size={28}
+                  className={`transition-colors ${
+                    s <= activeRating
+                      ? "text-amber-400 fill-amber-400"
+                      : "text-border hover:text-amber-200"
+                  }`}
+                />
+              </button>
+            ))}
           </div>
-          <p className="text-sm font-medium text-foreground">Add photos</p>
-          <p className="text-xs text-text-muted mt-1">Drop images here or click to upload</p>
-          <input type="file" accept="image/*" multiple className="hidden" onChange={() => {
-            // Mock: just show placeholder
-            setPhotos((prev) => [...prev, `photo-${prev.length + 1}`]);
-          }} />
-        </label>
+          {activeRating > 0 && (
+            <span className="text-sm font-medium text-foreground animate-fade-in">
+              {ratingLabels[activeRating]}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Text Review */}
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-foreground">Your review</label>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value.slice(0, maxChars))}
+          placeholder={`Tell others about your experience at ${salonName}...`}
+          rows={4}
+          className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-sm text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 resize-none transition"
+        />
+        <div className="flex justify-between text-xs">
+          <span className={text.length < 10 && text.length > 0 ? "text-red-400" : "text-text-muted"}>
+            {text.length < 10 && text.length > 0 ? "Minimum 10 characters" : ""}
+          </span>
+          <span className={`${text.length > maxChars * 0.9 ? "text-amber-500" : "text-text-muted"}`}>
+            {text.length}/{maxChars}
+          </span>
+        </div>
+      </div>
+
+      {/* Photo Upload Dropzone */}
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-foreground">Add photos (optional)</label>
         {photos.length > 0 && (
-          <div className="flex gap-2 mt-3">
-            {photos.map((p, i) => (
+          <div className="flex gap-2 mb-2">
+            {photos.map((_, i) => (
               <div key={i} className="relative w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Upload size={16} className="text-primary/50" />
+                <Camera size={20} className="text-primary/40" />
                 <button
-                  onClick={() => setPhotos((prev) => prev.filter((_, idx) => idx !== i))}
-                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center"
+                  onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}
+                  className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center"
                 >
                   <X size={10} />
                 </button>
@@ -130,13 +121,25 @@ export default function ReviewForm({
             ))}
           </div>
         )}
+        <button
+          onClick={() => setPhotos([...photos, "placeholder"])}
+          className="w-full border-2 border-dashed border-border hover:border-primary/40 rounded-xl p-6 flex flex-col items-center gap-2 transition group"
+        >
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition">
+            <Upload size={18} className="text-primary" />
+          </div>
+          <p className="text-sm font-medium text-text-muted group-hover:text-foreground transition">
+            Click to upload photos
+          </p>
+          <p className="text-xs text-text-muted">JPG, PNG up to 5MB each</p>
+        </button>
       </div>
 
       {/* Submit */}
       <button
         onClick={handleSubmit}
-        disabled={rating === 0 || submitting}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition disabled:opacity-40 disabled:cursor-not-allowed"
+        disabled={rating === 0 || text.trim().length < 10 || submitting}
+        className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {submitting ? (
           <>

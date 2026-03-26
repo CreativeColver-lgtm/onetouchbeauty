@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import AIChatAssistant from "@/components/AIChatAssistant";
+import SocialProof from "@/components/SocialProof";
 
 export const metadata: Metadata = {
   title: "One Touch Beauty | Find & Book Beauty Services Near You",
@@ -25,6 +26,7 @@ export default function RootLayout({
           <Footer />
           <BackToTop />
           <AIChatAssistant />
+          <SocialProof />
         </ThemeProvider>
       </body>
     </html>
