@@ -2,694 +2,340 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  Calendar, Clock, Users, Star, Bell, Settings,
-  Plus, X, ChevronLeft, ChevronRight, Coffee, Palmtree, Check,
-  BarChart3, Eye, Edit3, Save, Trash2, Building2, MapPin, Phone, Mail,
-  PoundSterling, ExternalLink, Shield, Globe, Award, Scissors,
+  TrendingUp, TrendingDown, PoundSterling, Calendar, Users, Star,
+  Eye, BarChart3, Clock, Edit3, MessageSquare, Scissors, ArrowUpRight,
+  ChevronRight, MapPin, Zap, QrCode, CalendarDays, Mail,
 } from "lucide-react";
 
-const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-const initialBookings = [
-  { id: 1, client: "Emma Wilson", service: "Balayage", time: "09:00", duration: 150, date: "Today", status: "confirmed" },
-  { id: 2, client: "Sarah Chen", service: "Haircut & Blow Dry", time: "12:00", duration: 60, date: "Today", status: "confirmed" },
-  { id: 3, client: "Jade Thompson", service: "Hair Colour", time: "14:30", duration: 120, date: "Today", status: "pending" },
-  { id: 4, client: "Amy Roberts", service: "Blow Dry", time: "09:30", duration: 45, date: "Tomorrow", status: "confirmed" },
-  { id: 5, client: "Lisa Patel", service: "Bridal Trial", time: "11:00", duration: 90, date: "Tomorrow", status: "confirmed" },
+/* ── mock data ── */
+const revenueCards = [
+  { label: "This Month", value: "£2,340", change: "+18%", up: true },
+  { label: "Last Month", value: "£1,980", change: "+7%", up: true },
+  { label: "Bookings", value: "48", change: "+12%", up: true },
+  { label: "Profile Views", value: "1,247", change: "-3%", up: false },
 ];
 
-const stats = [
-  { label: "Bookings This Week", value: "23", change: "+12%", icon: Calendar },
-  { label: "Total Clients", value: "156", change: "+8%", icon: Users },
-  { label: "Average Rating", value: "4.9", change: "+0.1", icon: Star },
-  { label: "Profile Views", value: "1.2k", change: "+24%", icon: Eye },
+const weeklyBookings = [
+  { day: "Mon", count: 6 },
+  { day: "Tue", count: 9 },
+  { day: "Wed", count: 12 },
+  { day: "Thu", count: 8 },
+  { day: "Fri", count: 14 },
+  { day: "Sat", count: 18 },
+  { day: "Sun", count: 3 },
 ];
 
-const initialNotifications = [
-  { id: 1, text: "New booking from Emma Wilson", time: "2 mins ago", read: false },
-  { id: 2, text: "Review from Sarah Chen: 5 stars", time: "1 hour ago", read: false },
-  { id: 3, text: "Reminder: Jade Thompson at 2:30 PM", time: "3 hours ago", read: true },
+const profileViews = [320, 280, 350, 310, 390, 420, 400, 370, 450, 480, 430, 460, 500, 470];
+
+const popularServices = [
+  { name: "Balayage", bookings: 38, pct: 92 },
+  { name: "Haircut & Blow Dry", bookings: 32, pct: 78 },
+  { name: "Hair Colour", bookings: 24, pct: 58 },
+  { name: "Olaplex Treatment", bookings: 18, pct: 44 },
+  { name: "Blow Dry & Style", bookings: 14, pct: 34 },
 ];
 
-interface Treatment {
-  id: number;
-  name: string;
-  duration: number;
-  price: number;
-  category: string;
-}
+const peakHoursData = [
+  //  9, 10, 11, 12, 13, 14, 15, 16, 17
+  [2, 3, 4, 2, 1, 3, 4, 3, 2], // Mon
+  [3, 4, 5, 3, 1, 4, 5, 4, 3], // Tue
+  [4, 5, 5, 4, 2, 5, 5, 4, 3], // Wed
+  [3, 4, 4, 3, 1, 3, 4, 3, 2], // Thu
+  [5, 5, 5, 4, 2, 5, 5, 5, 4], // Fri
+  [5, 5, 5, 5, 3, 5, 5, 4, 0], // Sat
+  [1, 2, 2, 1, 0, 0, 0, 0, 0], // Sun
+];
+const peakDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const peakHours = ["9am", "10", "11", "12", "1pm", "2", "3", "4", "5"];
 
-interface OpeningHour {
-  day: string;
-  open: boolean;
-  start: string;
-  end: string;
-}
+const recentBookings = [
+  { id: 1, client: "Emma Wilson", service: "Balayage", time: "09:00", date: "Today", price: "£120", status: "confirmed" },
+  { id: 2, client: "Sarah Chen", service: "Haircut & Blow Dry", time: "11:30", date: "Today", price: "£45", status: "confirmed" },
+  { id: 3, client: "Jade Thompson", service: "Hair Colour", time: "14:00", date: "Today", price: "£85", status: "pending" },
+  { id: 4, client: "Amy Roberts", service: "Blow Dry", time: "09:30", date: "Tomorrow", price: "£30", status: "confirmed" },
+  { id: 5, client: "Lisa Patel", service: "Bridal Trial", time: "11:00", date: "Tomorrow", price: "£75", status: "confirmed" },
+  { id: 6, client: "Rachel Green", service: "Olaplex", time: "15:00", date: "Tomorrow", price: "£35", status: "pending" },
+];
 
-type Tab = "overview" | "details" | "treatments" | "hours" | "calendar" | "bookings" | "breaks" | "notifications" | "preview";
+const acquisitionSources = [
+  { source: "Direct Search", pct: 42, color: "bg-primary" },
+  { source: "Google / SEO", pct: 28, color: "bg-secondary" },
+  { source: "Referral", pct: 18, color: "bg-accent" },
+  { source: "Social Media", pct: 12, color: "bg-amber-400" },
+];
 
-function getDaysInMonth(year: number, month: number) {
-  const days: { date: number; isCurrentMonth: boolean }[] = [];
-  const firstDay = new Date(year, month, 1).getDay();
-  const adjusted = firstDay === 0 ? 6 : firstDay - 1;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  for (let i = 0; i < adjusted; i++) days.push({ date: 0, isCurrentMonth: false });
-  for (let i = 1; i <= daysInMonth; i++) days.push({ date: i, isCurrentMonth: true });
-  return days;
+const ratingBreakdown = [
+  { stars: 5, count: 156, pct: 67 },
+  { stars: 4, count: 52, pct: 22 },
+  { stars: 3, count: 18, pct: 8 },
+  { stars: 2, count: 5, pct: 2 },
+  { stars: 1, count: 3, pct: 1 },
+];
+
+const quickActions = [
+  { label: "Edit Profile", icon: Edit3, href: "/dashboard/business", color: "bg-primary/10 text-primary" },
+  { label: "Calendar", icon: CalendarDays, href: "/dashboard/business/calendar", color: "bg-secondary/10 text-secondary" },
+  { label: "Reviews", icon: MessageSquare, href: "/dashboard/business", color: "bg-accent/10 text-accent" },
+  { label: "Services", icon: Scissors, href: "/dashboard/business", color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30" },
+  { label: "Marketing", icon: Mail, href: "/dashboard/business/marketing", color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30" },
+  { label: "QR Check-In", icon: QrCode, href: "/dashboard/business/qr", color: "bg-rose-100 text-rose-600 dark:bg-rose-900/30" },
+];
+
+/* ── helpers ── */
+function heatColor(v: number) {
+  if (v === 0) return "bg-surface";
+  if (v <= 1) return "bg-primary/10";
+  if (v <= 2) return "bg-primary/20";
+  if (v <= 3) return "bg-primary/40";
+  if (v <= 4) return "bg-primary/60";
+  return "bg-primary/90";
 }
 
 export default function BusinessDashboard() {
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
-  // Business Details
-  const [editingDetails, setEditingDetails] = useState(false);
-  const [details, setDetails] = useState({
-    name: "Glow Studio",
-    type: "Hair Salon",
-    email: "hello@glowstudio.co.uk",
-    phone: "020 1234 5678",
-    address: "42 Shoreditch High St",
-    city: "London",
-    postcode: "E1 6JJ",
-    about: "Award-winning hair salon specialising in colour, balayage, and styling. Our team of expert stylists are passionate about helping you look and feel your best.",
-  });
-  const [editDetails, setEditDetails] = useState({ ...details });
-
-  // Treatments
-  const [treatments, setTreatments] = useState<Treatment[]>([
-    { id: 1, name: "Women's Haircut & Blow Dry", duration: 60, price: 45, category: "Hair" },
-    { id: 2, name: "Men's Haircut", duration: 30, price: 25, category: "Hair" },
-    { id: 3, name: "Hair Colour (Full Head)", duration: 120, price: 85, category: "Colour" },
-    { id: 4, name: "Balayage", duration: 150, price: 120, category: "Colour" },
-    { id: 5, name: "Blow Dry & Style", duration: 45, price: 30, category: "Hair" },
-    { id: 6, name: "Olaplex Treatment", duration: 30, price: 35, category: "Treatment" },
-    { id: 7, name: "Bridal Hair Trial", duration: 90, price: 75, category: "Bridal" },
-  ]);
-  const [showAddTreatment, setShowAddTreatment] = useState(false);
-  const [newTreatment, setNewTreatment] = useState({ name: "", duration: 30, price: 0, category: "Hair" });
-  const [editingTreatmentId, setEditingTreatmentId] = useState<number | null>(null);
-
-  // Opening Hours
-  const [hours, setHours] = useState<OpeningHour[]>([
-    { day: "Monday", open: true, start: "09:00", end: "18:00" },
-    { day: "Tuesday", open: true, start: "09:00", end: "18:00" },
-    { day: "Wednesday", open: true, start: "09:00", end: "20:00" },
-    { day: "Thursday", open: true, start: "09:00", end: "20:00" },
-    { day: "Friday", open: true, start: "09:00", end: "18:00" },
-    { day: "Saturday", open: true, start: "09:00", end: "17:00" },
-    { day: "Sunday", open: false, start: "10:00", end: "16:00" },
-  ]);
-
-  // Breaks
-  const [breaks, setBreaks] = useState([
-    { id: 1, type: "break", name: "Lunch Break", day: "Every Day", time: "13:00 - 14:00" },
-    { id: 2, type: "holiday", name: "Easter Holiday", day: "18 Apr - 21 Apr", time: "All Day" },
-  ]);
-  const [showAddBreak, setShowAddBreak] = useState(false);
-
-  const days = getDaysInMonth(currentYear, currentMonth);
-
-  const tabs: { key: Tab; label: string; icon: typeof Calendar }[] = [
-    { key: "overview", label: "Overview", icon: BarChart3 },
-    { key: "details", label: "My Details", icon: Building2 },
-    { key: "treatments", label: "Treatments", icon: PoundSterling },
-    { key: "hours", label: "Opening Hours", icon: Clock },
-    { key: "calendar", label: "Calendar", icon: Calendar },
-    { key: "bookings", label: "Bookings", icon: Users },
-    { key: "breaks", label: "Breaks", icon: Coffee },
-    { key: "notifications", label: "Alerts", icon: Bell },
-    { key: "preview", label: "Preview Profile", icon: Eye },
-  ];
-
-  const addTreatment = () => {
-    if (!newTreatment.name || !newTreatment.price) return;
-    setTreatments((prev) => [...prev, { ...newTreatment, id: Date.now() }]);
-    setNewTreatment({ name: "", duration: 30, price: 0, category: "Hair" });
-    setShowAddTreatment(false);
-  };
-
-  const deleteTreatment = (id: number) => {
-    setTreatments((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  const updateHour = (index: number, field: keyof OpeningHour, value: string | boolean) => {
-    setHours((prev) => prev.map((h, i) => i === index ? { ...h, [field]: value } : h));
-  };
+  const maxBooking = Math.max(...weeklyBookings.map((b) => b.count));
+  const svgW = 600;
+  const svgH = 120;
+  const step = svgW / (profileViews.length - 1);
+  const maxView = Math.max(...profileViews);
+  const points = profileViews.map((v, i) => `${i * step},${svgH - (v / maxView) * (svgH - 10)}`).join(" ");
+  const areaPath = `M0,${svgH} ${profileViews.map((v, i) => `L${i * step},${svgH - (v / maxView) * (svgH - 10)}`).join(" ")} L${(profileViews.length - 1) * step},${svgH} Z`;
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Business Dashboard</h1>
-            <p className="text-text-muted">Welcome back, {details.name}</p>
+            <p className="text-text-muted">Welcome back, Glow Studio — here&apos;s your overview</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs px-3 py-1 rounded-full bg-accent/10 text-accent font-medium">{details.type}</span>
+            <span className="text-xs px-3 py-1 rounded-full bg-accent/10 text-accent font-medium">Hair Salon</span>
+            <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium flex items-center gap-1"><MapPin size={11} /> Shoreditch</span>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 mb-8 overflow-x-auto pb-2">
-          {tabs.map((tab) => (
-            <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition ${
-                activeTab === tab.key ? "bg-primary text-white" : "bg-surface-elevated text-text-muted hover:text-foreground"
-              }`}>
-              <tab.icon size={16} /> {tab.label}
-            </button>
+        {/* Revenue Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {revenueCards.map((c) => (
+            <div key={c.label} className="bg-surface-elevated border border-border rounded-2xl p-5 hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-between mb-3">
+                <PoundSterling size={18} className="text-primary" />
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5 ${
+                  c.up ? "bg-accent/10 text-accent" : "bg-red-100 text-red-500 dark:bg-red-900/30"
+                }`}>
+                  {c.up ? <TrendingUp size={11} /> : <TrendingDown size={11} />} {c.change}
+                </span>
+              </div>
+              <p className="text-2xl font-extrabold text-foreground">{c.value}</p>
+              <p className="text-sm text-text-muted">{c.label}</p>
+            </div>
           ))}
         </div>
 
-        {/* Overview */}
-        {activeTab === "overview" && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="bg-surface-elevated border border-border rounded-2xl p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <stat.icon size={20} className="text-primary" />
-                    <span className="text-xs font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">{stat.change}</span>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-8">
+          {quickActions.map((a) => (
+            <Link key={a.label} href={a.href}
+              className="flex flex-col items-center gap-2 p-4 bg-surface-elevated border border-border rounded-2xl hover:border-primary/30 hover:shadow-md transition-all group">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${a.color}`}>
+                <a.icon size={18} />
+              </div>
+              <span className="text-xs font-semibold text-foreground text-center">{a.label}</span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Charts Row */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          {/* Weekly Bookings */}
+          <div className="bg-surface-elevated border border-border rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h3 className="font-bold text-foreground">Weekly Bookings</h3>
+                <p className="text-xs text-text-muted">This week vs last week</p>
+              </div>
+              <BarChart3 size={18} className="text-text-muted" />
+            </div>
+            <div className="flex items-end justify-between gap-2 h-40">
+              {weeklyBookings.map((b) => (
+                <div key={b.day} className="flex flex-col items-center gap-1 flex-1">
+                  <span className="text-xs font-bold text-foreground">{b.count}</span>
+                  <div className="w-full rounded-t-lg bg-primary/20 relative overflow-hidden" style={{ height: `${(b.count / maxBooking) * 100}%` }}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary to-primary/60 rounded-t-lg" />
                   </div>
-                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                  <p className="text-sm text-text-muted">{stat.label}</p>
+                  <span className="text-xs text-text-muted font-medium">{b.day}</span>
                 </div>
               ))}
             </div>
-            <div className="grid lg:grid-cols-2 gap-6">
-              <div className="bg-surface-elevated border border-border rounded-2xl p-5">
-                <h3 className="font-bold text-foreground mb-4">Today&apos;s Appointments</h3>
-                <div className="space-y-3">
-                  {initialBookings.filter((b) => b.date === "Today").map((b) => (
-                    <div key={b.id} className="flex items-center gap-3 p-3 bg-surface rounded-xl">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users size={16} className="text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-semibold text-foreground text-sm">{b.client}</p>
-                        <p className="text-xs text-text-muted">{b.service} &bull; {b.duration} mins</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-semibold text-foreground">{b.time}</p>
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${
-                          b.status === "confirmed" ? "bg-accent/10 text-accent" : "bg-amber-100 text-amber-600 dark:bg-amber-900/30"
-                        }`}>{b.status}</span>
-                      </div>
-                    </div>
+          </div>
+
+          {/* Profile Views */}
+          <div className="bg-surface-elevated border border-border rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h3 className="font-bold text-foreground">Profile Views</h3>
+                <p className="text-xs text-text-muted">Last 14 days</p>
+              </div>
+              <div className="flex items-center gap-1 text-accent text-xs font-semibold">
+                <TrendingUp size={13} /> +24%
+              </div>
+            </div>
+            <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full h-32" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="viewGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d={areaPath} fill="url(#viewGrad)" />
+              <polyline points={points} fill="none" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Middle Row: Services + Peak Hours */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          {/* Popular Services */}
+          <div className="bg-surface-elevated border border-border rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-bold text-foreground">Popular Services</h3>
+              <Scissors size={18} className="text-text-muted" />
+            </div>
+            <div className="space-y-4">
+              {popularServices.map((s) => (
+                <div key={s.name}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-sm font-medium text-foreground">{s.name}</span>
+                    <span className="text-xs text-text-muted">{s.bookings} bookings</span>
+                  </div>
+                  <div className="h-2.5 bg-surface rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-dark transition-all" style={{ width: `${s.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Peak Hours Heatmap */}
+          <div className="bg-surface-elevated border border-border rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-bold text-foreground">Peak Hours</h3>
+              <Clock size={18} className="text-text-muted" />
+            </div>
+            <div className="overflow-x-auto">
+              <div className="min-w-[320px]">
+                {/* Header */}
+                <div className="grid gap-1 mb-1" style={{ gridTemplateColumns: `48px repeat(${peakHours.length}, 1fr)` }}>
+                  <div />
+                  {peakHours.map((h) => (
+                    <div key={h} className="text-center text-[10px] text-text-muted font-medium">{h}</div>
                   ))}
                 </div>
-              </div>
-              <div className="bg-surface-elevated border border-border rounded-2xl p-5">
-                <h3 className="font-bold text-foreground mb-4">Recent Notifications</h3>
-                <div className="space-y-3">
-                  {initialNotifications.map((n) => (
-                    <div key={n.id} className={`flex items-start gap-3 p-3 rounded-xl ${n.read ? "bg-surface" : "bg-primary/5 border border-primary/10"}`}>
-                      <Bell size={16} className={`mt-0.5 ${n.read ? "text-text-muted" : "text-primary"}`} />
-                      <div className="flex-1">
-                        <p className={`text-sm ${n.read ? "text-text-muted" : "text-foreground font-medium"}`}>{n.text}</p>
-                        <p className="text-xs text-text-muted mt-0.5">{n.time}</p>
-                      </div>
-                    </div>
+                {/* Rows */}
+                {peakDays.map((day, di) => (
+                  <div key={day} className="grid gap-1 mb-1" style={{ gridTemplateColumns: `48px repeat(${peakHours.length}, 1fr)` }}>
+                    <div className="text-xs text-text-muted font-medium flex items-center">{day}</div>
+                    {peakHoursData[di].map((v, hi) => (
+                      <div key={hi} className={`h-7 rounded-md ${heatColor(v)} transition-colors`} title={`${day} ${peakHours[hi]}: ${v}/5`} />
+                    ))}
+                  </div>
+                ))}
+                {/* Legend */}
+                <div className="flex items-center gap-2 mt-3 justify-end">
+                  <span className="text-[10px] text-text-muted">Quiet</span>
+                  {[1, 2, 3, 4, 5].map((v) => (
+                    <div key={v} className={`w-4 h-4 rounded ${heatColor(v)}`} />
                   ))}
+                  <span className="text-[10px] text-text-muted">Busy</span>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* My Details */}
-        {activeTab === "details" && (
-          <div className="animate-fade-in max-w-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-foreground">Business Details</h2>
-              {editingDetails ? (
-                <button onClick={() => { setDetails({ ...editDetails }); setEditingDetails(false); }}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-accent text-white font-semibold rounded-xl text-sm hover:bg-accent/90 transition">
-                  <Save size={14} /> Save Changes
-                </button>
-              ) : (
-                <button onClick={() => { setEditDetails({ ...details }); setEditingDetails(true); }}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary-dark transition">
-                  <Edit3 size={14} /> Edit Details
-                </button>
-              )}
-            </div>
-
-            <div className="bg-surface-elevated border border-border rounded-2xl p-6 space-y-4">
-              {editingDetails ? (
-                <>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Business Name</label>
-                    <input value={editDetails.name} onChange={(e) => setEditDetails({ ...editDetails, name: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-2 block">Salon Type</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {["Hair Salon", "Nail Salon", "Beauty Salon", "Barbershop", "Spa & Wellness", "Makeup Studio",
-                        "Lash & Brow Bar", "Skin Clinic", "Mobile Beautician", "Home-Based Salon", "Tanning Salon", "Massage Therapist",
-                      ].map((type) => (
-                        <button key={type} type="button" onClick={() => setEditDetails({ ...editDetails, type })}
-                          className={`px-3 py-2 rounded-xl text-xs font-medium transition border ${
-                            editDetails.type === type ? "border-primary bg-primary/10 text-primary" : "border-border bg-surface text-foreground hover:border-primary/50"
-                          }`}>{type}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-foreground mb-1.5 block">Email</label>
-                      <input value={editDetails.email} onChange={(e) => setEditDetails({ ...editDetails, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary" />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-foreground mb-1.5 block">Phone</label>
-                      <input value={editDetails.phone} onChange={(e) => setEditDetails({ ...editDetails, phone: e.target.value })}
-                        className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Address</label>
-                    <input value={editDetails.address} onChange={(e) => setEditDetails({ ...editDetails, address: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary" />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-foreground mb-1.5 block">City</label>
-                      <input value={editDetails.city} onChange={(e) => setEditDetails({ ...editDetails, city: e.target.value })}
-                        className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary" />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-foreground mb-1.5 block">Postcode</label>
-                      <input value={editDetails.postcode} onChange={(e) => setEditDetails({ ...editDetails, postcode: e.target.value })}
-                        className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">About</label>
-                    <textarea value={editDetails.about} onChange={(e) => setEditDetails({ ...editDetails, about: e.target.value })}
-                      rows={4} className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary resize-none" />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center gap-3 pb-4 border-b border-border">
-                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <Building2 size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-foreground text-lg">{details.name}</h3>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">{details.type}</span>
-                    </div>
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-3">
-                      <Mail size={16} className="text-text-muted" />
-                      <span className="text-sm text-foreground">{details.email}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Phone size={16} className="text-text-muted" />
-                      <span className="text-sm text-foreground">{details.phone}</span>
-                    </div>
-                    <div className="flex items-center gap-3 sm:col-span-2">
-                      <MapPin size={16} className="text-text-muted" />
-                      <span className="text-sm text-foreground">{details.address}, {details.city}, {details.postcode}</span>
-                    </div>
-                  </div>
-                  <div className="pt-4 border-t border-border">
-                    <p className="text-sm font-medium text-foreground mb-1">About</p>
-                    <p className="text-sm text-text-muted">{details.about}</p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Treatments & Pricing */}
-        {activeTab === "treatments" && (
-          <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-lg font-bold text-foreground">Treatments & Pricing</h2>
-                <p className="text-sm text-text-muted">{treatments.length} treatments listed</p>
-              </div>
-              <button onClick={() => setShowAddTreatment(!showAddTreatment)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary-dark transition">
-                <Plus size={16} /> Add Treatment
-              </button>
-            </div>
-
-            {/* Add Treatment Form */}
-            {showAddTreatment && (
-              <div className="bg-surface-elevated border border-border rounded-2xl p-5 mb-6 animate-fade-in">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-foreground">New Treatment</h3>
-                  <button onClick={() => setShowAddTreatment(false)}><X size={18} className="text-text-muted" /></button>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Treatment Name</label>
-                    <input value={newTreatment.name} onChange={(e) => setNewTreatment({ ...newTreatment, name: e.target.value })}
-                      placeholder="e.g. Gel Manicure" className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Price (£)</label>
-                    <input type="number" value={newTreatment.price || ""} onChange={(e) => setNewTreatment({ ...newTreatment, price: Number(e.target.value) })}
-                      placeholder="0.00" className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Duration (mins)</label>
-                    <select value={newTreatment.duration} onChange={(e) => setNewTreatment({ ...newTreatment, duration: Number(e.target.value) })}
-                      className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary">
-                      {[15, 30, 45, 60, 75, 90, 120, 150, 180].map((d) => (
-                        <option key={d} value={d}>{d} mins</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Category</label>
-                    <select value={newTreatment.category} onChange={(e) => setNewTreatment({ ...newTreatment, category: e.target.value })}
-                      className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-foreground focus:outline-none focus:border-primary">
-                      {["Hair", "Colour", "Nails", "Face", "Body", "Lashes", "Brows", "Makeup", "Bridal", "Treatment", "Other"].map((c) => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <button onClick={addTreatment}
-                  className="mt-4 px-5 py-2.5 bg-accent text-white font-semibold rounded-xl text-sm hover:bg-accent/90 transition flex items-center gap-1.5">
-                  <Check size={14} /> Add Treatment
-                </button>
-              </div>
-            )}
-
-            {/* Treatments List */}
-            <div className="space-y-3">
-              {treatments.map((t) => (
-                <div key={t.id} className="bg-surface-elevated border border-border rounded-xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <PoundSterling size={16} className="text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-foreground truncate">{t.name}</p>
-                    <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5">
-                      <span className="flex items-center gap-1"><Clock size={11} /> {t.duration} mins</span>
-                      <span className="px-2 py-0.5 rounded-full bg-surface border border-border">{t.category}</span>
-                    </div>
-                  </div>
-                  <p className="text-lg font-bold text-foreground">£{t.price}</p>
-                  <button onClick={() => deleteTreatment(t.id)}
-                    className="p-2 text-text-muted hover:text-red-400 transition">
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Opening Hours */}
-        {activeTab === "hours" && (
-          <div className="animate-fade-in max-w-2xl">
-            <h2 className="text-lg font-bold text-foreground mb-6">Opening Hours</h2>
-            <div className="bg-surface-elevated border border-border rounded-2xl p-5">
-              <div className="space-y-3">
-                {hours.map((h, i) => (
-                  <div key={h.day} className={`flex items-center gap-4 p-3 rounded-xl transition ${h.open ? "bg-surface" : "bg-surface opacity-50"}`}>
-                    <label className="flex items-center gap-3 w-32 shrink-0 cursor-pointer">
-                      <input type="checkbox" checked={h.open} onChange={(e) => updateHour(i, "open", e.target.checked)}
-                        className="w-4 h-4 accent-primary rounded" />
-                      <span className={`text-sm font-semibold ${h.open ? "text-foreground" : "text-text-muted"}`}>{h.day}</span>
-                    </label>
-                    {h.open ? (
-                      <div className="flex items-center gap-2 flex-1">
-                        <input type="time" value={h.start} onChange={(e) => updateHour(i, "start", e.target.value)}
-                          className="px-3 py-2 bg-surface-elevated border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-primary" />
-                        <span className="text-text-muted text-sm">to</span>
-                        <input type="time" value={h.end} onChange={(e) => updateHour(i, "end", e.target.value)}
-                          className="px-3 py-2 bg-surface-elevated border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-primary" />
-                      </div>
-                    ) : (
-                      <span className="text-sm text-text-muted italic">Closed</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Calendar */}
-        {activeTab === "calendar" && (
-          <div className="animate-fade-in">
-            <div className="bg-surface-elevated border border-border rounded-2xl p-5">
-              <div className="flex items-center justify-between mb-4">
-                <button onClick={() => { if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(currentYear - 1); } else setCurrentMonth(currentMonth - 1); }}
-                  className="p-2 hover:bg-surface rounded-lg transition"><ChevronLeft size={18} /></button>
-                <h3 className="font-bold text-foreground text-lg">{months[currentMonth]} {currentYear}</h3>
-                <button onClick={() => { if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(currentYear + 1); } else setCurrentMonth(currentMonth + 1); }}
-                  className="p-2 hover:bg-surface rounded-lg transition"><ChevronRight size={18} /></button>
-              </div>
-              <div className="grid grid-cols-7 gap-1 mb-2">
-                {daysOfWeek.map((d) => (
-                  <div key={d} className="text-center text-xs font-semibold text-text-muted py-2">{d}</div>
-                ))}
-              </div>
-              <div className="grid grid-cols-7 gap-1">
-                {days.map((d, i) => (
-                  <div key={i} className={`min-h-[80px] p-2 rounded-lg border text-sm ${
-                    d.isCurrentMonth ? "border-border bg-surface-elevated" : "invisible"
-                  }`}>
-                    {d.isCurrentMonth && (
-                      <>
-                        <span className="font-medium text-foreground">{d.date}</span>
-                        {d.date === new Date().getDate() && currentMonth === new Date().getMonth() && (
-                          <div className="mt-1 space-y-0.5">
-                            <div className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary truncate">9:00 Balayage</div>
-                            <div className="text-[10px] px-1.5 py-0.5 rounded bg-secondary/10 text-secondary truncate">12:00 Haircut</div>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Bookings */}
-        {activeTab === "bookings" && (
-          <div className="animate-fade-in space-y-3">
-            <h2 className="text-lg font-bold text-foreground mb-4">All Upcoming Bookings</h2>
-            {initialBookings.map((b) => (
-              <div key={b.id} className="bg-surface-elevated border border-border rounded-xl p-4 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Users size={18} className="text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">{b.client}</p>
-                  <p className="text-sm text-text-muted">{b.service} &bull; {b.duration} mins</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-text-muted">{b.date}</p>
-                  <p className="font-semibold text-foreground">{b.time}</p>
-                </div>
-                <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-                  b.status === "confirmed" ? "bg-accent/10 text-accent" : "bg-amber-100 text-amber-600 dark:bg-amber-900/30"
-                }`}>{b.status}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Breaks & Holidays */}
-        {activeTab === "breaks" && (
-          <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-foreground">Breaks & Holidays</h2>
-              <button onClick={() => setShowAddBreak(!showAddBreak)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary-dark transition">
-                <Plus size={16} /> Add Break / Holiday
-              </button>
-            </div>
-            {showAddBreak && (
-              <div className="bg-surface-elevated border border-border rounded-2xl p-5 mb-6 animate-fade-in">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-foreground">Add new</h3>
-                  <button onClick={() => setShowAddBreak(false)}><X size={18} className="text-text-muted" /></button>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Type</label>
-                    <select className="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary">
-                      <option>Break</option><option>Holiday</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Name</label>
-                    <input placeholder="e.g. Lunch break" className="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Date / Recurrence</label>
-                    <input placeholder="e.g. Every Day, 18 Apr - 21 Apr" className="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-foreground mb-1.5 block">Time</label>
-                    <input placeholder="e.g. 13:00 - 14:00 or All Day" className="w-full px-3 py-2.5 bg-surface border border-border rounded-xl text-sm text-foreground placeholder:text-text-muted focus:outline-none focus:border-primary" />
-                  </div>
-                </div>
-                <button onClick={() => { setShowAddBreak(false); setBreaks((prev) => [...prev, { id: Date.now(), type: "break", name: "New Break", day: "Custom", time: "TBD" }]); }}
-                  className="mt-4 px-5 py-2.5 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary-dark transition">Save</button>
-              </div>
-            )}
-            <div className="space-y-3">
-              {breaks.map((b) => (
-                <div key={b.id} className="bg-surface-elevated border border-border rounded-xl p-4 flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    b.type === "break" ? "bg-amber-100 dark:bg-amber-900/30" : "bg-accent/10"
-                  }`}>
-                    {b.type === "break" ? <Coffee size={18} className="text-amber-600" /> : <Palmtree size={18} className="text-accent" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-foreground">{b.name}</p>
-                    <p className="text-sm text-text-muted">{b.day} &bull; {b.time}</p>
-                  </div>
-                  <button onClick={() => setBreaks((prev) => prev.filter((x) => x.id !== b.id))}
-                    className="text-text-muted hover:text-red-400 transition"><X size={16} /></button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Notifications */}
-        {activeTab === "notifications" && (
-          <div className="animate-fade-in space-y-3">
-            <h2 className="text-lg font-bold text-foreground mb-4">Notifications</h2>
-            {initialNotifications.map((n) => (
-              <div key={n.id} className={`flex items-start gap-3 p-4 rounded-xl border transition ${
-                n.read ? "bg-surface-elevated border-border" : "bg-primary/5 border-primary/10"
-              }`}>
-                <Bell size={18} className={`mt-0.5 ${n.read ? "text-text-muted" : "text-primary"}`} />
-                <div className="flex-1">
-                  <p className={`${n.read ? "text-text-muted" : "text-foreground font-medium"}`}>{n.text}</p>
-                  <p className="text-xs text-text-muted mt-1">{n.time}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Preview Profile */}
-        {activeTab === "preview" && (
-          <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-lg font-bold text-foreground">Profile Preview</h2>
-                <p className="text-sm text-text-muted">This is how clients see your business page</p>
-              </div>
-              <Link href="/salon/1" target="_blank"
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white font-semibold rounded-xl text-sm hover:bg-primary-dark transition">
-                <ExternalLink size={14} /> Open Full Page
+        {/* Bottom Row: Recent Bookings + Sidebar */}
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Recent Bookings */}
+          <div className="lg:col-span-2 bg-surface-elevated border border-border rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-bold text-foreground">Recent Bookings</h3>
+              <Link href="/dashboard/business/calendar" className="text-xs text-primary font-semibold flex items-center gap-1 hover:underline">
+                View all <ChevronRight size={13} />
               </Link>
             </div>
+            <div className="space-y-3">
+              {recentBookings.map((b) => (
+                <div key={b.id} className="flex items-center gap-3 p-3 bg-surface rounded-xl hover:bg-surface/80 transition">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                    {b.client.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-foreground text-sm truncate">{b.client}</p>
+                    <p className="text-xs text-text-muted">{b.service}</p>
+                  </div>
+                  <div className="text-right hidden sm:block">
+                    <p className="text-xs text-text-muted">{b.date}</p>
+                    <p className="text-sm font-semibold text-foreground">{b.time}</p>
+                  </div>
+                  <span className="text-sm font-bold text-foreground">{b.price}</span>
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
+                    b.status === "confirmed" ? "bg-accent/10 text-accent" : "bg-amber-100 text-amber-600 dark:bg-amber-900/30"
+                  }`}>{b.status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-            {/* Preview Card */}
-            <div className="bg-surface-elevated border border-border rounded-2xl overflow-hidden">
-              {/* Mini Banner */}
-              <div className="h-32 bg-gradient-to-br from-primary/20 to-secondary/20 relative flex items-center justify-center">
-                <span className="text-4xl">💇‍♀️</span>
+          {/* Sidebar: Acquisition + Ratings */}
+          <div className="space-y-6">
+            {/* Client Acquisition */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6">
+              <h3 className="font-bold text-foreground mb-4">Client Sources</h3>
+              <div className="space-y-3">
+                {acquisitionSources.map((s) => (
+                  <div key={s.source}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm text-foreground">{s.source}</span>
+                      <span className="text-sm font-bold text-foreground">{s.pct}%</span>
+                    </div>
+                    <div className="h-2 bg-surface rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full ${s.color}`} style={{ width: `${s.pct}%` }} />
+                    </div>
+                  </div>
+                ))}
               </div>
+            </div>
 
-              <div className="p-6">
-                {/* Header */}
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-xl font-bold text-foreground">{details.name}</h3>
-                  <span className="flex items-center gap-1 text-xs font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
-                    <Shield size={10} /> Verified
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-primary font-medium">{details.type}</span>
-                </div>
-                <p className="text-sm text-text-muted flex items-center gap-1 mt-1">
-                  <MapPin size={13} /> {details.address}, {details.city}, {details.postcode}
-                </p>
-
-                <div className="flex items-center gap-4 mt-3 flex-wrap">
-                  <div className="flex items-center gap-1">
-                    <Star size={15} className="text-amber-400 fill-amber-400" />
-                    <span className="font-bold text-foreground">4.9</span>
-                    <span className="text-sm text-text-muted">(234 reviews)</span>
-                  </div>
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-surface border border-border text-text-muted flex items-center gap-1">
-                    <Award size={11} /> Est. 2019
-                  </span>
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-surface border border-border text-text-muted flex items-center gap-1">
-                    <Scissors size={11} /> {treatments.length} treatments
-                  </span>
-                </div>
-
-                {/* About */}
-                <div className="mt-5 pt-5 border-t border-border">
-                  <h4 className="font-semibold text-foreground mb-2">About</h4>
-                  <p className="text-sm text-text-muted leading-relaxed">{details.about}</p>
-                </div>
-
-                {/* Treatments Preview */}
-                <div className="mt-5 pt-5 border-t border-border">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-foreground">Treatments & Prices</h4>
-                    <span className="text-xs text-text-muted">{treatments.length} listed</span>
-                  </div>
-                  <div className="divide-y divide-border">
-                    {treatments.slice(0, 5).map((t) => (
-                      <div key={t.id} className="flex items-center justify-between py-2.5">
-                        <div>
-                          <p className="text-sm font-medium text-foreground">{t.name}</p>
-                          <span className="text-xs text-text-muted">{t.duration} mins &bull; {t.category}</span>
-                        </div>
-                        <span className="font-bold text-foreground">£{t.price}</span>
-                      </div>
-                    ))}
-                    {treatments.length > 5 && (
-                      <p className="text-xs text-primary font-medium pt-2">+ {treatments.length - 5} more treatments</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Opening Hours Preview */}
-                <div className="mt-5 pt-5 border-t border-border">
-                  <h4 className="font-semibold text-foreground mb-3">Opening Hours</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    {hours.map((h) => (
-                      <div key={h.day} className="flex items-center justify-between text-sm text-text-muted">
-                        <span>{h.day.substring(0, 3)}</span>
-                        <span className={!h.open ? "text-red-400" : ""}>{h.open ? `${h.start} - ${h.end}` : "Closed"}</span>
-                      </div>
+            {/* Rating Summary */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6">
+              <h3 className="font-bold text-foreground mb-4">Rating Summary</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-4xl font-extrabold text-foreground">4.8</span>
+                <div>
+                  <div className="flex items-center gap-0.5 mb-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star key={s} size={16} className={s <= 4 ? "text-amber-400 fill-amber-400" : "text-amber-400 fill-amber-400/40"} />
                     ))}
                   </div>
+                  <p className="text-xs text-text-muted">234 reviews</p>
                 </div>
-
-                {/* Contact Preview */}
-                <div className="mt-5 pt-5 border-t border-border">
-                  <h4 className="font-semibold text-foreground mb-3">Contact</h4>
-                  <div className="space-y-2">
-                    <p className="text-sm text-text-muted flex items-center gap-2"><Phone size={14} className="text-primary" /> {details.phone}</p>
-                    <p className="text-sm text-text-muted flex items-center gap-2"><Mail size={14} className="text-primary" /> {details.email}</p>
-                    <p className="text-sm text-text-muted flex items-center gap-2"><MapPin size={14} className="text-primary" /> {details.address}, {details.city}, {details.postcode}</p>
+              </div>
+              <div className="space-y-2">
+                {ratingBreakdown.map((r) => (
+                  <div key={r.stars} className="flex items-center gap-2">
+                    <span className="text-xs text-text-muted w-3">{r.stars}</span>
+                    <Star size={10} className="text-amber-400 fill-amber-400" />
+                    <div className="flex-1 h-2 bg-surface rounded-full overflow-hidden">
+                      <div className="h-full rounded-full bg-amber-400" style={{ width: `${r.pct}%` }} />
+                    </div>
+                    <span className="text-xs text-text-muted w-8 text-right">{r.count}</span>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
