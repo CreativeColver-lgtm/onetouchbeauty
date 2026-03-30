@@ -31,7 +31,7 @@ export async function getAvailableStaff(
   const dayOfWeek = DAYS[new Date(date).getDay()]
 
   // Filter by schedule availability
-  const available = (allStaff as StaffMember[]).filter((staff) => {
+  const available = (allStaff as StaffMember[]).filter((staff: any) => {
     const daySchedule = staff.schedule?.[dayOfWeek]
     if (!daySchedule?.available) return false
 
@@ -104,7 +104,7 @@ export async function checkStaffAvailability(
 
   const schedule = staff.schedule as StaffSchedule
   const dayOfWeek = DAYS[new Date(date).getDay()]
-  const daySchedule = schedule?.[dayOfWeek]
+  const daySchedule = (schedule as any)?.[dayOfWeek]
 
   if (!daySchedule?.available) return false
   if (startTime < daySchedule.start || endTime > daySchedule.end) return false

@@ -2,7 +2,9 @@
 // Reminders — Email & SMS reminder utilities
 // =============================================================================
 
-import type { Booking, BookingReminder } from '@/types/database'
+import type { Booking } from '@/types/database'
+
+type BookingReminder = Record<string, any>
 
 interface ReminderBooking extends Booking {
   businesses?: { name: string; phone: string | null; address: string | null }

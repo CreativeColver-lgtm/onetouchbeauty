@@ -3,7 +3,7 @@
 // =============================================================================
 
 import { createClient } from './supabase'
-import type { Product, StockTransaction, StockTransactionType } from '@/types/database'
+import type { InventoryProduct as Product, InventoryTransaction as StockTransaction, InventoryTransactionType as StockTransactionType } from '@/types/database'
 
 interface ProductFilters {
   category?: string

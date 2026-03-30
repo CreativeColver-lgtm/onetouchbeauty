@@ -1070,8 +1070,10 @@ export interface MarketingCampaignTargetAudience {
   last_visit_days?: number
   tags?: string[]
   min_spend_pence?: number
+  min_spent_pence?: number
   tier?: LoyaltyTier
-  [key: string]: unknown
+  service_categories?: string[]
+  min_bookings?: number
 }
 
 export interface MarketingCampaign {

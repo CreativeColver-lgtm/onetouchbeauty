@@ -3,7 +3,15 @@
 // =============================================================================
 
 import { createClient } from './supabase'
-import type { Campaign, CampaignInsert, CampaignStats, CampaignAudienceFilters } from '@/types/database'
+import type { MarketingCampaign as Campaign, MarketingCampaignInsert as CampaignInsert, MarketingCampaignTargetAudience as CampaignAudienceFilters } from '@/types/database'
+
+interface CampaignStats {
+  total_sent: number
+  delivered: number
+  opened: number
+  clicked: number
+  bounced: number
+}
 
 // ---------------------------------------------------------------------------
 // Create campaign

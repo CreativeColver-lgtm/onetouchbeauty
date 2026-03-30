@@ -67,7 +67,7 @@ export async function sendBookingConfirmation(booking: BookingWithRelations): Pr
       <p>Hi ${name},</p>
       <p>Your booking has been confirmed!</p>
       <div style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin: 16px 0;">
-        ${booking.reference ? `<p style="margin: 4px 0;"><strong>Reference:</strong> ${booking.reference}</p>` : ''}
+        ${(booking as any).reference ? `<p style="margin: 4px 0;"><strong>Reference:</strong> ${(booking as any).reference}</p>` : ''}
         <p style="margin: 4px 0;"><strong>Service:</strong> ${serviceName}</p>
         <p style="margin: 4px 0;"><strong>Date:</strong> ${booking.date}</p>
         <p style="margin: 4px 0;"><strong>Time:</strong> ${booking.start_time} — ${booking.end_time}</p>
@@ -145,12 +145,12 @@ export async function sendWaitlistNotification(entry: WaitlistEntry & { business
   const salonName = entry.businesses?.name ?? 'the salon'
 
   return sendEmail(
-    entry.client_email,
+    (entry as any).client_email,
     `A slot has opened up at ${salonName}! 🎉`,
     `
     <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto;">
       <h2 style="color: #333;">Good news! A slot is available 🎉</h2>
-      <p>Hi ${entry.client_name},</p>
+      <p>Hi ${(entry as any).client_name},</p>
       <p>Great news — a slot has opened up at <strong>${salonName}</strong>${entry.preferred_date ? ` around your preferred date (${entry.preferred_date})` : ''}!</p>
       <div style="text-align: center; margin: 24px 0;">
         <a href="${process.env.NEXT_PUBLIC_SITE_URL}/booking?business=${entry.business_id}" 
