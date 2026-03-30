@@ -535,6 +535,132 @@ Why One Touch Beauty wins where others haven't:
 
 ---
 
+---
+
+## REVISED PLAN: £20K Starting Budget + Profit Reinvestment
+
+### Why £20K Is Enough
+
+The full plan budgets £120K-185K over 12 months. But you don't need that upfront — you need it spread across the year, and from month 4 onwards the platform generates revenue that funds the next month's marketing.
+
+### Month-by-Month Cash Flow
+
+| Month | Marketing Spend | Revenue In | Cumulative Profit | Running Budget |
+|:---:|---:|---:|---:|---:|
+| **1** | £500 | £0 | -£500 | £19,500 |
+| **2** | £1,000 | £0 | -£1,500 | £18,500 |
+| **3** (Launch) | £4,000 | £500 | -£5,000 | £15,000 |
+| **4** | £3,000 | £2,000 | -£6,000 | £14,000 |
+| **5** | £3,500 | £5,000 | -£4,500 | £15,500 |
+| **6** | £4,000 | £10,000 | £1,500 | £21,500 |
+| **7** | £5,000 | £18,000 | £14,500 | £34,500 |
+| **8** | £6,000 | £28,000 | £36,500 | £56,500 |
+| **9** | £8,000 | £40,000 | £68,500 | £88,500 |
+| **10** | £10,000 | £55,000 | £113,500 | £133,500 |
+| **11** | £12,000 | £70,000 | £171,500 | £191,500 |
+| **12** | £15,000 | £85,000 | £241,500 | £261,500 |
+| **Total** | **£72,000** | **£313,500** | | |
+
+**By month 6, the business is self-funding.** By month 12, you've spent £72K on marketing (funded mostly from revenue) and brought in £313K+.
+
+### What Changes With £20K Start
+
+**Stays the same (costs nothing):**
+- Founding Salon program (free for them, free for you)
+- Instagram DM outreach (sweat equity)
+- Walk-in salon visits (petrol money only)
+- Facebook group engagement
+- Content creation (phone + Canva + CapCut)
+- SEO blog content
+- Referral program (funded from bookings, not upfront)
+- All 6 video campaign concepts (filmed on phone)
+- PR & press releases (free to send)
+
+**Gets phased (start small, scale with revenue):**
+
+| Tactic | Original Plan | £20K Version | When to Scale Up |
+|---|---|---|---|
+| **Influencer launch** | £4,500 (30 creators) | £1,500 (10 creators) | Month 5+ add more |
+| **Paid ads** | £3-5K/month from day 1 | £500/month → scale | Double when ROAS > 3x |
+| **City launches** | 10 cities × £2K | Start with 2 cities | Fund from revenue |
+| **City Ambassadors** | 10 from month 9 | 3 from month 6 | Commission-only, low risk |
+| **Video production** | £500-1K/month | DIY first, outsource later | Revenue hits £20K/month |
+
+### Revised 90-Day Plan
+
+**Month 1 — Spend: £500**
+- Build salon database (2,000+ contacts) — £0
+- Founding Salon outreach: 50 DMs/day on Instagram — £0
+- Walk-in visits: 5-8 salons per day — £50 petrol
+- Set up all social accounts, start posting daily — £0
+- Film 15 content pieces with phone — £0
+- Write 4 SEO blog posts — £0
+- Small test: £450 on Google Ads to validate keywords
+- **Target: 80 salons signed up**
+
+**Month 2 — Spend: £1,000**
+- Push to 200 salons — £0
+- Film 5 salon spotlights + 3 Transformation Tuesday videos — £0
+- DM 30 micro-influencers, book them for launch month — £0
+- Google Ads test: £500
+- Facebook/Instagram ad test: £500
+- Submit apps to App Store + Play Store
+- **Target: 200 salons, content going viral organically**
+
+**Month 3 (LAUNCH) — Spend: £4,000**
+- 7-day launch campaign — £0 (organic content already made)
+- 10 micro-influencers: £1,500
+- Google Ads: £1,000
+- Meta Ads: £1,000
+- TikTok Ads: £500
+- Referral program activated
+- PR push to beauty press
+- **Target: 200 salons, 500 customers, 1,000 bookings, £2,000 revenue**
+
+**Months 4-5 — Spend: £3,000-3,500/month**
+- Scale what works, cut what doesn't (3:1 ROAS minimum)
+- Launch city #2 (Manchester): £1,000
+- First "£50 Challenge" YouTube episode: £250
+- Continue weekly content cadence
+- **Target: 500 salons, 5,000 customers, £10,000/month revenue**
+
+**Month 6+ — Self-Funding**
+- Revenue exceeds marketing spend
+- Reinvest 100% of profit into growth
+- Follow the original scaling plan
+
+### The Critical First 8 Weeks — Daily Schedule
+
+| Time | Activity |
+|---|---|
+| 8:00-9:00 | Send 50 Instagram DMs to beauty professionals |
+| 9:00-12:00 | Walk-in salon visits (5-8 per morning) |
+| 12:00-13:00 | Follow up yesterday's DMs and emails |
+| 13:00-14:00 | Create 1 piece of content (Reel, TikTok, post) |
+| 14:00-15:00 | Engage in Facebook groups (genuine value, soft pitch) |
+| 15:00-16:00 | Email outreach (personalised, 20-30 per day) |
+| 16:00-17:00 | Admin, content planning, track metrics |
+
+**Saturday:** Film 2-3 videos at partner salons. Batch-create next week's content.
+
+This costs £0 and is the highest ROI activity in the entire plan.
+
+### Realistic Outcome with £20K
+
+| Target | Achievable? | Confidence |
+|---|---|---|
+| **200 salons by month 3** | ✅ Very achievable | 90% |
+| **2,000 salons by month 12** | ✅ Achievable | 75% |
+| **£500K revenue year 1** | ✅ Conservative hit | 80% |
+| **£1M revenue year 1** | ⚡ Stretch target | 50% |
+| **£1M+ in year 2** | ✅ Highly likely | 85% |
+
+Realistic outcome: **£500K-800K in year 1**, crossing £1M in **month 14-18**. Still a 7-figure business — might take a few extra months.
+
+The variable that changes everything: **how hard you grind in months 1-3.** If you personally sign up 200 salons through DMs and walk-ins, the rest works itself.
+
+---
+
 ## Final Word
 
 This isn't a spray-and-pray marketing plan. Every tactic here is proven, measurable, and specifically designed for a two-sided marketplace in the beauty industry.
@@ -547,6 +673,6 @@ The core strategy is simple:
 5. **Referrals + loyalty retains customers** (they keep coming back)
 6. **City-by-city expansion** (concentrated force beats scattered effort)
 
-The product is built. The market is massive. The competition is complacent and overpriced. Now we execute.
+The product is built. The market is massive. The competition is complacent and overpriced. £20K is the runway. Revenue is the fuel. Now we execute.
 
 Let's make it happen. 🚀
