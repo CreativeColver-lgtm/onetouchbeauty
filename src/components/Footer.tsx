@@ -119,9 +119,9 @@ export default function Footer() {
               <Image
                 src="/logo.png"
                 alt="One Touch Beauty"
-                width={150}
-                height={42}
-                className="h-9 w-auto"
+                width={240}
+                height={70}
+                className="h-14 w-auto"
               />
             </div>
             <p className="text-sm text-text-muted mb-5 leading-relaxed">
