@@ -39,15 +39,15 @@ export default function Navbar() {
       } transition-all duration-300`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`flex items-center justify-between ${isScrolled ? "h-16" : "h-[72px]"} transition-all duration-300`}>
+        <div className={`flex items-center justify-between ${isScrolled ? "h-20" : "h-24"} transition-all duration-300`}>
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/logo.png"
               alt="One Touch Beauty"
-              width={280}
-              height={80}
-              className="h-14 sm:h-16 w-auto"
+              width={400}
+              height={120}
+              className="h-16 sm:h-20 w-auto"
               priority
             />
           </Link>
