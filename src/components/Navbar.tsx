@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import {
   Sun, Moon, Menu, X, User, Building2, ChevronDown,
@@ -40,13 +41,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={`flex items-center justify-between ${isScrolled ? "h-16" : "h-[72px]"} transition-all duration-300`}>
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-md">
-              <span className="text-white font-extrabold text-lg">O</span>
-            </div>
-            <span className="font-extrabold text-xl text-foreground hidden sm:block tracking-tight">
-              One Touch <span className="text-primary">Beauty</span>
-            </span>
+          <Link href="/" className="flex items-center shrink-0">
+            <Image
+              src="/logo.png"
+              alt="One Touch Beauty"
+              width={180}
+              height={50}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}

@@ -3,10 +3,16 @@ import { Crown, Shield, Award, Gem, TrendingUp } from "lucide-react";
 import type { LoyaltyTier } from "@/types/database";
 
 interface LoyaltyCardProps {
-  points: number;
-  lifetimePoints: number;
-  tier: LoyaltyTier;
+  points?: number;
+  lifetimePoints?: number;
+  tier?: LoyaltyTier;
   businessName?: string;
+  businessImage?: string;
+  stampsEarned?: number;
+  stampsTotal?: number;
+  reward?: string;
+  lastVisit?: string;
+  pointsEarned?: number;
   nextTierName?: string;
   pointsToNextTier?: number;
   compact?: boolean;
@@ -24,9 +30,9 @@ const tierConfig: Record<LoyaltyTier, {
 };
 
 export default function LoyaltyCard({
-  points,
-  lifetimePoints,
-  tier,
+  points = 0,
+  lifetimePoints = 0,
+  tier = "bronze",
   businessName,
   nextTierName,
   pointsToNextTier,

@@ -614,10 +614,14 @@ export interface WaitlistEntry {
 
 export interface WaitlistEntryInsert {
   business_id: string
-  client_id: string
-  service_id: string
+  client_id?: string | null
+  client_name?: string
+  client_email?: string
+  client_phone?: string | null
+  service_id?: string | null
   preferred_staff_id?: string | null
   preferred_date?: string | null
+  preferred_time?: string | null
   preferred_time_start?: string | null
   preferred_time_end?: string | null
   status?: WaitlistStatus

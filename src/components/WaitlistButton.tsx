@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Bell, X, Clock, Check, Mail, User, Calendar } from "lucide-react";
 
 interface WaitlistButtonProps {
+  salonId?: string;
   salonName?: string;
   className?: string;
 }

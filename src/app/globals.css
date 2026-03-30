@@ -3,32 +3,32 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #1a1a2e;
-  --primary: #f78da7;
-  --primary-dark: #e56b8a;
-  --primary-light: #fdb5c8;
-  --secondary: #0693e3;
-  --accent: #00d084;
-  --surface: #f8f9fa;
+  --foreground: #32373c;
+  --primary: #e8b8b8;
+  --primary-dark: #d4a0a0;
+  --primary-light: #f5d5d5;
+  --secondary: #32373c;
+  --accent: #e8b8b8;
+  --surface: #faf8f7;
   --surface-elevated: #ffffff;
-  --border: #e5e7eb;
-  --text-muted: #6b7280;
+  --border: #f0e8e5;
+  --text-muted: #8a7e7a;
   --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .dark {
-  --background: #0f0f1a;
-  --foreground: #e8e8f0;
-  --primary: #f78da7;
-  --primary-dark: #ff9dba;
-  --primary-light: #3d2030;
-  --secondary: #4dabf0;
-  --accent: #34d399;
-  --surface: #1a1a2e;
-  --surface-elevated: #22223a;
-  --border: #2d2d44;
-  --text-muted: #9ca3af;
+  --background: #1a1515;
+  --foreground: #f0e8e5;
+  --primary: #e8b8b8;
+  --primary-dark: #f0c8c8;
+  --primary-light: #3d2a2a;
+  --secondary: #c4a8a8;
+  --accent: #d4a0a0;
+  --surface: #1a1515;
+  --surface-elevated: #241e1e;
+  --border: #3d2a2a;
+  --text-muted: #a89090;
   --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
   --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
@@ -142,8 +142,8 @@ input, textarea, select {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(247, 141, 167, 0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(247, 141, 167, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 184, 184, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(232, 184, 184, 0); }
 }
 
 @keyframes float {
@@ -370,7 +370,17 @@ main {
 
 /* ─── Premium dark mode card glow ─── */
 .dark .card-glow:hover {
-  box-shadow: 0 0 30px rgba(247, 141, 167, 0.08), 0 8px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 30px rgba(232, 184, 184, 0.08), 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── Hero slideshow ─── */
+@keyframes heroZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+.hero-slide-zoom {
+  animation: heroZoom 5s ease-out forwards;
 }
 
 /* ─── Map placeholder ─── */

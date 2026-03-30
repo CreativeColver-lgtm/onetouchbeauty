@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Share2, Copy, Check, MessageCircle, X as XIcon } from "lucide-react";
 
 interface ShareButtonProps {
-  url: string;
+  url?: string;
   title: string;
   text?: string;
   compact?: boolean;
 }
 
-export default function ShareButton({ url, title, text = "", compact = false }: ShareButtonProps) {
+export default function ShareButton({ url = typeof window !== "undefined" ? window.location.href : "", title, text = "", compact = false }: ShareButtonProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [copied, setCopied] = useState(false);
 

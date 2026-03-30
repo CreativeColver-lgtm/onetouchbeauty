@@ -9,6 +9,8 @@ interface CancellationPolicyProps {
   cardOnFileRequired?: boolean;
   customText?: string | null;
   compact?: boolean;
+  freeCancel?: boolean | number;
+  noShowCharge?: string | number | boolean;
 }
 
 export default function CancellationPolicy({

@@ -36,21 +36,21 @@ function useCountUp(end: number, duration = 2000, start = false) {
 
 /* ─── Data ─── */
 const featuredSalons = [
-  { name: "Glow Studio", location: "Shoreditch, London", rating: 4.9, reviews: 234, image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop", speciality: "Hair Colour Specialists", verified: true, availableToday: true },
+  { name: "Glow Studio", location: "Shoreditch, London", rating: 4.9, reviews: 234, image: "/images/beauty-1.jpeg", speciality: "Hair Colour Specialists", verified: true, availableToday: true },
   { name: "Nail Artistry", location: "Northern Quarter, Manchester", rating: 4.8, reviews: 189, image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=400&fit=crop", speciality: "Gel & Acrylic Nails", verified: true, availableToday: true },
-  { name: "Pure Skin Clinic", location: "Clifton, Bristol", rating: 4.9, reviews: 312, image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=400&fit=crop", speciality: "Advanced Facials", verified: true, availableToday: false },
+  { name: "Pure Skin Clinic", location: "Clifton, Bristol", rating: 4.9, reviews: 312, image: "/images/beauty-2.jpeg", speciality: "Advanced Facials", verified: true, availableToday: false },
   { name: "Serenity Spa", location: "Bath, Somerset", rating: 4.8, reviews: 278, image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&h=400&fit=crop", speciality: "Luxury Spa Treatments", verified: false, availableToday: true },
   { name: "Curl & Co", location: "Brixton, London", rating: 4.7, reviews: 198, image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=400&fit=crop", speciality: "Afro & Textured Hair", verified: true, availableToday: true },
-  { name: "Blush Beauty Bar", location: "Deansgate, Manchester", rating: 4.8, reviews: 267, image: "https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=600&h=400&fit=crop", speciality: "Bridal & Event Makeup", verified: true, availableToday: false },
+  { name: "Blush Beauty Bar", location: "Deansgate, Manchester", rating: 4.8, reviews: 267, image: "/images/beauty-3.jpeg", speciality: "Bridal & Event Makeup", verified: true, availableToday: false },
   { name: "Polish Perfect", location: "Didsbury, Manchester", rating: 4.9, reviews: 178, image: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=600&h=400&fit=crop", speciality: "Nail Art & Extensions", verified: true, availableToday: true },
   { name: "The Grooming Room", location: "Soho, London", rating: 4.6, reviews: 156, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop", speciality: "Premium Barbering", verified: false, availableToday: true },
 ];
 
 const categories = [
-  { name: "Hair", image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=300&fit=crop", count: 2450, href: "/directory?category=hair" },
+  { name: "Hair", image: "/images/beauty-1.jpeg", count: 2450, href: "/directory?category=hair" },
   { name: "Nails", image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop", count: 1830, href: "/directory?category=nails" },
-  { name: "Makeup", image: "https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=400&h=300&fit=crop", count: 1240, href: "/directory?category=makeup" },
-  { name: "Face", image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop", count: 1560, href: "/directory?category=face" },
+  { name: "Makeup", image: "/images/beauty-3.jpeg", count: 1240, href: "/directory?category=makeup" },
+  { name: "Face", image: "/images/beauty-2.jpeg", count: 1560, href: "/directory?category=face" },
   { name: "Body", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&h=300&fit=crop", count: 980, href: "/directory?category=body" },
   { name: "Hair Removal", image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&h=300&fit=crop", count: 1120, href: "/directory?category=hair-removal" },
 ];
@@ -63,11 +63,11 @@ const testimonials = [
 ];
 
 const trendingTreatments = [
-  { name: "Balayage", image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=500&fit=crop", priceRange: "£85 – £150", bookings: 3420 },
+  { name: "Balayage", image: "/images/beauty-1.jpeg", priceRange: "£85 – £150", bookings: 3420 },
   { name: "Gel Manicure", image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=500&fit=crop", priceRange: "£25 – £45", bookings: 5120 },
-  { name: "Hydrafacial", image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=500&fit=crop", priceRange: "£60 – £120", bookings: 2890 },
+  { name: "Hydrafacial", image: "/images/beauty-2.jpeg", priceRange: "£60 – £120", bookings: 2890 },
   { name: "Hot Stone Massage", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&h=500&fit=crop", priceRange: "£50 – £90", bookings: 1960 },
-  { name: "Lash Extensions", image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&h=500&fit=crop", priceRange: "£40 – £80", bookings: 4230 },
+  { name: "Lash Extensions", image: "/images/beauty-3.jpeg", priceRange: "£40 – £80", bookings: 4230 },
   { name: "Brazilian Blowout", image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=500&fit=crop", priceRange: "£100 – £200", bookings: 1540 },
 ];
 
@@ -90,6 +90,147 @@ const cities = [
   "Bristol", "Sheffield", "Edinburgh", "Glasgow", "Cardiff",
   "Nottingham", "Newcastle",
 ];
+
+/* ─── Hero slideshow images ─── */
+const heroSlides = [
+  "/images/slides/slide-1.png",
+  "/images/slides/slide-2.png",
+  "/images/slides/slide-3.png",
+  "/images/slides/slide-4.png",
+];
+
+function HeroSlideshow({
+  searchQuery,
+  setSearchQuery,
+  locationQuery,
+  setLocationQuery,
+  statsRef,
+  pros,
+  clients,
+  bookings,
+}: {
+  searchQuery: string;
+  setSearchQuery: (v: string) => void;
+  locationQuery: string;
+  setLocationQuery: (v: string) => void;
+  statsRef: React.RefObject<HTMLDivElement | null>;
+  pros: number;
+  clients: number;
+  bookings: number;
+}) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="relative h-[100svh] min-h-[600px] max-h-[900px] overflow-hidden grain-overlay">
+      {/* Slideshow backgrounds */}
+      {heroSlides.map((src, i) => (
+        <div
+          key={src}
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: current === i ? 1 : 0, zIndex: 1 }}
+        >
+          <Image
+            src={src}
+            alt={`Beauty slide ${i + 1}`}
+            fill
+            className={`object-cover ${current === i ? "hero-slide-zoom" : ""}`}
+            priority={i === 0}
+            unoptimized
+          />
+        </div>
+      ))}
+
+      {/* Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/15 z-[2]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-secondary/5 z-[2]" />
+
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
+        <div className="text-center max-w-4xl mx-auto animate-slide-up">
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-white text-sm font-semibold mb-8 border border-white/10">
+            <Sparkles size={14} className="text-primary" /> The UK&apos;s Premier Beauty Marketplace
+          </span>
+
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white leading-[1.05] mb-6 tracking-tight">
+            Discover Your <br />
+            <span className="gradient-text-animated">Perfect Look</span>
+          </h1>
+
+          <p className="text-lg sm:text-xl text-white/70 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
+            Book top-rated salons, stylists, and beauty professionals near you. Instant confirmation, real reviews, zero hassle.
+          </p>
+
+          {/* Search Bar */}
+          <div className="bg-white/95 dark:bg-surface-elevated/95 glass rounded-2xl p-2 flex flex-col sm:flex-row gap-2 shadow-2xl max-w-2xl mx-auto border border-white/20">
+            <div className="flex items-center gap-2 flex-1 px-4">
+              <Search size={18} className="text-gray-400 shrink-0" />
+              <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="What are you looking for?"
+                className="w-full py-3 bg-transparent text-gray-800 dark:text-foreground placeholder:text-gray-400 focus:outline-none"
+              />
+            </div>
+            <div className="flex items-center gap-2 flex-1 px-4 border-t sm:border-t-0 sm:border-l border-gray-200 dark:border-border">
+              <MapPin size={18} className="text-gray-400 shrink-0" />
+              <input
+                value={locationQuery}
+                onChange={(e) => setLocationQuery(e.target.value)}
+                placeholder="City or postcode"
+                className="w-full py-3 bg-transparent text-gray-800 dark:text-foreground placeholder:text-gray-400 focus:outline-none"
+              />
+            </div>
+            <Link
+              href={`/directory?q=${searchQuery}&location=${locationQuery}`}
+              className="px-8 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-all hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <Search size={16} /> Search
+            </Link>
+          </div>
+        </div>
+
+        {/* Animated Stats */}
+        <div ref={statsRef} className="mt-12 flex flex-wrap justify-center gap-10 sm:gap-16">
+          {[
+            { label: "Beauty Pros", value: pros, suffix: "+" },
+            { label: "Happy Clients", value: clients, suffix: "+" },
+            { label: "Bookings Made", value: bookings, suffix: "+" },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="text-3xl sm:text-4xl font-extrabold text-white tabular-nums">
+                {stat.value.toLocaleString()}{stat.suffix}
+              </p>
+              <p className="text-sm text-white/50 mt-1 font-medium">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation Dots */}
+        <div className="mt-8 flex gap-2.5">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                current === i
+                  ? "bg-white w-8"
+                  : "bg-white/40 hover:bg-white/60"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -126,80 +267,17 @@ export default function Home() {
 
   return (
     <div ref={scrollRef}>
-      {/* ═══ HERO ═══ */}
-      <section className="relative h-[100svh] min-h-[600px] max-h-[900px] overflow-hidden grain-overlay">
-        <Image
-          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&h=1080&fit=crop&q=80"
-          alt="Luxury beauty salon interior"
-          fill
-          className="object-cover scale-105"
-          priority
-          unoptimized
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-[2]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-secondary/5 z-[2]" />
-
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-          <div className="text-center max-w-4xl mx-auto animate-slide-up">
-            <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-white text-sm font-semibold mb-8 border border-white/10">
-              <Sparkles size={14} className="text-primary" /> The UK&apos;s Premier Beauty Marketplace
-            </span>
-
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white leading-[1.05] mb-6 tracking-tight">
-              Discover Your <br />
-              <span className="gradient-text-animated">Perfect Look</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-white/70 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
-              Book top-rated salons, stylists, and beauty professionals near you. Instant confirmation, real reviews, zero hassle.
-            </p>
-
-            {/* Search Bar */}
-            <div className="bg-white/95 dark:bg-surface-elevated/95 glass rounded-2xl p-2 flex flex-col sm:flex-row gap-2 shadow-2xl max-w-2xl mx-auto border border-white/20">
-              <div className="flex items-center gap-2 flex-1 px-4">
-                <Search size={18} className="text-gray-400 shrink-0" />
-                <input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="What are you looking for?"
-                  className="w-full py-3 bg-transparent text-gray-800 dark:text-foreground placeholder:text-gray-400 focus:outline-none"
-                />
-              </div>
-              <div className="flex items-center gap-2 flex-1 px-4 border-t sm:border-t-0 sm:border-l border-gray-200 dark:border-border">
-                <MapPin size={18} className="text-gray-400 shrink-0" />
-                <input
-                  value={locationQuery}
-                  onChange={(e) => setLocationQuery(e.target.value)}
-                  placeholder="City or postcode"
-                  className="w-full py-3 bg-transparent text-gray-800 dark:text-foreground placeholder:text-gray-400 focus:outline-none"
-                />
-              </div>
-              <Link
-                href={`/directory?q=${searchQuery}&location=${locationQuery}`}
-                className="px-8 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-all hover:shadow-lg flex items-center justify-center gap-2"
-              >
-                <Search size={16} /> Search
-              </Link>
-            </div>
-          </div>
-
-          {/* Animated Stats */}
-          <div ref={statsRef} className="mt-12 flex flex-wrap justify-center gap-10 sm:gap-16">
-            {[
-              { label: "Beauty Pros", value: pros, suffix: "+" },
-              { label: "Happy Clients", value: clients, suffix: "+" },
-              { label: "Bookings Made", value: bookings, suffix: "+" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-3xl sm:text-4xl font-extrabold text-white tabular-nums">
-                  {stat.value.toLocaleString()}{stat.suffix}
-                </p>
-                <p className="text-sm text-white/50 mt-1 font-medium">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ═══ HERO SLIDESHOW ═══ */}
+      <HeroSlideshow
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        locationQuery={locationQuery}
+        setLocationQuery={setLocationQuery}
+        statsRef={statsRef}
+        pros={pros}
+        clients={clients}
+        bookings={bookings}
+      />
 
       {/* ═══ CATEGORIES ═══ */}
       <section className="py-20 bg-background">

@@ -6,20 +6,31 @@ interface AddToCalendarProps {
   title: string;
   description?: string;
   location?: string;
-  startDate: string; // YYYY-MM-DD
-  startTime: string; // HH:MM
-  durationMinutes: number;
+  startDate?: string; // YYYY-MM-DD
+  startTime?: string; // HH:MM
+  date?: string | Date; // alias for startDate
+  time?: string; // alias for startTime
+  durationMinutes?: number;
+  duration?: number; // alias for durationMinutes
 }
 
 export default function AddToCalendar({
   title,
   description = "",
   location = "",
-  startDate,
-  startTime,
-  durationMinutes,
+  startDate: startDateProp,
+  startTime: startTimeProp,
+  date,
+  time,
+  durationMinutes: durationMinutesProp,
+  duration,
 }: AddToCalendarProps) {
   const [showDropdown, setShowDropdown] = useState(false);
+
+  // Resolve aliased props
+  const startDate = startDateProp ?? (date instanceof Date ? date.toISOString().split("T")[0] : date) ?? "";
+  const startTime = startTimeProp ?? time ?? "";
+  const durationMinutes = durationMinutesProp ?? duration ?? 60;
 
   // Build date strings
   const start = new Date(`${startDate}T${startTime}:00`);

@@ -6,7 +6,7 @@ import {
   MapPin, Star, Clock, Phone, Mail, Globe, Shield, Heart,
   Calendar, Share2, ChevronLeft, ChevronRight, MessageSquare,
   Scissors, Users, Award, CheckCircle2, ExternalLink, Map,
-  Instagram, Facebook, AlertCircle, BellPlus,
+  AlertCircle, BellPlus,
 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import BeforeAfterGallery from "@/components/BeforeAfterGallery";
@@ -316,7 +316,7 @@ export default function SalonPage() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 text-purple-400 hover:text-purple-300 transition"
                     >
-                      <Instagram size={12} /> @{salon.instagram}
+                      <ExternalLink size={12} /> @{salon.instagram}
                     </a>
                   )}
                   {salon.facebook && (
@@ -326,7 +326,7 @@ export default function SalonPage() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:text-blue-300 transition"
                     >
-                      <Facebook size={12} /> Facebook
+                      <ExternalLink size={12} /> Facebook
                     </a>
                   )}
                 </div>

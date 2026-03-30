@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, Mail, CheckCircle2, BadgeCheck, Lock, Shield, Clock } from "lucide-react";
 
 const footerLinks = {
@@ -114,13 +115,14 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center">
-                <span className="text-white font-bold text-sm">O</span>
-              </div>
-              <span className="font-extrabold text-base text-foreground">
-                One Touch <span className="text-primary">Beauty</span>
-              </span>
+            <div className="mb-4">
+              <Image
+                src="/logo.png"
+                alt="One Touch Beauty"
+                width={150}
+                height={42}
+                className="h-9 w-auto"
+              />
             </div>
             <p className="text-sm text-text-muted mb-5 leading-relaxed">
               The UK's premier beauty marketplace connecting thousands of clients with top-rated beauty professionals.

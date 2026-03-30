@@ -4,13 +4,17 @@ import { Check, AlertCircle } from "lucide-react";
 import type { ConsultationFormField } from "@/types/database";
 
 interface ConsultationFormProps {
-  fields: ConsultationFormField[];
-  onSubmit: (data: Record<string, unknown>) => void;
+  fields?: ConsultationFormField[];
+  onSubmit?: (data: Record<string, unknown>) => void;
   title?: string;
   description?: string;
+  services?: string[] | { id: string; name: string }[];
+  answers?: Record<string, string>;
+  onChange?: (key: string, value: string) => void;
+  onComplete?: (complete: boolean) => void;
 }
 
-export default function ConsultationForm({ fields, onSubmit, title, description }: ConsultationFormProps) {
+export default function ConsultationForm({ fields = [], onSubmit, title, description, services, answers, onChange, onComplete }: ConsultationFormProps) {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -87,7 +91,7 @@ export default function ConsultationForm({ fields, onSubmit, title, description 
     e.preventDefault();
     if (validate()) {
       setSubmitted(true);
-      onSubmit(formData);
+      onSubmit?.(formData);
     }
   };
 
