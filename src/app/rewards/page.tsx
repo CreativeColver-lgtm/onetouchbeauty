@@ -3,8 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   Gift, Star, Crown, Award, Gem, Shield, Users, ArrowRight,
-  Check, Copy, Sparkles, TrendingUp, Zap, Heart,
+  Check, Copy, Sparkles, TrendingUp, Zap, Heart, Share2,
+  CreditCard, Clock,
 } from "lucide-react";
+import LoyaltyCard from "@/components/LoyaltyCard";
+import ShareButton from "@/components/ShareButton";
 
 const tiers = [
   {
@@ -60,16 +63,64 @@ const user = {
   referrals: 3,
 };
 
+// Loyalty cards per business
+const loyaltyCards = [
+  {
+    id: 1,
+    businessName: "Glow Studio",
+    businessImage: "💇‍♀️",
+    stampsEarned: 7,
+    stampsTotal: 10,
+    reward: "Free Blow Dry",
+    lastVisit: "22 Mar 2026",
+    pointsEarned: 1650,
+  },
+  {
+    id: 2,
+    businessName: "Nail Artistry",
+    businessImage: "💅",
+    stampsEarned: 3,
+    stampsTotal: 8,
+    reward: "Free Gel Manicure",
+    lastVisit: "15 Mar 2026",
+    pointsEarned: 520,
+  },
+  {
+    id: 3,
+    businessName: "Pure Skin Clinic",
+    businessImage: "✨",
+    stampsEarned: 1,
+    stampsTotal: 6,
+    reward: "Free Mini Facial",
+    lastVisit: "8 Mar 2026",
+    pointsEarned: 280,
+  },
+];
+
+// Available rewards
+const availableRewards = [
+  { id: 1, name: "Free Blow Dry", pointsCost: 300, image: "💇‍♀️", category: "Hair" },
+  { id: 2, name: "£10 Off Any Treatment", pointsCost: 500, image: "🎫", category: "Discount" },
+  { id: 3, name: "Free Olaplex Treatment", pointsCost: 800, image: "✨", category: "Treatment" },
+  { id: 4, name: "Free Gel Manicure", pointsCost: 600, image: "💅", category: "Nails" },
+  { id: 5, name: "Free Full Colour", pointsCost: 2000, image: "🎨", category: "Colour" },
+  { id: 6, name: "VIP Pamper Package", pointsCost: 3500, image: "👑", category: "Premium" },
+];
+
 const rewardHistory = [
   { date: "22 Mar", desc: "Balayage at Glow Studio", points: 1200, type: "earned" as const },
   { date: "15 Mar", desc: "Referral bonus — Emma joined", points: 500, type: "earned" as const },
   { date: "8 Mar", desc: "Redeemed: Free blow dry", points: -300, type: "redeemed" as const },
   { date: "1 Mar", desc: "Haircut at Luxe Hair", points: 450, type: "earned" as const },
   { date: "20 Feb", desc: "Gel Manicure at The Nail Room", points: 280, type: "earned" as const },
+  { date: "14 Feb", desc: "Birthday bonus 🎂", points: 50, type: "earned" as const },
+  { date: "10 Feb", desc: "Referral bonus — Lisa joined", points: 500, type: "earned" as const },
+  { date: "2 Feb", desc: "Redeemed: £10 Off Treatment", points: -500, type: "redeemed" as const },
 ];
 
 export default function RewardsPage() {
   const [copied, setCopied] = useState(false);
+  const [showAllHistory, setShowAllHistory] = useState(false);
   const referralCode = "SARAH-OTB-10";
 
   const copyCode = () => {
@@ -84,6 +135,8 @@ export default function RewardsPage() {
   const progressPct = nextTier
     ? ((user.points - currentTier.points) / (nextTier.points - currentTier.points)) * 100
     : 100;
+
+  const visibleHistory = showAllHistory ? rewardHistory : rewardHistory.slice(0, 5);
 
   return (
     <div className="min-h-screen bg-background py-8 px-4">
@@ -129,10 +182,77 @@ export default function RewardsPage() {
                     style={{ width: `${Math.min(progressPct, 100)}%` }}
                   />
                 </div>
+                <div className="flex justify-between text-[10px] text-white/50 mt-1">
+                  <span>{currentTier.points.toLocaleString()} pts</span>
+                  <span>{nextTier.points.toLocaleString()} pts</span>
+                </div>
               </div>
             )}
           </div>
         </div>
+
+        {/* Loyalty Cards per Business */}
+        <section>
+          <h2 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
+            <CreditCard size={20} className="text-primary" /> Your Loyalty Cards
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {loyaltyCards.map((card) => (
+              <LoyaltyCard
+                key={card.id}
+                businessName={card.businessName}
+                businessImage={card.businessImage}
+                stampsEarned={card.stampsEarned}
+                stampsTotal={card.stampsTotal}
+                reward={card.reward}
+                lastVisit={card.lastVisit}
+                pointsEarned={card.pointsEarned}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Available Rewards to Redeem */}
+        <section>
+          <h2 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
+            <Gift size={20} className="text-primary" /> Available Rewards
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {availableRewards.map((reward) => {
+              const canRedeem = user.points >= reward.pointsCost;
+              return (
+                <div
+                  key={reward.id}
+                  className={`bg-surface-elevated border rounded-2xl p-5 transition-all ${
+                    canRedeem
+                      ? "border-primary/30 hover:border-primary hover:shadow-md cursor-pointer"
+                      : "border-border opacity-70"
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="text-3xl">{reward.image}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-surface border border-border text-text-muted">
+                      {reward.category}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-foreground text-sm mb-1">{reward.name}</h3>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="text-sm font-bold text-primary">{reward.pointsCost.toLocaleString()} pts</span>
+                    {canRedeem ? (
+                      <button className="text-xs font-semibold text-white bg-primary px-3 py-1.5 rounded-lg hover:bg-primary-dark transition">
+                        Redeem
+                      </button>
+                    ) : (
+                      <span className="text-[10px] text-text-muted">
+                        Need {(reward.pointsCost - user.points).toLocaleString()} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         {/* How It Works */}
         <section>
@@ -225,6 +345,10 @@ export default function RewardsPage() {
                   {copied ? <Check size={16} /> : <Copy size={16} />}
                   {copied ? "Copied!" : "Copy"}
                 </button>
+                <ShareButton
+                  title="Join One Touch Beauty!"
+                  text={`Use my referral code ${referralCode} to get £10 off your first booking on One Touch Beauty!`}
+                />
               </div>
               <p className="text-xs text-text-muted mt-2">
                 You&apos;ve referred {user.referrals} friends and earned £{user.referrals * 10} in rewards
@@ -236,36 +360,45 @@ export default function RewardsPage() {
           </div>
         </section>
 
-        {/* Recent Activity */}
+        {/* Points Transaction History Timeline */}
         <section>
           <h2 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
-            <TrendingUp size={20} className="text-primary" /> Recent Activity
+            <Clock size={20} className="text-primary" /> Points History
           </h2>
-          <div className="bg-surface-elevated border border-border rounded-2xl divide-y divide-border">
-            {rewardHistory.map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-4">
-                <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                    item.type === "earned" ? "bg-accent/10" : "bg-primary/10"
-                  }`}>
-                    {item.type === "earned" ? (
-                      <Star size={14} className="text-accent" />
-                    ) : (
-                      <Gift size={14} className="text-primary" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{item.desc}</p>
-                    <p className="text-xs text-text-muted">{item.date}</p>
+          <div className="bg-surface-elevated border border-border rounded-2xl overflow-hidden">
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-[27px] top-0 bottom-0 w-0.5 bg-border" />
+
+              {visibleHistory.map((item, i) => (
+                <div key={i} className="flex items-start gap-4 p-4 relative hover:bg-surface/50 transition">
+                  {/* Timeline dot */}
+                  <div className={`w-3 h-3 rounded-full shrink-0 mt-1.5 z-10 ring-4 ring-background ${
+                    item.type === "earned" ? "bg-accent" : "bg-primary"
+                  }`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-foreground">{item.desc}</p>
+                      <span className={`text-sm font-bold ${
+                        item.type === "earned" ? "text-accent" : "text-primary"
+                      }`}>
+                        {item.points > 0 ? "+" : ""}{item.points}
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-muted mt-0.5">{item.date}</p>
                   </div>
                 </div>
-                <span className={`text-sm font-bold ${
-                  item.type === "earned" ? "text-accent" : "text-primary"
-                }`}>
-                  {item.points > 0 ? "+" : ""}{item.points}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {rewardHistory.length > 5 && (
+              <button
+                onClick={() => setShowAllHistory(!showAllHistory)}
+                className="w-full py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition border-t border-border"
+              >
+                {showAllHistory ? "Show less" : `Show all ${rewardHistory.length} transactions`}
+              </button>
+            )}
           </div>
         </section>
 

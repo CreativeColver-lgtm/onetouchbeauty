@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Search, MapPin, Star, SlidersHorizontal, X, Clock, ChevronDown,
-  Map, ChevronLeft, ChevronRight, LayoutGrid,
+  Map, ChevronLeft, ChevronRight, LayoutGrid, Zap, Navigation,
+  DollarSign, Filter, BadgeCheck,
 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import MapView from "@/components/MapView";
@@ -20,8 +21,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=500&h=350&fit=crop",
     speciality: "Hair Colour Specialists",
     price: "££",
+    priceLevel: 2,
     distance: "0.3 miles",
+    distanceNum: 0.3,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Haircut", "Colour", "Balayage", "Treatment"],
   },
   {
     id: 2,
@@ -33,8 +38,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&h=350&fit=crop",
     speciality: "Gel & Acrylic Nails",
     price: "££",
+    priceLevel: 2,
     distance: "0.5 miles",
+    distanceNum: 0.5,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Gel Nails", "Acrylic", "Nail Art", "Manicure"],
   },
   {
     id: 3,
@@ -46,8 +55,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500&h=350&fit=crop",
     speciality: "Advanced Facials",
     price: "£££",
+    priceLevel: 3,
     distance: "1.2 miles",
+    distanceNum: 1.2,
     openNow: false,
+    availableToday: false,
+    serviceTypes: ["Facial", "Chemical Peel", "Microneedling"],
   },
   {
     id: 4,
@@ -59,8 +72,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=500&h=350&fit=crop",
     speciality: "Lash Extensions",
     price: "££",
+    priceLevel: 2,
     distance: "0.8 miles",
+    distanceNum: 0.8,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Lash Extensions", "Brow Lamination", "Tinting"],
   },
   {
     id: 5,
@@ -72,8 +89,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&h=350&fit=crop",
     speciality: "Brazilian & Hollywood Wax",
     price: "£",
+    priceLevel: 1,
     distance: "2.1 miles",
+    distanceNum: 2.1,
     openNow: true,
+    availableToday: false,
+    serviceTypes: ["Waxing", "Brazilian", "Hollywood"],
   },
   {
     id: 6,
@@ -85,8 +106,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=500&h=350&fit=crop",
     speciality: "Bridal & Event Makeup",
     price: "£££",
+    priceLevel: 3,
     distance: "1.5 miles",
+    distanceNum: 1.5,
     openNow: false,
+    availableToday: false,
+    serviceTypes: ["Bridal Makeup", "Evening Makeup", "Lessons"],
   },
   {
     id: 7,
@@ -98,8 +123,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1544367567-0d6fcffe1c0f?w=500&h=350&fit=crop",
     speciality: "Hot Stone Massage",
     price: "£££",
+    priceLevel: 3,
     distance: "3.0 miles",
+    distanceNum: 3.0,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Massage", "Hot Stone", "Deep Tissue", "Swedish"],
   },
   {
     id: 8,
@@ -111,8 +140,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&h=350&fit=crop",
     speciality: "Afro & Textured Hair",
     price: "££",
+    priceLevel: 2,
     distance: "1.8 miles",
+    distanceNum: 1.8,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Haircut", "Braids", "Twists", "Locs"],
   },
   {
     id: 9,
@@ -124,8 +157,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&h=350&fit=crop",
     speciality: "Nail Art & Extensions",
     price: "££",
+    priceLevel: 2,
     distance: "2.5 miles",
+    distanceNum: 2.5,
     openNow: true,
+    availableToday: false,
+    serviceTypes: ["Nail Art", "Extensions", "Gel", "Pedicure"],
   },
   {
     id: 10,
@@ -137,8 +174,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&h=350&fit=crop",
     speciality: "Laser Hair Removal",
     price: "£££",
+    priceLevel: 3,
     distance: "0.7 miles",
+    distanceNum: 0.7,
     openNow: false,
+    availableToday: false,
+    serviceTypes: ["Laser", "IPL", "Electrolysis"],
   },
   {
     id: 11,
@@ -150,8 +191,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500&h=350&fit=crop",
     speciality: "Chemical Peels & Microneedling",
     price: "£££",
+    priceLevel: 3,
     distance: "1.1 miles",
+    distanceNum: 1.1,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Chemical Peel", "Microneedling", "Dermaplaning"],
   },
   {
     id: 12,
@@ -163,8 +208,12 @@ const allSalons = [
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=500&h=350&fit=crop",
     speciality: "Balayage & Ombré",
     price: "££",
+    priceLevel: 2,
     distance: "0.4 miles",
+    distanceNum: 0.4,
     openNow: true,
+    availableToday: true,
+    serviceTypes: ["Balayage", "Ombre", "Highlights", "Colour"],
   },
 ];
 
@@ -178,33 +227,75 @@ const categoryFilters = [
   { value: "hair-removal", label: "Hair Removal" },
 ];
 
-const distanceFilters = ["Any", "1 mile", "3 miles", "5 miles", "10 miles", "25 miles"];
+const radiusOptions = [
+  { value: 5, label: "5 miles" },
+  { value: 10, label: "10 miles" },
+  { value: 25, label: "25 miles" },
+  { value: 50, label: "50 miles" },
+];
+
+const ratingFilters = [
+  { value: 0, label: "Any" },
+  { value: 4, label: "4+" },
+  { value: 4.5, label: "4.5+" },
+];
+
+const priceFilters = [
+  { value: 0, label: "Any" },
+  { value: 1, label: "£" },
+  { value: 2, label: "££" },
+  { value: 3, label: "£££" },
+];
+
+const sortOptions = [
+  { value: "distance", label: "Nearest" },
+  { value: "rating", label: "Highest rated" },
+  { value: "reviews", label: "Most reviewed" },
+  { value: "price-low", label: "Price: Low → High" },
+  { value: "price-high", label: "Price: High → Low" },
+];
 
 const ITEMS_PER_PAGE = 12;
 
 export default function DirectoryPage() {
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [radius, setRadius] = useState(25);
   const [category, setCategory] = useState("");
-  const [distance, setDistance] = useState("Any");
   const [sortBy, setSortBy] = useState("rating");
+  const [minRating, setMinRating] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [availableOnly, setAvailableOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
   const scrollRef = useScrollReveal();
 
+  const activeFilterCount = [
+    category ? 1 : 0,
+    minRating > 0 ? 1 : 0,
+    maxPrice > 0 ? 1 : 0,
+    availableOnly ? 1 : 0,
+  ].reduce((a, b) => a + b, 0);
+
   const filtered = allSalons
     .filter((s) => {
       if (category && s.category !== category) return false;
       if (search && !s.name.toLowerCase().includes(search.toLowerCase()) && !s.speciality.toLowerCase().includes(search.toLowerCase())) return false;
-      if (location && !s.location.toLowerCase().includes(location.toLowerCase())) return false;
+      if (postcode && !s.location.toLowerCase().includes(postcode.toLowerCase())) return false;
+      if (minRating > 0 && s.rating < minRating) return false;
+      if (maxPrice > 0 && s.priceLevel > maxPrice) return false;
+      if (availableOnly && !s.availableToday) return false;
       return true;
     })
     .sort((a, b) => {
       if (sortBy === "rating") return b.rating - a.rating;
       if (sortBy === "reviews") return b.reviews - a.reviews;
-      return parseFloat(a.distance) - parseFloat(b.distance);
+      if (sortBy === "distance") return a.distanceNum - b.distanceNum;
+      if (sortBy === "price-low") return a.priceLevel - b.priceLevel;
+      if (sortBy === "price-high") return b.priceLevel - a.priceLevel;
+      return 0;
     });
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -215,12 +306,30 @@ export default function DirectoryPage() {
     setCurrentPage(1);
   };
 
+  const clearFilters = () => {
+    setCategory("");
+    setMinRating(0);
+    setMaxPrice(0);
+    setAvailableOnly(false);
+    setSearch("");
+    setPostcode("");
+    setSortBy("rating");
+    setCurrentPage(1);
+  };
+
   return (
     <div ref={scrollRef} className="min-h-screen bg-background">
       {/* Search Header */}
       <div className="bg-surface-elevated border-b border-border sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Find a salon</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold text-foreground">Find a salon</h1>
+            <p className="text-sm text-text-muted">
+              <span className="font-semibold text-foreground">{filtered.length}</span> result{filtered.length !== 1 ? "s" : ""} found
+            </p>
+          </div>
+
+          {/* Search Row */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex items-center gap-2 flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary/30 transition-colors">
               <Search size={18} className="text-text-muted" />
@@ -233,69 +342,137 @@ export default function DirectoryPage() {
                 placeholder="Search by name or treatment..."
                 className="w-full bg-transparent text-foreground placeholder:text-text-muted focus:outline-none"
               />
+              {search && (
+                <button onClick={() => { setSearch(""); handleFilterChange(); }}>
+                  <X size={16} className="text-text-muted hover:text-foreground" />
+                </button>
+              )}
             </div>
-            <div className="flex items-center gap-2 flex-1 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary/30 transition-colors">
-              <MapPin size={18} className="text-text-muted" />
-              <input
-                value={location}
+
+            {/* Postcode + Radius */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-4 py-3 bg-surface border border-border rounded-xl hover:border-primary/30 transition-colors flex-1 sm:w-48">
+                <Navigation size={18} className="text-text-muted shrink-0" />
+                <input
+                  value={postcode}
+                  onChange={(e) => {
+                    setPostcode(e.target.value);
+                    handleFilterChange();
+                  }}
+                  placeholder="Postcode..."
+                  className="w-full bg-transparent text-foreground placeholder:text-text-muted focus:outline-none"
+                />
+              </div>
+              <select
+                value={radius}
                 onChange={(e) => {
-                  setLocation(e.target.value);
+                  setRadius(Number(e.target.value));
                   handleFilterChange();
                 }}
-                placeholder="City or postcode..."
-                className="w-full bg-transparent text-foreground placeholder:text-text-muted focus:outline-none"
-              />
+                className="px-3 py-3 bg-surface border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
+              >
+                {radiusOptions.map((r) => (
+                  <option key={r.value} value={r.value}>{r.label}</option>
+                ))}
+              </select>
             </div>
+
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="px-5 py-3 bg-surface border border-border rounded-xl flex items-center gap-2 text-foreground hover:border-primary hover:bg-primary/5 transition-all"
+              className={`px-5 py-3 border rounded-xl flex items-center gap-2 transition-all ${
+                showFilters || activeFilterCount > 0
+                  ? "bg-primary/5 border-primary text-primary"
+                  : "bg-surface border-border text-foreground hover:border-primary hover:bg-primary/5"
+              }`}
             >
               <SlidersHorizontal size={18} /> Filters
+              {activeFilterCount > 0 && (
+                <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">
+                  {activeFilterCount}
+                </span>
+              )}
             </button>
           </div>
 
-          {/* Filters Panel */}
+          {/* Filter Chips Row (always visible) */}
+          <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-1">
+            {/* Category Chips */}
+            {categoryFilters.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => {
+                  setCategory(c.value);
+                  handleFilterChange();
+                }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+                  category === c.value
+                    ? "bg-primary text-white shadow-md"
+                    : "bg-surface border border-border text-foreground hover:border-primary hover:bg-primary/5"
+                }`}
+              >
+                {c.label}
+              </button>
+            ))}
+
+            <div className="w-px h-5 bg-border mx-1" />
+
+            {/* Rating Chips */}
+            {ratingFilters.map((r) => (
+              <button
+                key={r.value}
+                onClick={() => {
+                  setMinRating(r.value);
+                  handleFilterChange();
+                }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1 ${
+                  minRating === r.value
+                    ? "bg-amber-500 text-white shadow-md"
+                    : "bg-surface border border-border text-foreground hover:border-amber-500/50"
+                }`}
+              >
+                <Star size={10} className={minRating === r.value ? "fill-white" : ""} /> {r.label}
+              </button>
+            ))}
+
+            <div className="w-px h-5 bg-border mx-1" />
+
+            {/* Available Today */}
+            <button
+              onClick={() => {
+                setAvailableOnly(!availableOnly);
+                handleFilterChange();
+              }}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1 ${
+                availableOnly
+                  ? "bg-accent text-white shadow-md"
+                  : "bg-surface border border-border text-foreground hover:border-accent/50"
+              }`}
+            >
+              <Zap size={10} /> Available today
+            </button>
+          </div>
+
+          {/* Expanded Filters Panel */}
           {showFilters && (
             <div className="mt-4 p-4 bg-surface border border-border rounded-xl animate-slide-down">
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">Category</label>
+                  <label className="text-sm font-medium text-foreground mb-2 block">Price Range</label>
                   <div className="flex flex-wrap gap-2">
-                    {categoryFilters.map((c) => (
+                    {priceFilters.map((p) => (
                       <button
-                        key={c.value}
+                        key={p.value}
                         onClick={() => {
-                          setCategory(c.value);
+                          setMaxPrice(p.value);
                           handleFilterChange();
                         }}
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                          category === c.value
+                          maxPrice === p.value
                             ? "bg-primary text-white shadow-md"
                             : "bg-surface-elevated border border-border text-foreground hover:border-primary hover:bg-primary/5"
                         }`}
                       >
-                        {c.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">Distance</label>
-                  <div className="flex flex-wrap gap-2">
-                    {distanceFilters.map((d) => (
-                      <button
-                        key={d}
-                        onClick={() => {
-                          setDistance(d);
-                          handleFilterChange();
-                        }}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                          distance === d
-                            ? "bg-primary text-white shadow-md"
-                            : "bg-surface-elevated border border-border text-foreground hover:border-primary hover:bg-primary/5"
-                        }`}
-                      >
-                        {d}
+                        {p.label}
                       </button>
                     ))}
                   </div>
@@ -310,10 +487,18 @@ export default function DirectoryPage() {
                     }}
                     className="w-full px-3 py-2 bg-surface-elevated border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
                   >
-                    <option value="rating">Highest rated</option>
-                    <option value="reviews">Most reviewed</option>
-                    <option value="distance">Nearest</option>
+                    {sortOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
+                </div>
+                <div className="flex items-end">
+                  <button
+                    onClick={clearFilters}
+                    className="text-sm text-primary hover:underline font-medium"
+                  >
+                    Clear all filters
+                  </button>
                 </div>
               </div>
             </div>
@@ -324,9 +509,26 @@ export default function DirectoryPage() {
       {/* Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-text-muted">
-            {filtered.length} result{filtered.length !== 1 ? "s" : ""} found
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm text-text-muted">
+              <span className="font-semibold text-foreground">{filtered.length}</span> salon{filtered.length !== 1 ? "s" : ""}
+              {postcode && <span className="ml-1">near <strong className="text-foreground">{postcode}</strong></span>}
+              {category && <span className="ml-1">in <strong className="text-foreground">{categoryFilters.find(c => c.value === category)?.label}</strong></span>}
+            </p>
+            {/* Sort Dropdown (always visible) */}
+            <select
+              value={sortBy}
+              onChange={(e) => {
+                setSortBy(e.target.value);
+                handleFilterChange();
+              }}
+              className="px-3 py-1.5 bg-surface border border-border rounded-lg text-xs text-foreground focus:outline-none focus:border-primary transition-colors"
+            >
+              {sortOptions.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
           <div className="flex items-center gap-1 bg-surface border border-border rounded-xl p-1">
             <button
               onClick={() => setViewMode("list")}
@@ -376,6 +578,11 @@ export default function DirectoryPage() {
                 <span className="absolute top-3 right-3 text-xs font-semibold text-white bg-black/60 glass px-2.5 py-1.5 rounded-full">
                   {salon.price}
                 </span>
+                {salon.availableToday && (
+                  <span className="absolute top-3 left-3 text-[10px] font-bold text-white bg-accent px-2.5 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                    <Zap size={10} /> Available today
+                  </span>
+                )}
               </div>
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2">
@@ -413,6 +620,17 @@ export default function DirectoryPage() {
             </Link>
           ))}
         </div>
+
+        {filtered.length === 0 && (
+          <div className="text-center py-16">
+            <Search size={48} className="text-text-muted mx-auto mb-4" />
+            <h3 className="font-bold text-foreground text-lg mb-2">No salons found</h3>
+            <p className="text-sm text-text-muted mb-4">Try adjusting your search or filters</p>
+            <button onClick={clearFilters} className="text-sm font-semibold text-primary hover:underline">
+              Clear all filters
+            </button>
+          </div>
+        )}
 
         {/* Map Placeholder */}
         <div className="mt-12 mb-12 reveal">

@@ -6,11 +6,15 @@ import {
   MapPin, Star, Clock, Phone, Mail, Globe, Shield, Heart,
   Calendar, Share2, ChevronLeft, ChevronRight, MessageSquare,
   Scissors, Users, Award, CheckCircle2, ExternalLink, Map,
+  Instagram, Facebook, AlertCircle, BellPlus,
 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import BeforeAfterGallery from "@/components/BeforeAfterGallery";
 import PortfolioGrid from "@/components/PortfolioGrid";
 import VideoIntro from "@/components/VideoIntro";
+import RatingBreakdown from "@/components/RatingBreakdown";
+import WaitlistButton from "@/components/WaitlistButton";
+import ShareButton from "@/components/ShareButton";
 
 const salon = {
   name: "Glow Studio",
@@ -26,6 +30,15 @@ const salon = {
   verified: true,
   established: "2019",
   teamSize: 6,
+  instagram: "glowstudio_ldn",
+  facebook: "glowstudiolondon",
+  hasAvailability: true,
+  cancellationPolicy: {
+    freeCancel: 24,
+    depositRequired: true,
+    depositPercent: 20,
+    noShowCharge: true,
+  },
   about:
     "Award-winning hair salon specialising in colour, balayage, and styling. Our team of expert stylists are passionate about helping you look and feel your best. Whether you're after a fresh new cut, a bold colour change, or a special occasion style, we've got you covered.\n\nWe use only the finest products including Olaplex, Redken, and L'Oreal Professional to ensure your hair stays healthy and vibrant. Every appointment begins with a thorough consultation so we can understand exactly what you're looking for.",
   gallery: [
@@ -58,6 +71,53 @@ const salon = {
     { name: "Blow Dry & Style", duration: "45 mins", price: 30, category: "Hair" },
     { name: "Olaplex Treatment", duration: "30 mins", price: 35, category: "Treatment" },
     { name: "Keratin Treatment", duration: "120 mins", price: 150, category: "Treatment" },
+  ],
+  staffMembers: [
+    {
+      id: 1,
+      name: "Sophie Taylor",
+      role: "Senior Stylist",
+      bio: "With 8 years of experience, Sophie specialises in balayage and creative colour. She's trained with some of London's top colourists.",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face",
+      specialties: ["Balayage", "Colour", "Highlights"],
+      rating: 4.9,
+    },
+    {
+      id: 2,
+      name: "James Chen",
+      role: "Creative Director",
+      bio: "James founded Glow Studio in 2019. Known for his precision cuts and modern styling, he brings a decade of editorial experience.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+      specialties: ["Precision Cuts", "Men's Styling", "Editorial"],
+      rating: 5.0,
+    },
+    {
+      id: 3,
+      name: "Amara Osei",
+      role: "Colour Specialist",
+      bio: "Amara is passionate about colour correction and transformations. She loves turning hair dreams into reality.",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face",
+      specialties: ["Colour Correction", "Highlights", "Toner"],
+      rating: 4.8,
+    },
+    {
+      id: 4,
+      name: "Lily Nguyen",
+      role: "Stylist",
+      bio: "Lily joined Glow Studio after training at the London College of Fashion. She excels in blow dries and updos for special events.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face",
+      specialties: ["Blow Dry", "Updos", "Bridal"],
+      rating: 4.7,
+    },
+    {
+      id: 5,
+      name: "Marcus Green",
+      role: "Junior Stylist",
+      bio: "Marcus is our newest team member, bringing fresh energy and a keen eye for trends. Great with textured and afro hair.",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face",
+      specialties: ["Textured Hair", "Men's Cuts", "Fades"],
+      rating: 4.6,
+    },
   ],
   reviewsList: [
     {
@@ -245,16 +305,46 @@ export default function SalonPage() {
                   <Scissors size={11} /> {salon.treatments.length} treatments
                 </span>
               </div>
+
+              {/* Social Links */}
+              {(salon.instagram || salon.facebook) && (
+                <div className="flex items-center gap-2 mt-3">
+                  {salon.instagram && (
+                    <a
+                      href={`https://instagram.com/${salon.instagram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 text-purple-400 hover:text-purple-300 transition"
+                    >
+                      <Instagram size={12} /> @{salon.instagram}
+                    </a>
+                  )}
+                  {salon.facebook && (
+                    <a
+                      href={`https://facebook.com/${salon.facebook}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:text-blue-300 transition"
+                    >
+                      <Facebook size={12} /> Facebook
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 sm:items-end">
-              <Link
-                href="/booking"
-                className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-all hover:shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto"
-              >
-                <Calendar size={16} /> Book Appointment
-              </Link>
+              {salon.hasAvailability ? (
+                <Link
+                  href="/booking"
+                  className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-all hover:shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto"
+                >
+                  <Calendar size={16} /> Book Appointment
+                </Link>
+              ) : (
+                <WaitlistButton salonId="1" salonName={salon.name} />
+              )}
               <div className="flex gap-2">
                 <a
                   href={`tel:${salon.phone}`}
@@ -276,9 +366,11 @@ export default function SalonPage() {
                   />
                   {liked ? "Saved" : "Save"}
                 </button>
-                <button className="px-4 py-2.5 border border-border text-foreground rounded-xl hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center">
-                  <Share2 size={14} />
-                </button>
+                <ShareButton
+                  title={salon.name}
+                  text={`Check out ${salon.name} — ${salon.type} in ${salon.city}`}
+                  url={typeof window !== "undefined" ? window.location.href : ""}
+                />
               </div>
             </div>
           </div>
@@ -300,6 +392,65 @@ export default function SalonPage() {
                   {p}
                 </p>
               ))}
+            </div>
+
+            {/* Meet the Team */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6 reveal card-glow">
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="font-bold text-foreground text-lg flex items-center gap-2">
+                  <Users size={18} className="text-primary" /> Meet the Team
+                </h2>
+                <span className="text-xs text-text-muted">{salon.staffMembers.length} stylists</span>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {salon.staffMembers.map((member) => (
+                  <div
+                    key={member.id}
+                    className="group p-4 rounded-xl border border-border bg-surface hover:border-primary/30 transition-all"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-16 h-16 rounded-full overflow-hidden relative ring-2 ring-primary/10 shrink-0">
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-foreground text-sm group-hover:text-primary transition">
+                          {member.name}
+                        </h3>
+                        <p className="text-xs text-primary font-medium">{member.role}</p>
+                        <div className="flex items-center gap-1 mt-1">
+                          <Star size={11} className="text-amber-400 fill-amber-400" />
+                          <span className="text-xs font-bold text-foreground">{member.rating}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-text-muted mt-3 leading-relaxed line-clamp-2">
+                      {member.bio}
+                    </p>
+                    <div className="flex gap-1 mt-3 flex-wrap">
+                      {member.specialties.map((sp) => (
+                        <span
+                          key={sp}
+                          className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium"
+                        >
+                          {sp}
+                        </span>
+                      ))}
+                    </div>
+                    <Link
+                      href={`/booking?staff=${member.id}`}
+                      className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                    >
+                      Book with {member.name.split(" ")[0]} →
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Treatments & Prices */}
@@ -376,7 +527,7 @@ export default function SalonPage() {
               </div>
             </div>
 
-            {/* Reviews */}
+            {/* Reviews with Rating Breakdown */}
             <div className="bg-surface-elevated border border-border rounded-2xl p-6 reveal card-glow">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-bold text-foreground text-lg">Reviews</h2>
@@ -394,64 +545,21 @@ export default function SalonPage() {
                 </div>
               </div>
 
-              {/* Rating Breakdown */}
-              <div className="flex items-center gap-6 mb-6 pb-5 border-b border-border">
-                <div className="text-center">
-                  <p className="text-4xl font-extrabold text-foreground">
-                    {salon.rating}
-                  </p>
-                  <div className="flex gap-0.5 justify-center mt-1">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star
-                        key={s}
-                        size={14}
-                        className={
-                          s <= Math.round(salon.rating)
-                            ? "text-amber-400 fill-amber-400"
-                            : "text-border"
-                        }
-                      />
-                    ))}
-                  </div>
-                  <p className="text-xs text-text-muted mt-1">
-                    {salon.reviews} reviews
-                  </p>
-                </div>
-                <div className="flex-1 space-y-1.5">
-                  {[5, 4, 3, 2, 1].map((stars) => {
-                    const count = salon.reviewsList.filter(
-                      (r) => r.rating === stars
-                    ).length;
-                    const pct =
-                      salon.reviewsList.length > 0
-                        ? (count / salon.reviewsList.length) * 100
-                        : 0;
-                    return (
-                      <div key={stars} className="flex items-center gap-2">
-                        <span className="text-xs text-text-muted w-3">
-                          {stars}
-                        </span>
-                        <Star
-                          size={10}
-                          className="text-amber-400 fill-amber-400"
-                        />
-                        <div className="flex-1 h-2 bg-surface rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-amber-400 rounded-full"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                        <span className="text-xs text-text-muted w-6">
-                          {count}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              {/* Rating Breakdown Component */}
+              <RatingBreakdown
+                rating={salon.rating}
+                totalReviews={salon.reviews}
+                breakdown={[
+                  { stars: 5, count: salon.reviewsList.filter(r => r.rating === 5).length },
+                  { stars: 4, count: salon.reviewsList.filter(r => r.rating === 4).length },
+                  { stars: 3, count: salon.reviewsList.filter(r => r.rating === 3).length },
+                  { stars: 2, count: salon.reviewsList.filter(r => r.rating === 2).length },
+                  { stars: 1, count: salon.reviewsList.filter(r => r.rating === 1).length },
+                ]}
+              />
 
               {/* Individual Reviews */}
-              <div className="space-y-5">
+              <div className="space-y-5 mt-6">
                 {visibleReviews.map((r, i) => (
                   <div
                     key={i}
@@ -600,6 +708,39 @@ export default function SalonPage() {
                   {salon.location}
                 </div>
               </div>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="bg-surface-elevated border border-border rounded-2xl p-6 reveal card-glow">
+              <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                <Shield size={16} className="text-primary" /> Cancellation Policy
+              </h3>
+              <ul className="text-xs text-text-muted space-y-2">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 size={12} className="text-accent shrink-0 mt-0.5" />
+                  Free cancellation up to {salon.cancellationPolicy.freeCancel} hours before
+                </li>
+                {salon.cancellationPolicy.depositRequired && (
+                  <li className="flex items-start gap-2">
+                    <AlertCircle size={12} className="text-amber-400 shrink-0 mt-0.5" />
+                    {salon.cancellationPolicy.depositPercent}% deposit required at booking
+                  </li>
+                )}
+                <li className="flex items-start gap-2">
+                  <AlertCircle size={12} className="text-amber-400 shrink-0 mt-0.5" />
+                  Late cancellations: deposit is non-refundable
+                </li>
+                {salon.cancellationPolicy.noShowCharge && (
+                  <li className="flex items-start gap-2">
+                    <AlertCircle size={12} className="text-red-400 shrink-0 mt-0.5" />
+                    No-shows: full amount may be charged
+                  </li>
+                )}
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 size={12} className="text-accent shrink-0 mt-0.5" />
+                  Free rescheduling with {salon.cancellationPolicy.freeCancel}+ hours notice
+                </li>
+              </ul>
             </div>
 
             {/* Map Placeholder */}
