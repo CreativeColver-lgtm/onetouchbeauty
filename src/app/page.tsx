@@ -98,7 +98,7 @@ function Hero() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
   return (
-    <section className="relative h-[100svh] min-h-[700px] overflow-hidden">
+    <section className="relative h-[100svh] min-h-[550px] overflow-hidden">
       {/* Video background */}
       <div className="absolute inset-0">
         <video
