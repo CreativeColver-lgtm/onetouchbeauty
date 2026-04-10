@@ -202,7 +202,7 @@ export default function WaitlistPage() {
                     <div className="flex items-center gap-2">
                       {entry.status === "notified" && (
                         <a
-                          href="#"
+                          href="/waitlist"
                           className="px-4 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-dark transition"
                         >
                           Book Now

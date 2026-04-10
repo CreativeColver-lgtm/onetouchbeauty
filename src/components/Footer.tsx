@@ -17,6 +17,8 @@ const footerLinks = {
     { name: "Contact", href: "/contact" },
     { name: "FAQs", href: "/faqs" },
     { name: "Blog", href: "/blog" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Collections", href: "/collections" },
   ],
   Legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -27,6 +29,7 @@ const footerLinks = {
     { name: "List Your Business", href: "/register/business" },
     { name: "Business Dashboard", href: "/dashboard/business" },
     { name: "Pricing", href: "/pricing" },
+    { name: "Rewards", href: "/rewards" },
   ],
 };
 
@@ -128,19 +131,19 @@ export default function Footer() {
               The UK's premier beauty marketplace connecting thousands of clients with top-rated beauty professionals.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="p-2 rounded-lg bg-surface-elevated hover:bg-primary/10 text-text-muted hover:text-primary transition" aria-label="Instagram">
+              <a href="https://instagram.com/onetouchbeauty" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-surface-elevated hover:bg-primary/10 text-text-muted hover:text-primary transition" aria-label="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
                 </svg>
               </a>
-              <a href="#" className="p-2 rounded-lg bg-surface-elevated hover:bg-primary/10 text-text-muted hover:text-primary transition" aria-label="Facebook">
+              <a href="https://facebook.com/onetouchbeauty" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-surface-elevated hover:bg-primary/10 text-text-muted hover:text-primary transition" aria-label="Facebook">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 2h-3a6 6 0 0 0-6 6v3H7v4h3v8h4v-8h3l1-4h-4V8a1 1 0 0 1 1-1h3z" />
                 </svg>
               </a>
-              <a href="#" className="p-2 rounded-lg bg-surface-elevated hover:bg-primary/10 text-text-muted hover:text-primary transition" aria-label="Twitter">
+              <a href="https://twitter.com/onetouchbeauty" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-surface-elevated hover:bg-primary/10 text-text-muted hover:text-primary transition" aria-label="Twitter">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 4l11.733 16h4.267L4 4z" />
                   <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />

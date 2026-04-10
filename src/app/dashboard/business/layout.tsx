@@ -3,12 +3,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Users, UserCheck, Package, Megaphone,
-  Gift, Shield, ClipboardList, Calendar, QrCode,
+  Gift, Shield, ClipboardList, Calendar, QrCode, Star,
 } from "lucide-react";
 
 const navItems = [
   { label: "Overview", href: "/dashboard/business", icon: LayoutDashboard },
   { label: "Calendar", href: "/dashboard/business/calendar", icon: Calendar },
+  { label: "Reviews", href: "/dashboard/business/reviews", icon: Star },
   { label: "Staff", href: "/dashboard/business/staff", icon: UserCheck },
   { label: "Clients", href: "/dashboard/business/clients", icon: Users },
   { label: "Inventory", href: "/dashboard/business/inventory", icon: Package },

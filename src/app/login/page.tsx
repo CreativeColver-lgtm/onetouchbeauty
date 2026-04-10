@@ -59,7 +59,7 @@ export default function LoginPage() {
               <label className="flex items-center gap-2 text-sm text-text-muted">
                 <input type="checkbox" className="rounded accent-primary" /> Remember me
               </label>
-              <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
+              <span className="text-sm text-primary hover:underline cursor-pointer">Forgot password?</span>
             </div>
 
             <button type="submit"
