@@ -164,7 +164,7 @@ function Hero() {
             </div>
             <Link
               href={`/directory?q=${searchQuery}&location=${locationQuery}`}
-              className="px-8 py-3.5 bg-white text-black font-semibold hover:bg-white/90 transition-all flex items-center justify-center text-sm tracking-wide"
+              className="px-8 py-3.5 bg-secondary text-white font-semibold hover:bg-foreground transition-all flex items-center justify-center text-sm tracking-wide"
             >
               Search
             </Link>
@@ -196,12 +196,12 @@ function Hero() {
 function Marquee() {
   const items = "HAIR · NAILS · FACIALS · MAKEUP · SPA · BARBERING · ";
   return (
-    <div className="bg-black border-y border-white/10 py-6 overflow-hidden">
+    <div className="bg-surface-blush border-y border-border py-6 overflow-hidden">
       <div className="marquee-track">
         {[0, 1].map((i) => (
           <span
             key={i}
-            className="text-white/20 font-extrabold uppercase tracking-[0.2em] whitespace-nowrap px-4"
+            className="text-primary/20 font-extrabold uppercase tracking-[0.2em] whitespace-nowrap px-4"
             style={{ fontFamily: "var(--font-body)", fontSize: "clamp(2rem, 5vw, 5rem)" }}
           >
             {items}{items}
@@ -259,10 +259,10 @@ function FeaturedCarousel() {
       </div>
       {/* Arrow buttons */}
       <div className="flex gap-2 mt-6">
-        <button onClick={scrollPrev} className="w-12 h-12 border border-white/20 flex items-center justify-center hover:border-white hover:bg-white hover:text-black transition-all text-white">
+        <button onClick={scrollPrev} className="w-12 h-12 border border-border flex items-center justify-center hover:border-primary hover:bg-primary hover:text-white transition-all text-foreground">
           <ChevronLeft size={18} />
         </button>
-        <button onClick={scrollNext} className="w-12 h-12 border border-white/20 flex items-center justify-center hover:border-white hover:bg-white hover:text-black transition-all text-white">
+        <button onClick={scrollNext} className="w-12 h-12 border border-border flex items-center justify-center hover:border-primary hover:bg-primary hover:text-white transition-all text-foreground">
           <ChevronRight size={18} />
         </button>
       </div>
@@ -340,7 +340,7 @@ export default function Home() {
       <Marquee />
 
       {/* 3. CATEGORIES — Full-bleed image grid, sharp edges */}
-      <section className="bg-black">
+      <section className="bg-background">
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-[2px]">
           {categories.map((cat) => (
             <Link key={cat.name} href={cat.href} className="category-grid-item group block aspect-[4/5] relative">
@@ -367,11 +367,11 @@ export default function Home() {
       </section>
 
       {/* 4. FEATURED — Horizontal scroll (RCA artist carousel) */}
-      <section className="py-32 sm:py-40 bg-secondary">
+      <section className="py-32 sm:py-40 bg-surface-blush">
         <div className="px-6 lg:px-12">
           <ScrollReveal>
             <h2
-              className="text-massive text-white mb-16"
+              className="text-massive text-foreground mb-16"
               style={{ fontFamily: "var(--font-body)" }}
             >
               TOP RATED
@@ -436,40 +436,40 @@ export default function Home() {
       </section>
 
       {/* 6. APP DOWNLOAD */}
-      <section className="py-32 sm:py-40 bg-black text-white overflow-hidden">
+      <section className="py-32 sm:py-40 bg-surface overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <ScrollReveal>
-                <span className="inline-block px-4 py-1.5 border border-white/20 text-[10px] tracking-[0.3em] uppercase text-white/50 mb-8">
+                <span className="inline-block px-4 py-1.5 border border-border text-[10px] tracking-[0.3em] uppercase text-text-muted mb-8">
                   Coming Soon
                 </span>
               </ScrollReveal>
               <TextReveal
                 text="Beauty booking, right in your pocket"
                 tag="h2"
-                className="text-editorial text-white"
+                className="text-editorial text-foreground"
               />
               <ScrollReveal delay={0.2}>
-                <p className="text-white/40 mt-6 max-w-md leading-relaxed">
+                <p className="text-text-muted mt-6 max-w-md leading-relaxed">
                   Book appointments, discover new salons, manage your schedule — all from the One Touch Beauty app.
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.3}>
                 <div className="flex gap-4 mt-10">
                   {/* App Store button */}
-                  <div className="px-6 py-3 border border-white/20 flex items-center gap-3 hover:bg-white/5 transition-colors cursor-pointer">
+                  <div className="px-6 py-3 border border-border flex items-center gap-3 hover:bg-surface transition-colors cursor-pointer">
                     <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                     <div>
-                      <p className="text-[9px] text-white/50 uppercase tracking-wider">Download on the</p>
+                      <p className="text-[9px] text-text-muted uppercase tracking-wider">Download on the</p>
                       <p className="text-sm font-semibold -mt-0.5">App Store</p>
                     </div>
                   </div>
                   {/* Google Play button */}
-                  <div className="px-6 py-3 border border-white/20 flex items-center gap-3 hover:bg-white/5 transition-colors cursor-pointer">
+                  <div className="px-6 py-3 border border-border flex items-center gap-3 hover:bg-surface transition-colors cursor-pointer">
                     <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35m13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27m.91-.91L19.59 12l-1.87-2.21-2.27 2.27 2.27 2.15M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
                     <div>
-                      <p className="text-[9px] text-white/50 uppercase tracking-wider">Get it on</p>
+                      <p className="text-[9px] text-text-muted uppercase tracking-wider">Get it on</p>
                       <p className="text-sm font-semibold -mt-0.5">Google Play</p>
                     </div>
                   </div>
@@ -479,7 +479,7 @@ export default function Home() {
             {/* Phone mockup */}
             <ScrollReveal direction="right">
               <div className="flex justify-center lg:justify-end">
-                <div className="relative w-[260px] h-[520px] bg-secondary rounded-[36px] border-4 border-white/10 overflow-hidden shadow-2xl shadow-black/50">
+                <div className="relative w-[260px] h-[520px] bg-foreground rounded-[36px] border-4 border-border overflow-hidden shadow-2xl shadow-black/50">
                   <Image
                     loader={cloudinaryLoader}
                     src={img.hair3}
@@ -501,7 +501,7 @@ export default function Home() {
       </section>
 
       {/* 7. TESTIMONIALS — Large single-quote slider */}
-      <section className="py-32 sm:py-40 bg-secondary">
+      <section className="py-32 sm:py-40 bg-surface-blush">
         <div className="px-6 lg:px-8">
           <TestimonialSlider />
         </div>
@@ -511,7 +511,7 @@ export default function Home() {
       <section className="bg-background">
         <div className="grid lg:grid-cols-2 min-h-[80vh]">
           {/* Left — dark text */}
-          <div className="flex flex-col justify-center p-10 sm:p-16 lg:p-24 bg-secondary text-white">
+          <div className="flex flex-col justify-center p-10 sm:p-16 lg:p-24 bg-surface-blush text-foreground">
             <ScrollReveal>
               <span className="text-primary text-xs font-semibold tracking-[0.2em] uppercase flex items-center gap-2 mb-6">
                 <BarChart3 size={14} /> For Professionals
@@ -520,7 +520,7 @@ export default function Home() {
             <TextReveal
               text="Grow your business"
               tag="h2"
-              className="text-editorial text-white"
+              className="text-editorial text-foreground"
             />
             <StaggerChildren className="mt-12 space-y-8" staggerDelay={0.1}>
               {[
@@ -530,12 +530,12 @@ export default function Home() {
                 { icon: TrendingUp, title: "Grow", desc: "Track performance and watch your client base build." },
               ].map((step) => (
                 <motion.div key={step.title} variants={staggerItem} className="flex gap-4">
-                  <div className="w-10 h-10 border border-white/20 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 border border-border flex items-center justify-center shrink-0">
                     <step.icon size={16} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white text-sm tracking-tight">{step.title}</h3>
-                    <p className="text-white/40 text-sm mt-1 leading-relaxed">{step.desc}</p>
+                    <h3 className="font-semibold text-foreground text-sm tracking-tight">{step.title}</h3>
+                    <p className="text-text-muted text-sm mt-1 leading-relaxed">{step.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -543,7 +543,7 @@ export default function Home() {
             <ScrollReveal delay={0.4}>
               <Link
                 href="/register/business"
-                className="inline-flex items-center gap-2 mt-12 px-8 py-4 bg-white text-black font-semibold hover:bg-white/90 transition-all text-sm tracking-wide"
+                className="inline-flex items-center gap-2 mt-12 px-8 py-4 bg-secondary text-white font-semibold hover:bg-foreground transition-all text-sm tracking-wide"
               >
                 <Zap size={16} /> Get started free
               </Link>
@@ -589,7 +589,7 @@ export default function Home() {
       </section>
 
       {/* 10. CITIES — Pills on dark background */}
-      <section className="py-20 bg-black">
+      <section className="py-20 bg-secondary">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <p className="text-white/30 text-xs font-semibold tracking-[0.2em] uppercase mb-8">Popular Cities</p>
@@ -630,7 +630,7 @@ export default function Home() {
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <p className="text-white/40 mt-6 max-w-md mx-auto leading-relaxed text-lg">
+            <p className="text-text-muted mt-6 max-w-md mx-auto leading-relaxed text-lg">
               Your next appointment is one tap away.
             </p>
           </ScrollReveal>
@@ -638,7 +638,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
               <Link
                 href="/directory"
-                className="px-10 py-4 bg-white text-black font-semibold hover:bg-white/90 transition-all text-sm tracking-wide inline-flex items-center justify-center gap-2"
+                className="px-10 py-4 bg-secondary text-white font-semibold hover:bg-foreground transition-all text-sm tracking-wide inline-flex items-center justify-center gap-2"
               >
                 Find a salon
               </Link>
