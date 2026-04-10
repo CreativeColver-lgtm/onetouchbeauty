@@ -27,7 +27,7 @@ const defaultPins: SalonPin[] = [
   { id: 10, name: "Rose & Bloom", rating: 4.9, reviews: 302, speciality: "Organic Facials & Skincare", location: "Coventry", lat: 52.4068, lng: -1.5197 },
 ];
 
-const MAPS_KEY = "AIzaSyA4REu_2hbHZNt4JNGesSHC-SH69Ryxk5k";
+const MAPS_KEY = "AIzaSyBQljJe0LJNucI4U0yDRbo4pxLWyXR-p5M";
 
 // Custom warm map style
 const mapStyles: google.maps.MapTypeStyle[] = [
