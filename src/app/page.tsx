@@ -19,7 +19,8 @@ import useEmblaCarousel from "embla-carousel-react";
 
 /* ─── Curated Pexels imagery ─── */
 const img = {
-  heroVideo: "https://videos.pexels.com/video-files/4800213/4800213-hd_1920_1080_30fps.mp4",
+  heroVideo: "https://videos.pexels.com/video-files/7754397/7754397-hd_1920_1080_30fps.mp4",
+  ctaFriendly: "https://images.pexels.com/photos/3852136/pexels-photo-3852136.jpeg?auto=compress&cs=tinysrgb&w=1920",
   heroPoster: "https://images.pexels.com/photos/7755209/pexels-photo-7755209.jpeg?auto=compress&cs=tinysrgb&w=1920",
   hair1: "https://images.pexels.com/photos/7755209/pexels-photo-7755209.jpeg?auto=compress&cs=tinysrgb&w=800",
   hair2: "https://images.pexels.com/photos/2820607/pexels-photo-2820607.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -52,7 +53,7 @@ const categories = [
   { name: "Facials", image: img.facial1, href: "/directory?category=face" },
   { name: "Makeup", image: img.makeup1, href: "/directory?category=makeup" },
   { name: "Spa & Body", image: img.spa1, href: "/directory?category=body" },
-  { name: "Barbering", image: img.barber1, href: "/directory?category=barbering" },
+  { name: "Lashes", image: img.lashes, href: "/directory?category=lashes" },
 ];
 
 const featuredSalons = [
@@ -62,7 +63,7 @@ const featuredSalons = [
   { name: "Serenity Spa", location: "Bath, Somerset", rating: 4.8, image: img.spa2 },
   { name: "Curl & Co", location: "Brixton, London", rating: 4.7, image: img.hair2 },
   { name: "Blush Beauty Bar", location: "Deansgate, Manchester", rating: 4.8, image: img.makeup2 },
-  { name: "The Grooming Room", location: "Soho, London", rating: 4.6, image: img.barber2 },
+  { name: "Lash Luxe Studio", location: "Soho, London", rating: 4.8, image: img.facial2 },
   { name: "Lash Luxe", location: "Didsbury, Manchester", rating: 4.9, image: img.lashes },
 ];
 
@@ -72,13 +73,13 @@ const trendingTreatments = [
   { name: "Hydrafacial", image: img.facial1, price: "£60 – £120", bookings: 2890 },
   { name: "Hot Stone Massage", image: img.spa2, price: "£50 – £90", bookings: 1960 },
   { name: "Lash Extensions", image: img.lashes, price: "£40 – £80", bookings: 4230 },
-  { name: "Skin Fade", image: img.barber2, price: "£20 – £35", bookings: 2740 },
+  { name: "Brazilian Blowout", image: img.hair2, price: "£100 – £200", bookings: 1540 },
 ];
 
 const testimonials = [
   { name: "Sophie Williams", location: "London", avatar: avatars.a1, rating: 5, text: "Found my dream stylist through One Touch Beauty. The booking was seamless and my balayage turned out absolutely gorgeous. I\u2019ve told all my friends." },
   { name: "Hannah Peters", location: "Bristol", avatar: avatars.a2, rating: 5, text: "I used to spend ages on Instagram searching for nail techs. Now I filter by area and book in seconds. Total game changer for my monthly pamper." },
-  { name: "James Okafor", location: "Manchester", avatar: avatars.a3, rating: 5, text: "Best barbering experience I\u2019ve had. Found a specialist in fades near me through the reviews. The whole process was effortless. 10/10." },
+  { name: "Amara Chen", location: "Edinburgh", avatar: avatars.a3, rating: 5, text: "Had my bridal makeup trial through the app and it was perfect. The reviews helped me pick the right MUA and the whole experience was stress-free." },
 ];
 
 const cities = [
@@ -636,8 +637,8 @@ export default function Home() {
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <Image
           loader={cloudinaryLoader}
-          src={img.makeup2}
-          alt="Beauty"
+          src={img.ctaFriendly}
+          alt="Friends enjoying beauty treatments"
           fill
           className="object-cover"
           unoptimized
