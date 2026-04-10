@@ -1,79 +1,131 @@
 "use client";
-import Image from "next/image";
-import { MapPin, Star, Info } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { APIProvider, Map, AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
+import { Star, MapPin, Navigation } from "lucide-react";
+import Link from "next/link";
 
 interface SalonPin {
+  id: number;
   name: string;
   rating: number;
-  top: string;
-  left: string;
+  reviews: number;
+  speciality: string;
+  location: string;
+  lat: number;
+  lng: number;
+  image?: string;
 }
 
 const defaultPins: SalonPin[] = [
-  { name: "Glow Studio", rating: 4.9, top: "35%", left: "52%" },
-  { name: "Nail Artistry", rating: 4.8, top: "28%", left: "38%" },
-  { name: "Pure Skin Clinic", rating: 4.9, top: "55%", left: "30%" },
-  { name: "Curl & Co", rating: 4.7, top: "40%", left: "48%" },
-  { name: "Blush Beauty Bar", rating: 4.8, top: "25%", left: "40%" },
-  { name: "Polish Perfect", rating: 4.9, top: "30%", left: "42%" },
+  { id: 1, name: "Glow Studio", rating: 4.9, reviews: 234, speciality: "Hair Colour Specialists", location: "Shoreditch, London", lat: 51.5245, lng: -0.0780 },
+  { id: 2, name: "Nail Artistry", rating: 4.8, reviews: 189, speciality: "Gel & Acrylic Nails", location: "Northern Quarter, Manchester", lat: 53.4845, lng: -2.2360 },
+  { id: 3, name: "Pure Skin Clinic", rating: 4.9, reviews: 312, speciality: "Advanced Facials", location: "Clifton, Bristol", lat: 51.4558, lng: -2.6200 },
+  { id: 4, name: "Serenity Spa", rating: 4.8, reviews: 278, speciality: "Luxury Spa Treatments", location: "Bath, Somerset", lat: 51.3811, lng: -2.3590 },
+  { id: 5, name: "Curl & Co", rating: 4.7, reviews: 198, speciality: "Afro & Textured Hair", location: "Brixton, London", lat: 51.4613, lng: -0.1156 },
+  { id: 6, name: "Blush Beauty Bar", rating: 4.8, reviews: 267, speciality: "Bridal & Event Makeup", location: "Deansgate, Manchester", lat: 53.4774, lng: -2.2488 },
+  { id: 7, name: "Lash Luxe Studio", rating: 4.8, reviews: 210, speciality: "Lash Extensions & Lifts", location: "Soho, London", lat: 51.5137, lng: -0.1337 },
+  { id: 8, name: "Polish Perfect", rating: 4.9, reviews: 178, speciality: "Nail Art & Extensions", location: "Didsbury, Manchester", lat: 53.4138, lng: -2.2305 },
+  { id: 9, name: "The Beauty Rooms", rating: 4.7, reviews: 145, speciality: "Full Beauty Services", location: "Leamington Spa", lat: 52.2852, lng: -1.5361 },
+  { id: 10, name: "Rose & Bloom", rating: 4.9, reviews: 302, speciality: "Organic Facials & Skincare", location: "Coventry", lat: 52.4068, lng: -1.5197 },
+];
+
+// Warm map style to match the site aesthetic
+const mapStyles = [
+  { featureType: "all", elementType: "geometry", stylers: [{ saturation: -30 }] },
+  { featureType: "all", elementType: "labels.text.fill", stylers: [{ color: "#7a7068" }] },
+  { featureType: "water", elementType: "geometry.fill", stylers: [{ color: "#e8ddd8" }] },
+  { featureType: "landscape", elementType: "geometry.fill", stylers: [{ color: "#f8f2ef" }] },
+  { featureType: "road", elementType: "geometry.fill", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#e8ddd8" }] },
+  { featureType: "poi", elementType: "geometry.fill", stylers: [{ color: "#f0e8e3" }] },
+  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
 ];
 
 export default function MapView({ pins = defaultPins }: { pins?: SalonPin[] }) {
-  const [activePin, setActivePin] = useState<number | null>(null);
+  const [selectedPin, setSelectedPin] = useState<SalonPin | null>(null);
+
+  // Centre of UK
+  const defaultCenter = { lat: 52.5, lng: -1.5 };
+  const defaultZoom = 6;
+
+  const handleMarkerClick = useCallback((pin: SalonPin) => {
+    setSelectedPin(pin);
+  }, []);
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden border border-border bg-surface-elevated">
-      {/* Map background */}
-      <div className="relative aspect-[2/1] min-h-[300px] max-h-[500px]">
-        <Image
-          src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&h=600&fit=crop"
-          alt="Map view"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px]" />
-
-        {/* Pins */}
-        {pins.map((pin, i) => (
-          <button
-            key={pin.name}
-            className="absolute z-10 group"
-            style={{ top: pin.top, left: pin.left, transform: "translate(-50%, -100%)" }}
-            onClick={() => setActivePin(activePin === i ? null : i)}
+      <div className="relative aspect-[2/1] min-h-[350px] max-h-[550px]">
+        <APIProvider apiKey="AIzaSyA4REu_2hbHZNt4JNGesSHC-SH69Ryxk5k">
+          <Map
+            defaultCenter={defaultCenter}
+            defaultZoom={defaultZoom}
+            gestureHandling="cooperative"
+            disableDefaultUI={true}
+            zoomControl={true}
+            styles={mapStyles}
+            mapId="onetouchbeauty-map"
           >
-            {/* Pin marker */}
-            <div className={`relative transition-transform duration-200 ${activePin === i ? "scale-125" : "group-hover:scale-110"}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-lg ${
-                activePin === i ? "bg-primary" : "bg-white"
-              }`}>
-                <MapPin size={16} className={activePin === i ? "text-white" : "text-primary"} />
-              </div>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-inherit rotate-45 -mt-1" />
-            </div>
-
-            {/* Info tooltip */}
-            {activePin === i && (
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-white rounded-xl shadow-xl p-3 min-w-[160px] animate-slide-up">
-                <p className="font-bold text-gray-900 text-sm whitespace-nowrap">{pin.name}</p>
-                <div className="flex items-center gap-1 mt-1">
-                  <Star size={12} className="text-amber-400 fill-amber-400" />
-                  <span className="text-xs font-semibold text-gray-700">{pin.rating}</span>
+            {pins.map((pin) => (
+              <AdvancedMarker
+                key={pin.id}
+                position={{ lat: pin.lat, lng: pin.lng }}
+                onClick={() => handleMarkerClick(pin)}
+              >
+                <div className="relative group cursor-pointer">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 ${
+                    selectedPin?.id === pin.id
+                      ? "bg-primary scale-110"
+                      : "bg-white hover:scale-105"
+                  }`}>
+                    <MapPin
+                      size={18}
+                      className={selectedPin?.id === pin.id ? "text-white" : "text-primary"}
+                    />
+                  </div>
+                  {/* Pulse ring */}
+                  <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" style={{ animationDuration: "3s" }} />
                 </div>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 -mt-1.5" />
-              </div>
-            )}
-          </button>
-        ))}
-      </div>
+              </AdvancedMarker>
+            ))}
 
-      {/* Notice bar */}
-      <div className="px-5 py-3 bg-surface flex items-center gap-3 border-t border-border">
-        <Info size={16} className="text-primary shrink-0" />
-        <p className="text-sm text-text-muted">
-          <span className="font-semibold text-foreground">Map view coming soon</span> — we&apos;re integrating Google Maps for full interactive browsing
-        </p>
+            {selectedPin && (
+              <InfoWindow
+                position={{ lat: selectedPin.lat, lng: selectedPin.lng }}
+                onCloseClick={() => setSelectedPin(null)}
+                pixelOffset={[0, -45]}
+              >
+                <div className="p-1 min-w-[200px] max-w-[260px]" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <h3 className="font-semibold text-gray-900 text-sm">{selectedPin.name}</h3>
+                  <p className="text-xs text-gray-500 mt-0.5">{selectedPin.location}</p>
+                  <p className="text-xs font-medium mt-1" style={{ color: "#c4959a" }}>{selectedPin.speciality}</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <Star size={12} className="text-amber-400 fill-amber-400" />
+                    <span className="text-xs font-semibold text-gray-700">{selectedPin.rating}</span>
+                    <span className="text-xs text-gray-400">({selectedPin.reviews} reviews)</span>
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <Link
+                      href={`/salon/${selectedPin.id}`}
+                      className="flex-1 text-center text-xs font-semibold py-1.5 rounded-lg text-white"
+                      style={{ backgroundColor: "#c4959a" }}
+                    >
+                      View salon
+                    </Link>
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${selectedPin.lat},${selectedPin.lng}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center w-8 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                    >
+                      <Navigation size={12} className="text-gray-500" />
+                    </a>
+                  </div>
+                </div>
+              </InfoWindow>
+            )}
+          </Map>
+        </APIProvider>
       </div>
     </div>
   );
