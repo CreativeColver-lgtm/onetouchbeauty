@@ -1,7 +1,6 @@
 "use client";
-import { useState, useCallback } from "react";
-import { APIProvider, Map, AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
-import { Star, MapPin, Navigation } from "lucide-react";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { Star, Navigation, MapPin } from "lucide-react";
 import Link from "next/link";
 
 interface SalonPin {
@@ -13,7 +12,6 @@ interface SalonPin {
   location: string;
   lat: number;
   lng: number;
-  image?: string;
 }
 
 const defaultPins: SalonPin[] = [
@@ -29,8 +27,10 @@ const defaultPins: SalonPin[] = [
   { id: 10, name: "Rose & Bloom", rating: 4.9, reviews: 302, speciality: "Organic Facials & Skincare", location: "Coventry", lat: 52.4068, lng: -1.5197 },
 ];
 
-// Warm map style to match the site aesthetic
-const mapStyles = [
+const MAPS_KEY = "AIzaSyA4REu_2hbHZNt4JNGesSHC-SH69Ryxk5k";
+
+// Custom warm map style
+const mapStyles: google.maps.MapTypeStyle[] = [
   { featureType: "all", elementType: "geometry", stylers: [{ saturation: -30 }] },
   { featureType: "all", elementType: "labels.text.fill", stylers: [{ color: "#7a7068" }] },
   { featureType: "water", elementType: "geometry.fill", stylers: [{ color: "#e8ddd8" }] },
@@ -42,90 +42,127 @@ const mapStyles = [
   { featureType: "transit", stylers: [{ visibility: "off" }] },
 ];
 
+function loadGoogleMaps(): Promise<typeof google.maps> {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== "undefined" && window.google?.maps) {
+      resolve(window.google.maps);
+      return;
+    }
+
+    const existing = document.querySelector(`script[src*="maps.googleapis.com"]`);
+    if (existing) {
+      existing.addEventListener("load", () => resolve(window.google.maps));
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&libraries=marker`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve(window.google.maps);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
 export default function MapView({ pins = defaultPins }: { pins?: SalonPin[] }) {
-  const [selectedPin, setSelectedPin] = useState<SalonPin | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstance = useRef<google.maps.Map | null>(null);
+  const infoWindow = useRef<google.maps.InfoWindow | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
 
-  // Centre of UK
-  const defaultCenter = { lat: 52.5, lng: -1.5 };
-  const defaultZoom = 6;
+  useEffect(() => {
+    if (!mapRef.current) return;
 
-  const handleMarkerClick = useCallback((pin: SalonPin) => {
-    setSelectedPin(pin);
-  }, []);
+    loadGoogleMaps()
+      .then((maps) => {
+        const map = new maps.Map(mapRef.current!, {
+          center: { lat: 52.5, lng: -1.5 },
+          zoom: 6,
+          disableDefaultUI: true,
+          zoomControl: true,
+          gestureHandling: "cooperative",
+          styles: mapStyles,
+        });
+
+        mapInstance.current = map;
+        infoWindow.current = new maps.InfoWindow();
+
+        // Add markers
+        pins.forEach((pin) => {
+          const marker = new maps.Marker({
+            position: { lat: pin.lat, lng: pin.lng },
+            map,
+            icon: {
+              path: maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: "#c4959a",
+              fillOpacity: 1,
+              strokeColor: "#ffffff",
+              strokeWeight: 3,
+            },
+            title: pin.name,
+          });
+
+          marker.addListener("click", () => {
+            const content = `
+              <div style="font-family: Inter, sans-serif; padding: 4px; min-width: 200px; max-width: 260px;">
+                <h3 style="font-weight: 600; color: #1a1a1a; font-size: 14px; margin: 0;">${pin.name}</h3>
+                <p style="color: #7a7068; font-size: 12px; margin: 2px 0 0;">${pin.location}</p>
+                <p style="color: #c4959a; font-size: 12px; font-weight: 500; margin: 6px 0 0;">${pin.speciality}</p>
+                <div style="display: flex; align-items: center; gap: 4px; margin-top: 8px;">
+                  <span style="color: #f59e0b; font-size: 12px;">★</span>
+                  <span style="font-weight: 600; color: #1a1a1a; font-size: 12px;">${pin.rating}</span>
+                  <span style="color: #7a7068; font-size: 11px;">(${pin.reviews} reviews)</span>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                  <a href="/salon/${pin.id}" style="flex: 1; text-align: center; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px; color: white; background: #c4959a; text-decoration: none;">
+                    View salon
+                  </a>
+                  <a href="https://www.google.com/maps/dir/?api=1&destination=${pin.lat},${pin.lng}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; width: 32px; border-radius: 8px; border: 1px solid #e8ddd8; text-decoration: none; color: #7a7068;">
+                    ↗
+                  </a>
+                </div>
+              </div>
+            `;
+            infoWindow.current!.setContent(content);
+            infoWindow.current!.open(map, marker);
+          });
+        });
+
+        setLoaded(true);
+      })
+      .catch(() => {
+        setError(true);
+      });
+  }, [pins]);
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden border border-border bg-surface-elevated">
       <div className="relative aspect-[2/1] min-h-[350px] max-h-[550px]">
-        <APIProvider apiKey="AIzaSyA4REu_2hbHZNt4JNGesSHC-SH69Ryxk5k">
-          <Map
-            defaultCenter={defaultCenter}
-            defaultZoom={defaultZoom}
-            gestureHandling="cooperative"
-            disableDefaultUI={true}
-            zoomControl={true}
-            styles={mapStyles}
-            mapId="onetouchbeauty-map"
-          >
-            {pins.map((pin) => (
-              <AdvancedMarker
-                key={pin.id}
-                position={{ lat: pin.lat, lng: pin.lng }}
-                onClick={() => handleMarkerClick(pin)}
-              >
-                <div className="relative group cursor-pointer">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 ${
-                    selectedPin?.id === pin.id
-                      ? "bg-primary scale-110"
-                      : "bg-white hover:scale-105"
-                  }`}>
-                    <MapPin
-                      size={18}
-                      className={selectedPin?.id === pin.id ? "text-white" : "text-primary"}
-                    />
-                  </div>
-                  {/* Pulse ring */}
-                  <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" style={{ animationDuration: "3s" }} />
-                </div>
-              </AdvancedMarker>
-            ))}
+        <div ref={mapRef} className="absolute inset-0" />
 
-            {selectedPin && (
-              <InfoWindow
-                position={{ lat: selectedPin.lat, lng: selectedPin.lng }}
-                onCloseClick={() => setSelectedPin(null)}
-                pixelOffset={[0, -45]}
-              >
-                <div className="p-1 min-w-[200px] max-w-[260px]" style={{ fontFamily: "Inter, sans-serif" }}>
-                  <h3 className="font-semibold text-gray-900 text-sm">{selectedPin.name}</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">{selectedPin.location}</p>
-                  <p className="text-xs font-medium mt-1" style={{ color: "#c4959a" }}>{selectedPin.speciality}</p>
-                  <div className="flex items-center gap-1 mt-2">
-                    <Star size={12} className="text-amber-400 fill-amber-400" />
-                    <span className="text-xs font-semibold text-gray-700">{selectedPin.rating}</span>
-                    <span className="text-xs text-gray-400">({selectedPin.reviews} reviews)</span>
-                  </div>
-                  <div className="flex gap-2 mt-3">
-                    <Link
-                      href={`/salon/${selectedPin.id}`}
-                      className="flex-1 text-center text-xs font-semibold py-1.5 rounded-lg text-white"
-                      style={{ backgroundColor: "#c4959a" }}
-                    >
-                      View salon
-                    </Link>
-                    <a
-                      href={`https://www.google.com/maps/dir/?api=1&destination=${selectedPin.lat},${selectedPin.lng}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center w-8 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-                    >
-                      <Navigation size={12} className="text-gray-500" />
-                    </a>
-                  </div>
-                </div>
-              </InfoWindow>
-            )}
-          </Map>
-        </APIProvider>
+        {/* Loading state */}
+        {!loaded && !error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-surface">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-text-muted">Loading map...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Error state */}
+        {error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-surface">
+            <div className="text-center px-6">
+              <MapPin size={32} className="text-primary mx-auto mb-3" />
+              <p className="font-semibold text-foreground">Map unavailable</p>
+              <p className="text-sm text-text-muted mt-1">Please check your connection and try again</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
