@@ -24,7 +24,7 @@ export default function BusinessRegisterPage() {
 
   const serviceCategories: Record<string, string[]> = {
     "Hair": [
-      "Haircuts", "Men's Haircut", "Children's Hair Cuts", "Blow Dry", "Colouring", "Highlights",
+      "Haircuts", "Children's Hair Cuts", "Blow Dry", "Colouring", "Highlights",
       "Balayage", "Ombre", "Hair Extensions", "Braids", "Hair Styled Up", "Wedding Hair",
       "Conditioning", "Scalp Treatments", "Hair Loss Treatments", "Hair Consulting",
       "Afro Hairdressing", "Chemical Straightening", "Electrolysis",
@@ -190,7 +190,7 @@ export default function BusinessRegisterPage() {
                 <label className="text-sm font-medium text-foreground mb-2 block">What type of salon are you?</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {[
-                    "Hair Salon", "Nail Salon", "Beauty Salon", "Barbershop",
+                    "Hair Salon", "Nail Salon", "Beauty Salon", "Aesthetics Clinic",
                     "Spa & Wellness", "Makeup Studio", "Lash & Brow Bar",
                     "Skin Clinic", "Mobile Beautician", "Home-Based Salon",
                     "Tanning Salon", "Massage Therapist",

@@ -51,8 +51,8 @@ const mockStaff: StaffMemberLocal[] = [
   },
   {
     id: "2", name: "James Chen", email: "james@glowstudio.com", phone: "07700 100002",
-    role: "staff", avatar_url: null, bio: "Specialises in men's cuts and fades",
-    specialties: ["Cuts", "Fades"], is_active: true,
+    role: "staff", avatar_url: null, bio: "Specialises in precision cuts and styling",
+    specialties: ["Cuts", "Styling"], is_active: true,
     services: ["Haircut & Blow Dry", "Blow Dry & Style"],
     schedule: defaultSchedule,
   },

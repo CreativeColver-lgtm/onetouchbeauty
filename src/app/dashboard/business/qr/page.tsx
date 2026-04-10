@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 const colorOptions = [
-  { name: "Pink", value: "#f78da7", ring: "ring-pink-400" },
+  { name: "Rose", value: "#c4959a", ring: "ring-primary" },
   { name: "Black", value: "#1a1a2e", ring: "ring-gray-800" },
   { name: "Blue", value: "#0693e3", ring: "ring-blue-500" },
   { name: "Green", value: "#00d084", ring: "ring-green-500" },

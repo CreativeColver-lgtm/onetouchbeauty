@@ -26,7 +26,7 @@ interface Staff {
 
 /* ── mock data ── */
 const staff: Staff[] = [
-  { id: 1, name: "Sophie L.", avatar: "SL", color: "text-pink-600", colorBg: "bg-pink-100 dark:bg-pink-900/30" },
+  { id: 1, name: "Sophie L.", avatar: "SL", color: "text-primary", colorBg: "bg-primary/10" },
   { id: 2, name: "Marcus T.", avatar: "MT", color: "text-blue-600", colorBg: "bg-blue-100 dark:bg-blue-900/30" },
   { id: 3, name: "Priya K.", avatar: "PK", color: "text-emerald-600", colorBg: "bg-emerald-100 dark:bg-emerald-900/30" },
 ];
@@ -50,7 +50,7 @@ const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 function getStaffColor(staffId: number) {
   const s = staff.find((st) => st.id === staffId);
   if (!s) return { bg: "bg-gray-100", text: "text-gray-600", border: "border-gray-200" };
-  if (staffId === 1) return { bg: "bg-pink-50 dark:bg-pink-900/20", text: "text-pink-700 dark:text-pink-300", border: "border-pink-200 dark:border-pink-800" };
+  if (staffId === 1) return { bg: "bg-primary/5", text: "text-primary", border: "border-primary/20" };
   if (staffId === 2) return { bg: "bg-blue-50 dark:bg-blue-900/20", text: "text-blue-700 dark:text-blue-300", border: "border-blue-200 dark:border-blue-800" };
   return { bg: "bg-emerald-50 dark:bg-emerald-900/20", text: "text-emerald-700 dark:text-emerald-300", border: "border-emerald-200 dark:border-emerald-800" };
 }

@@ -27,7 +27,7 @@ const initialCampaigns: Campaign[] = [
     subject: "Haven't seen you in a while — 10% off!",
     preview: "Hi {name}, we miss you at Glow Studio! It's been a while since your last visit. Come back and enjoy 10% off your next appointment. Book now and treat yourself — you deserve it! 💖",
     enabled: true, openRate: 42, clickRate: 18, bookings: 12, sent: 234,
-    color: "from-rose-500 to-pink-500",
+    color: "from-primary to-primary-dark",
   },
   {
     id: 2, name: "Birthday", type: "Automated", icon: Gift,

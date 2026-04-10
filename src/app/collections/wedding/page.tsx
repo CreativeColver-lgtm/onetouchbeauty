@@ -42,7 +42,7 @@ export default function WeddingPage() {
           unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-transparent to-pink-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/5" />
 
         <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-12 lg:p-20 z-10">
           <Link href="/collections" className="inline-flex items-center gap-1 text-white/70 text-sm hover:text-white transition mb-6">

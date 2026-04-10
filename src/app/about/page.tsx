@@ -33,7 +33,7 @@ export default function AboutPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: Users, label: "5,000+ Beauty Pros", color: "bg-pink-100 dark:bg-pink-900/30 text-pink-600" },
+                { icon: Users, label: "5,000+ Beauty Pros", color: "bg-primary/10 text-primary" },
                 { icon: Star, label: "50,000+ Happy Clients", color: "bg-amber-100 dark:bg-amber-900/30 text-amber-600" },
                 { icon: MapPin, label: "UK-Wide Coverage", color: "bg-blue-100 dark:bg-blue-900/30 text-blue-600" },
                 { icon: Shield, label: "Verified Businesses", color: "bg-green-100 dark:bg-green-900/30 text-green-600" },

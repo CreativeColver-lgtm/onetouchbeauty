@@ -60,7 +60,7 @@ const salon = {
   ],
   treatments: [
     { name: "Women's Haircut & Blow Dry", duration: "60 mins", price: 45, category: "Hair" },
-    { name: "Men's Haircut", duration: "30 mins", price: 25, category: "Hair" },
+    { name: "Blow Dry & Style", duration: "45 mins", price: 30, category: "Hair" },
     { name: "Children's Haircut", duration: "30 mins", price: 18, category: "Hair" },
     { name: "Hair Colour (Full Head)", duration: "120 mins", price: 85, category: "Colour" },
     { name: "Balayage", duration: "150 mins", price: 120, category: "Colour" },
@@ -88,7 +88,7 @@ const salon = {
       role: "Creative Director",
       bio: "James founded Glow Studio in 2019. Known for his precision cuts and modern styling, he brings a decade of editorial experience.",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
-      specialties: ["Precision Cuts", "Men's Styling", "Editorial"],
+      specialties: ["Precision Cuts", "Styling", "Editorial"],
       rating: 5.0,
     },
     {
@@ -115,7 +115,7 @@ const salon = {
       role: "Junior Stylist",
       bio: "Marcus is our newest team member, bringing fresh energy and a keen eye for trends. Great with textured and afro hair.",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face",
-      specialties: ["Textured Hair", "Men's Cuts", "Fades"],
+      specialties: ["Textured Hair", "Braids", "Natural Styling"],
       rating: 4.6,
     },
   ],
@@ -314,7 +314,7 @@ export default function SalonPage() {
                       href={`https://instagram.com/${salon.instagram}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 text-purple-400 hover:text-purple-300 transition"
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary hover:text-primary-dark transition"
                     >
                       <ExternalLink size={12} /> @{salon.instagram}
                     </a>

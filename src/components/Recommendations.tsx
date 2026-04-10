@@ -75,13 +75,13 @@ const popular = [
   },
   {
     id: "7",
-    name: "Fresh Fade Barbers",
-    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=400&fit=crop",
+    name: "Glow & Go Beauty",
+    image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=400&fit=crop",
     rating: 4.7,
     reviews: 298,
     location: "Brixton, London",
-    priceFrom: 20,
-    tags: ["Barber", "Fades"],
+    priceFrom: 28,
+    tags: ["Makeup", "Bridal"],
     nextSlot: "Today 4:45pm",
   },
   {
