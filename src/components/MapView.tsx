@@ -56,7 +56,7 @@ function loadGoogleMaps(): Promise<typeof google.maps> {
     }
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&libraries=marker`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}`;
     script.async = true;
     script.defer = true;
     script.onload = () => resolve(window.google.maps);

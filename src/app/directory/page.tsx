@@ -554,7 +554,7 @@ export default function DirectoryPage() {
         </div>
 
         {viewMode === "map" && (
-          <div className="mb-10 reveal">
+          <div className="mb-10">
             <MapView />
           </div>
         )}
