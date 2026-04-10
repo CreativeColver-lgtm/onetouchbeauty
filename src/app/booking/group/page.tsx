@@ -111,7 +111,7 @@ export default function GroupBookingPage() {
             <Link href="/booking" className="inline-flex items-center gap-1 text-white/70 hover:text-white text-sm mb-3 transition">
               <ArrowLeft size={14} /> Back to booking
             </Link>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">Group Booking</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Group Booking</h1>
             <p className="text-white/70 text-sm sm:text-base max-w-lg">
               Perfect for hen parties, birthdays, bridal parties & more. Book treatments for the whole group in one go.
             </p>
@@ -246,7 +246,7 @@ export default function GroupBookingPage() {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-2xl font-extrabold text-primary">£{totalPrice}</p>
+                <p className="text-2xl font-bold text-primary">£{totalPrice}</p>
                 {totalPrice >= 200 && (
                   <p className="text-xs text-accent font-semibold">🎉 10% group discount applied</p>
                 )}

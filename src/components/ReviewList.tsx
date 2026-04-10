@@ -102,7 +102,7 @@ export default function ReviewList() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
           {/* Average Score */}
           <div className="text-center sm:text-left shrink-0">
-            <p className="text-5xl font-extrabold text-foreground">{avgRating.toFixed(1)}</p>
+            <p className="text-5xl font-bold text-foreground">{avgRating.toFixed(1)}</p>
             <div className="flex gap-0.5 justify-center sm:justify-start mt-1">
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star key={s} size={16} className={s <= Math.round(avgRating) ? "text-amber-400 fill-amber-400" : "text-border"} />

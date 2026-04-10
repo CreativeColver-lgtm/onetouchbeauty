@@ -170,7 +170,7 @@ export default function BusinessDashboard() {
                   {c.up ? <TrendingUp size={11} /> : <TrendingDown size={11} />} {c.change}
                 </span>
               </div>
-              <p className="text-2xl font-extrabold text-foreground">{c.value}</p>
+              <p className="text-2xl font-bold text-foreground">{c.value}</p>
               <p className="text-sm text-text-muted">{c.label}</p>
             </div>
           ))}
@@ -183,7 +183,7 @@ export default function BusinessDashboard() {
               <Calendar size={16} className="text-secondary" />
               <span className="text-sm font-medium text-text-muted">Bookings Today</span>
             </div>
-            <p className="text-3xl font-extrabold text-foreground">{bookingsTodayCount}</p>
+            <p className="text-3xl font-bold text-foreground">{bookingsTodayCount}</p>
             <p className="text-xs text-text-muted mt-1">{todayBookings.filter(b => b.status === "confirmed").length} confirmed, {todayBookings.filter(b => b.status === "pending").length} pending</p>
           </div>
           <div className="bg-surface-elevated border border-border rounded-2xl p-5">
@@ -191,7 +191,7 @@ export default function BusinessDashboard() {
               <UserCheck size={16} className="text-accent" />
               <span className="text-sm font-medium text-text-muted">Client Retention</span>
             </div>
-            <p className="text-3xl font-extrabold text-foreground">{clientRetentionRate}%</p>
+            <p className="text-3xl font-bold text-foreground">{clientRetentionRate}%</p>
             <p className="text-xs text-accent mt-1 flex items-center gap-1"><TrendingUp size={10} /> +5% from last month</p>
           </div>
           <div className="bg-surface-elevated border border-border rounded-2xl p-5">
@@ -199,7 +199,7 @@ export default function BusinessDashboard() {
               <UserX size={16} className="text-red-400" />
               <span className="text-sm font-medium text-text-muted">No-Show Rate</span>
             </div>
-            <p className="text-3xl font-extrabold text-foreground">{noShowRate}%</p>
+            <p className="text-3xl font-bold text-foreground">{noShowRate}%</p>
             <p className="text-xs text-accent mt-1 flex items-center gap-1"><TrendingDown size={10} /> Down from 6.1%</p>
           </div>
         </div>
@@ -411,7 +411,7 @@ export default function BusinessDashboard() {
             <div className="bg-surface-elevated border border-border rounded-2xl p-6">
               <h3 className="font-bold text-foreground mb-4">Rating Summary</h3>
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-4xl font-extrabold text-foreground">4.8</span>
+                <span className="text-4xl font-bold text-foreground">4.8</span>
                 <div>
                   <div className="flex items-center gap-0.5 mb-1">
                     {[1, 2, 3, 4, 5].map((s) => (

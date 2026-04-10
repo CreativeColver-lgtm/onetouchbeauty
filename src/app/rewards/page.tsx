@@ -151,20 +151,20 @@ export default function RewardsPage() {
               <currentTier.icon size={20} />
               <span className="text-sm font-semibold text-white/80">{user.tier} Member</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold mb-1">Hey {user.name}! 👋</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1">Hey {user.name}! 👋</h1>
             <p className="text-white/70 text-sm">You&apos;re doing brilliantly. Keep earning to unlock more perks.</p>
 
             <div className="mt-6 grid grid-cols-3 gap-4">
               <div>
-                <p className="text-3xl font-extrabold">{user.points.toLocaleString()}</p>
+                <p className="text-3xl font-bold">{user.points.toLocaleString()}</p>
                 <p className="text-xs text-white/60">Current points</p>
               </div>
               <div>
-                <p className="text-3xl font-extrabold">{user.lifetimePoints.toLocaleString()}</p>
+                <p className="text-3xl font-bold">{user.lifetimePoints.toLocaleString()}</p>
                 <p className="text-xs text-white/60">Lifetime earned</p>
               </div>
               <div>
-                <p className="text-3xl font-extrabold">{user.referrals}</p>
+                <p className="text-3xl font-bold">{user.referrals}</p>
                 <p className="text-xs text-white/60">Referrals</p>
               </div>
             </div>

@@ -120,7 +120,7 @@ export default function BusinessRegisterPage() {
               </div>
               <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold">£19.99</span>
+                  <span className="text-3xl font-bold">£19.99</span>
                   <span className="text-white/70 text-sm">/month</span>
                 </div>
                 <p className="text-white/80 text-sm font-medium">No joining fee. Cancel anytime.</p>

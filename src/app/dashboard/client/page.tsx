@@ -93,7 +93,7 @@ export default function ClientDashboard() {
               <Crown size={24} />
               <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full">GOLD TIER</span>
             </div>
-            <p className="text-3xl font-extrabold">1,240</p>
+            <p className="text-3xl font-bold">1,240</p>
             <p className="text-sm opacity-80">Loyalty Points</p>
             <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
               <div className="h-full bg-white rounded-full" style={{ width: "62%" }} />
@@ -102,12 +102,12 @@ export default function ClientDashboard() {
           </div>
           <div className="bg-surface-elevated border border-border rounded-2xl p-5">
             <Calendar size={18} className="text-primary mb-2" />
-            <p className="text-2xl font-extrabold text-foreground">3</p>
+            <p className="text-2xl font-bold text-foreground">3</p>
             <p className="text-sm text-text-muted">Upcoming</p>
           </div>
           <div className="bg-surface-elevated border border-border rounded-2xl p-5">
             <Heart size={18} className="text-primary mb-2" />
-            <p className="text-2xl font-extrabold text-foreground">4</p>
+            <p className="text-2xl font-bold text-foreground">4</p>
             <p className="text-sm text-text-muted">Favourites</p>
           </div>
         </div>

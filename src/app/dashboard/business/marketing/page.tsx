@@ -89,7 +89,7 @@ export default function MarketingPage() {
           ].map((s) => (
             <div key={s.label} className="bg-surface-elevated border border-border rounded-2xl p-5">
               <s.icon size={18} className={`${s.color} mb-2`} />
-              <p className="text-2xl font-extrabold text-foreground">{s.value}</p>
+              <p className="text-2xl font-bold text-foreground">{s.value}</p>
               <p className="text-sm text-text-muted">{s.label}</p>
             </div>
           ))}

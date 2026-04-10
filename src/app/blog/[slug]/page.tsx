@@ -73,7 +73,7 @@ const relatedArticles = [
 function renderContent(blocks: string[]) {
   return blocks.map((block, i) => {
     if (block.startsWith("## ")) {
-      return <h2 key={i} id={block.replace("## ", "").toLowerCase().replace(/[^a-z0-9]+/g, "-")} className="text-xl font-extrabold text-foreground mt-8 mb-3">{block.replace("## ", "")}</h2>;
+      return <h2 key={i} id={block.replace("## ", "").toLowerCase().replace(/[^a-z0-9]+/g, "-")} className="text-xl font-bold text-foreground mt-8 mb-3">{block.replace("## ", "")}</h2>;
     }
     if (block.startsWith("**") && block.endsWith("**")) {
       return <p key={i} className="text-foreground font-semibold my-3">{block.replace(/\*\*/g, "")}</p>;
@@ -116,7 +116,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 max-w-4xl mx-auto">
           <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-primary text-white mb-3 inline-block">{article.category}</span>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white mb-3">{article.title}</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3">{article.title}</h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-white/80">
             <span className="flex items-center gap-1"><User size={13} /> {article.author}</span>
             <span className="flex items-center gap-1"><Calendar size={13} /> {article.date}</span>

@@ -72,7 +72,7 @@ export default function PricingPage() {
     <div className="min-h-screen bg-background">
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4">Simple, Transparent Pricing</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Simple, Transparent Pricing</h1>
           <p className="text-lg text-text-muted">No hidden fees. No joining costs. Cancel anytime.</p>
         </div>
       </section>
@@ -96,7 +96,7 @@ export default function PricingPage() {
                 <h2 className="text-xl font-bold text-foreground">{plan.name}</h2>
                 <p className="text-sm text-text-muted mt-1 mb-4">{plan.description}</p>
                 <div className="mb-6">
-                  <span className="text-3xl font-extrabold text-foreground">{plan.price}</span>
+                  <span className="text-3xl font-bold text-foreground">{plan.price}</span>
                   <span className="text-text-muted text-sm ml-1">/{plan.period}</span>
                 </div>
                 <ul className="space-y-3 mb-8 flex-1">

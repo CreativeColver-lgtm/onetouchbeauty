@@ -44,7 +44,7 @@ export default function SummerGlowPage() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/20 text-amber-200 text-sm font-bold w-fit mb-4 backdrop-blur-sm border border-amber-400/20">
             <Sun size={14} /> Seasonal Edit
           </span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
             Summer Glow<br />
             <span className="text-amber-300">Treatments</span>
           </h1>
@@ -66,7 +66,7 @@ export default function SummerGlowPage() {
 
       {/* Treatments */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
-        <h2 className="text-3xl font-extrabold text-foreground mb-10 reveal">The Edit</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-10 reveal">The Edit</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {treatments.map((t, i) => (
             <Link
@@ -100,7 +100,7 @@ export default function SummerGlowPage() {
       <section className="bg-surface py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 reveal">
-            <h2 className="text-3xl font-extrabold text-foreground mb-3">Featured Salons</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-3">Featured Salons</h2>
             <p className="text-text-muted text-lg">Top-rated salons perfect for your summer glow</p>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
@@ -134,7 +134,7 @@ export default function SummerGlowPage() {
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 text-center reveal">
           <Sparkles size={32} className="text-primary mx-auto mb-4" />
-          <h2 className="text-3xl font-extrabold text-foreground mb-3">Ready for your summer glow?</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-3">Ready for your summer glow?</h2>
           <p className="text-text-muted mb-8 text-lg">Browse all summer-ready treatments and book with confidence</p>
           <Link
             href="/directory"

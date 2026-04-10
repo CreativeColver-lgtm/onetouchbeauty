@@ -51,7 +51,7 @@ export default function WeddingPage() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-400/20 text-rose-200 text-sm font-bold w-fit mb-4 backdrop-blur-sm border border-rose-400/20">
             <Heart size={14} /> Bridal Edit
           </span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
             Wedding Season<br />
             <span className="text-rose-300">Packages</span>
           </h1>
@@ -73,7 +73,7 @@ export default function WeddingPage() {
 
       {/* Wedding Beauty Timeline */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
-        <h2 className="text-3xl font-extrabold text-foreground mb-10 text-center reveal">Your Bridal Beauty Timeline</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-10 text-center reveal">Your Bridal Beauty Timeline</h2>
         <div className="relative">
           {/* Vertical line */}
           <div className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-px bg-border sm:-translate-x-px" />
@@ -101,7 +101,7 @@ export default function WeddingPage() {
 
       {/* Treatments */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
-        <h2 className="text-3xl font-extrabold text-foreground mb-10 reveal">Bridal Treatments</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-10 reveal">Bridal Treatments</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {treatments.map((t, i) => (
             <Link
@@ -135,7 +135,7 @@ export default function WeddingPage() {
       <section className="bg-surface py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 reveal">
-            <h2 className="text-3xl font-extrabold text-foreground mb-3">Featured Bridal Salons</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-3">Featured Bridal Salons</h2>
             <p className="text-text-muted text-lg">Top-rated salons with dedicated bridal services</p>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
@@ -169,7 +169,7 @@ export default function WeddingPage() {
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 text-center reveal">
           <Heart size={32} className="text-primary mx-auto mb-4" />
-          <h2 className="text-3xl font-extrabold text-foreground mb-3">Your dream wedding look starts here</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-3">Your dream wedding look starts here</h2>
           <p className="text-text-muted mb-8 text-lg">Browse bridal-ready salons and book your trial today</p>
           <Link
             href="/directory"

@@ -32,7 +32,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 navbar-shrink navbar-gradient-line ${
+      className={`sticky top-0 z-50 ${
         isScrolled
           ? "navbar-scrolled bg-surface-elevated/95 glass"
           : "bg-surface-elevated/90 glass"

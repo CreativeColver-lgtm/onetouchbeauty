@@ -5,7 +5,7 @@ export default function CookiesPage() {
     <div className="min-h-screen bg-background">
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-4">Cookie Policy</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Cookie Policy</h1>
           <p className="text-text-muted">Last updated: March 2026</p>
         </div>
       </section>

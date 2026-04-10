@@ -20,7 +20,7 @@ export default function RatingBreakdown({ rating, reviews: reviewsProp, totalRev
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-3">
-        <span className="text-4xl font-extrabold text-foreground">{rating}</span>
+        <span className="text-4xl font-bold text-foreground">{rating}</span>
         <div>
           <div className="flex gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (

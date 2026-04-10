@@ -143,7 +143,7 @@ export default function CampaignsPage() {
         ].map((card) => (
           <div key={card.label} className="bg-surface-elevated border border-border rounded-2xl p-5">
             <card.icon size={18} className={`${card.color} mb-2`} />
-            <p className="text-2xl font-extrabold text-foreground">{card.value}</p>
+            <p className="text-2xl font-bold text-foreground">{card.value}</p>
             <p className="text-xs text-text-muted">{card.label}</p>
           </div>
         ))}

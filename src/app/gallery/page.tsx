@@ -63,7 +63,7 @@ export default function GalleryPage() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-sm font-semibold mb-4 backdrop-blur-sm border border-white/10">
             <Sparkles size={14} className="text-primary" /> Before & After
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-3">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3">
             Transformation Gallery
           </h1>
           <p className="text-white/70 text-lg max-w-xl">

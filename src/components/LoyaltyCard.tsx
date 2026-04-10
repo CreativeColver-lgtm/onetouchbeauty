@@ -55,7 +55,7 @@ export default function LoyaltyCard({
           </div>
           {businessName && <span className="text-xs text-white/60">{businessName}</span>}
         </div>
-        <p className="text-2xl font-extrabold">{points.toLocaleString()}</p>
+        <p className="text-2xl font-bold">{points.toLocaleString()}</p>
         <p className="text-xs text-white/60">points available</p>
         {pointsToNextTier && nextTierName && (
           <div className="mt-2">
@@ -88,11 +88,11 @@ export default function LoyaltyCard({
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-3xl font-extrabold">{points.toLocaleString()}</p>
+            <p className="text-3xl font-bold">{points.toLocaleString()}</p>
             <p className="text-xs text-white/60">Available points</p>
           </div>
           <div>
-            <p className="text-3xl font-extrabold">{lifetimePoints.toLocaleString()}</p>
+            <p className="text-3xl font-bold">{lifetimePoints.toLocaleString()}</p>
             <p className="text-xs text-white/60">Lifetime earned</p>
           </div>
         </div>

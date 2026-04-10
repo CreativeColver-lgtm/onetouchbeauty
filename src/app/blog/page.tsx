@@ -119,7 +119,7 @@ export default function BlogPage() {
       <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-16">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <BookOpen size={40} className="text-primary mx-auto mb-4" />
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-3">Beauty Blog</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Beauty Blog</h1>
           <p className="text-lg text-text-muted max-w-xl mx-auto">Tips, trends, and advice from top beauty professionals across the UK</p>
         </div>
       </section>
@@ -135,7 +135,7 @@ export default function BlogPage() {
             </div>
             <div className="p-6 md:p-8 flex flex-col justify-center">
               <span className="text-xs font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full w-fit mb-3">{featured.category}</span>
-              <h2 className="text-2xl font-extrabold text-foreground mb-3 group-hover:text-primary transition">{featured.title}</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition">{featured.title}</h2>
               <p className="text-text-muted mb-4 leading-relaxed">{featured.excerpt}</p>
               <div className="flex items-center gap-4 text-sm text-text-muted">
                 <span className="flex items-center gap-1"><User size={13} /> {featured.author}</span>
@@ -196,7 +196,7 @@ export default function BlogPage() {
         {/* Newsletter CTA */}
         <div className="bg-gradient-to-br from-primary to-primary-dark rounded-2xl p-8 md:p-12 text-white text-center">
           <Mail size={36} className="mx-auto mb-4 opacity-90" />
-          <h2 className="text-2xl font-extrabold mb-2">Stay in the Loop</h2>
+          <h2 className="text-2xl font-bold mb-2">Stay in the Loop</h2>
           <p className="opacity-80 mb-6 max-w-md mx-auto">Get the latest beauty tips, trends, and exclusive offers delivered straight to your inbox every week.</p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input

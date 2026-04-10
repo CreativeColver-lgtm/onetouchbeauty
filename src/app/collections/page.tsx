@@ -32,7 +32,7 @@ export default function CollectionsPage() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold mb-6">
             <Sparkles size={14} /> Curated Collections
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
             Beauty Collections
           </h1>
           <p className="text-text-muted text-lg max-w-2xl mx-auto leading-relaxed">
@@ -62,7 +62,7 @@ export default function CollectionsPage() {
                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-sm w-fit mb-3">
                   {col.tag}
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 group-hover:text-primary transition-colors">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
                   {col.title}
                 </h2>
                 <p className="text-white/70 text-sm leading-relaxed mb-4 max-w-md">

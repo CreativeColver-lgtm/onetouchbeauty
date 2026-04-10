@@ -117,11 +117,11 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="mb-4">
               <Image
-                src="/logo.png"
+                src="/logo-new.jpg"
                 alt="One Touch Beauty"
-                width={240}
-                height={70}
-                className="h-14 w-auto"
+                width={720}
+                height={140}
+                className="h-12 w-auto"
               />
             </div>
             <p className="text-sm text-text-muted mb-5 leading-relaxed">
