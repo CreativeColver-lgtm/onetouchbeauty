@@ -19,7 +19,7 @@ import useEmblaCarousel from "embla-carousel-react";
 
 /* ─── Curated Pexels imagery ─── */
 const img = {
-  heroVideo: "https://videos.pexels.com/video-files/8830118/8830118-hd_1920_1080_25fps.mp4",
+  heroVideo: "https://videos.pexels.com/video-files/3993033/3993033-uhd_2560_1440_25fps.mp4",
   ctaFriendly: "https://images.pexels.com/photos/3762761/pexels-photo-3762761.jpeg?auto=compress&cs=tinysrgb&w=1920",
   heroPoster: "https://images.pexels.com/photos/7755209/pexels-photo-7755209.jpeg?auto=compress&cs=tinysrgb&w=1920",
   hair1: "https://images.pexels.com/photos/7755209/pexels-photo-7755209.jpeg?auto=compress&cs=tinysrgb&w=800",
